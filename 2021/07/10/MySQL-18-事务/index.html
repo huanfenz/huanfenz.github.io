@@ -1,0 +1,616 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210927131547.jpg">
+  <link rel="icon" href="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210927131547.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="该博客使用Hexo+Github创建">
+  <meta name="author" content="huanfenz">
+  <meta name="keywords" content="">
+  <meta name="description" content="事务   事务 事务介绍 事务的特性   事务的创建 事务的隔离级别 例子 1.演示事务的使用步骤 2.演示事务对于delete和truncate的处理的区别 3.演示savepoint 的使用   作业13-事务 题目 我的解答      事务Transaction Control Language 事务控制语言 事务介绍一个或一组sql语句组成一个执行单元，这个执行单元要么全部执行，要么全部不">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL-18-事务">
+<meta property="og:url" content="https://huanfenz.top/2021/07/10/MySQL-18-%E4%BA%8B%E5%8A%A1/index.html">
+<meta property="og:site_name" content="huanfenz的博客">
+<meta property="og:description" content="事务   事务 事务介绍 事务的特性   事务的创建 事务的隔离级别 例子 1.演示事务的使用步骤 2.演示事务对于delete和truncate的处理的区别 3.演示savepoint 的使用   作业13-事务 题目 我的解答      事务Transaction Control Language 事务控制语言 事务介绍一个或一组sql语句组成一个执行单元，这个执行单元要么全部执行，要么全部不">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-07-10T12:00:01.000Z">
+<meta property="article:modified_time" content="2021-09-27T12:31:08.632Z">
+<meta property="article:author" content="huanfenz">
+<meta property="article:tag" content="数据库">
+<meta property="article:tag" content="MySQL">
+<meta name="twitter:card" content="summary_large_image">
+  
+  <title>MySQL-18-事务 - huanfenz的博客</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/obsidian.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"huanfenz.top","root":"/","version":"1.8.12","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4","collapseDepth":2},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname"}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>huanfenz&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210927141514.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="MySQL-18-事务">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-07-10 20:00" pubdate>
+        2021年7月10日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.1k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      7 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">MySQL-18-事务</h1>
+            
+            <div class="markdown-body">
+              <h1><span id="事务">事务</span></h1><!-- toc -->
+
+<ul>
+<li><a href="#%E4%BA%8B%E5%8A%A1">事务</a><ul>
+<li><a href="#%E4%BA%8B%E5%8A%A1%E4%BB%8B%E7%BB%8D">事务介绍</a></li>
+<li><a href="#%E4%BA%8B%E5%8A%A1%E7%9A%84%E7%89%B9%E6%80%A7">事务的特性</a></li>
+</ul>
+</li>
+<li><a href="#%E4%BA%8B%E5%8A%A1%E7%9A%84%E5%88%9B%E5%BB%BA">事务的创建</a></li>
+<li><a href="#%E4%BA%8B%E5%8A%A1%E7%9A%84%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB">事务的隔离级别</a></li>
+<li><a href="#%E4%BE%8B%E5%AD%90">例子</a><ul>
+<li><a href="#1%E6%BC%94%E7%A4%BA%E4%BA%8B%E5%8A%A1%E7%9A%84%E4%BD%BF%E7%94%A8%E6%AD%A5%E9%AA%A4">1.演示事务的使用步骤</a></li>
+<li><a href="#2%E6%BC%94%E7%A4%BA%E4%BA%8B%E5%8A%A1%E5%AF%B9%E4%BA%8Edelete%E5%92%8Ctruncate%E7%9A%84%E5%A4%84%E7%90%86%E7%9A%84%E5%8C%BA%E5%88%AB">2.演示事务对于delete和truncate的处理的区别</a></li>
+<li><a href="#3%E6%BC%94%E7%A4%BAsavepoint-%E7%9A%84%E4%BD%BF%E7%94%A8">3.演示savepoint 的使用</a></li>
+</ul>
+</li>
+<li><a href="#%E4%BD%9C%E4%B8%9A13-%E4%BA%8B%E5%8A%A1">作业13-事务</a><ul>
+<li><a href="#%E9%A2%98%E7%9B%AE">题目</a></li>
+<li><a href="#%E6%88%91%E7%9A%84%E8%A7%A3%E7%AD%94">我的解答</a></li>
+</ul>
+</li>
+</ul>
+<!-- tocstop -->
+
+<h2><span id="事务">事务</span></h2><p>Transaction Control Language 事务控制语言</p>
+<h3><span id="事务介绍">事务介绍</span></h3><p>一个或一组sql语句组成一个执行单元，这个执行单元要么全部执行，要么全部不执行。</p>
+<p>案例：转账</p>
+<p>张三丰  1000<br>郭襄    1000</p>
+<p>update 表 set 张三丰的余额=500 where name=’张三丰’<br>意外<br>update 表 set 郭襄的余额=1500 where name=’郭襄’</p>
+<h3><span id="事务的特性">事务的特性</span></h3><p>ACID<br>原子性：一个事务不可再分割，要么都执行要么都不执行<br>一致性：一个事务执行会使数据从一个一致状态切换到另外一个一致状态<br>隔离性：一个事务的执行不受其他事务的干扰<br>持久性：一个事务一旦提交，则会永久的改变数据库的数据.</p>
+<h2><span id="事务的创建">事务的创建</span></h2><p>隐式事务：事务没有明显的开启和结束的标记<br>比如insert、update、delete语句</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs mysql">delete from 表 where id =1;<br></code></pre></div></td></tr></table></figure>
+<p>显式事务：事务具有明显的开启和结束的标记<br>前提：必须先设置自动提交功能为禁用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs mysql">set autocommit=0;<br></code></pre></div></td></tr></table></figure>
+
+<ul>
+<li><p>步骤1：开启事务</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs mysql">set autocommit=0;<br>start transaction;可选的<br></code></pre></div></td></tr></table></figure></li>
+<li><p>步骤2：编写事务中的sql语句(select insert update delete)</p>
+<figure class="highlight abnf"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs abnf">语句<span class="hljs-number">1</span><span class="hljs-comment">;</span><br>语句<span class="hljs-number">2</span><span class="hljs-comment">;</span><br>...<br></code></pre></div></td></tr></table></figure></li>
+<li><p>步骤3：结束事务</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs mysql">commit;提交事务<br>rollback;回滚事务<br>savepoint 节点名;设置保存点<br></code></pre></div></td></tr></table></figure></li>
+</ul>
+<h2><span id="事务的隔离级别">事务的隔离级别</span></h2><table>
+<thead>
+<tr>
+<th>隔离级别</th>
+<th>脏读</th>
+<th>不可重复读</th>
+<th>幻读</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>read uncommitted</td>
+<td>√</td>
+<td>√</td>
+<td>√</td>
+</tr>
+<tr>
+<td>read committed</td>
+<td>×</td>
+<td>√</td>
+<td>√</td>
+</tr>
+<tr>
+<td>repeatable read</td>
+<td>×</td>
+<td>×</td>
+<td>√</td>
+</tr>
+<tr>
+<td>serializable</td>
+<td>×</td>
+<td>×</td>
+<td>×</td>
+</tr>
+</tbody></table>
+<ul>
+<li>mysql中默认 第三个隔离级别 repeatable read</li>
+<li>oracle中默认第二个隔离级别 read committed</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs mysql">查看隔离级别<br>select @@tx_isolation;<br>设置隔离级别<br>set session|global transaction isolation level 隔离级别;<br><br>开启事务的语句;<br>update 表 set 张三丰的余额=500 where name=&#x27;张三丰&#x27;<br><br>update 表 set 郭襄的余额=1500 where name=&#x27;郭襄&#x27; <br>结束事务的语句;<br><br>SHOW VARIABLES LIKE &#x27;autocommit&#x27;;<br>SHOW ENGINES;<br></code></pre></div></td></tr></table></figure>
+
+
+
+<h2><span id="例子">例子</span></h2><h3><span id="1演示事务的使用步骤">1.演示事务的使用步骤</span></h3><figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs mysql">#开启事务<br><br>SET autocommit=0;<br>START TRANSACTION;<br><br>#编写一组事务的语句<br>UPDATE account SET balance = 1000 WHERE username=&#x27;张无忌&#x27;;<br>UPDATE account SET balance = 1000 WHERE username=&#x27;赵敏&#x27;;<br><br>#结束事务<br>ROLLBACK;<br>#或<br>commit;<br><br>#查看<br>SELECT * FROM account;<br></code></pre></div></td></tr></table></figure>
+
+<h3><span id="2演示事务对于delete和truncate的处理的区别">2.演示事务对于delete和truncate的处理的区别</span></h3><figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs mysql">SET autocommit=0;<br>START TRANSACTION;<br><br>DELETE FROM account;<br>ROLLBACK;<br></code></pre></div></td></tr></table></figure>
+
+<h3><span id="3演示savepoint-的使用">3.演示savepoint 的使用</span></h3><figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs mysql">SET autocommit=0;<br>START TRANSACTION;<br>DELETE FROM account WHERE id=25;<br>SAVEPOINT a;#设置保存点<br>DELETE FROM account WHERE id=28;<br>ROLLBACK TO a;#回滚到保存点<br><br><br>SELECT * FROM account;<br></code></pre></div></td></tr></table></figure>
+
+<h2><span id="作业13-事务">作业13-事务</span></h2><h3><span id="题目">题目</span></h3><p>1.创建一个表，里面有 id 为主键，stuname 唯一键，seat 座位号，要求将id 设置成自增<br>2.要求用事务的方式插入3 行数据<br>3.要求用事务的方式删除数据，并回滚 </p>
+<h3><span id="我的解答">我的解答</span></h3><figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs mysql">1.创建一个表，里面有 id 为主键，stuname 唯一键，seat 座位号，要求将id 设置成自增<br><br>CREATE TABLE t1(<br>	id INT PRIMARY KEY AUTO_INCREMENT,<br>	stuname VARCHAR(10) UNIQUE,<br>	seat INT<br>);<br><br>2.要求用事务的方式插入3 行数据<br><br>SET autocommit = 0;<br>START TRANSACTION;<br><br>INSERT INTO t1 VALUE(NULL, &#x27;sunlei&#x27;, 5151);<br>INSERT INTO t1 VALUE(NULL, &#x27;wangpeng&#x27;, 5152);<br>INSERT INTO t1 VALUE(NULL, &#x27;wangchengyu&#x27;, 5153);<br><br>COMMIT;<br><br>SELECT * FROM t1;<br><br>3.要求用事务的方式删除数据，并回滚<br>SET autocommit = 0;<br>START TRANSACTION;<br><br>DELETE FROM t1 WHERE id = 1;<br><br>ROLLBACK;<br><br></code></pre></div></td></tr></table></figure>
+
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Java%E5%90%8E%E7%AB%AF/">Java后端</a>
+                    
+                      <a class="hover-with-bg" href="/categories/Java%E5%90%8E%E7%AB%AF/MySQL/">MySQL</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+                    
+                      <a class="hover-with-bg" href="/tags/MySQL/">MySQL</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/07/10/MySQL-17-%E6%A0%87%E8%AF%86%E5%88%97/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">MySQL-17-标识列</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/07/10/MySQL-19-%E8%A7%86%E5%9B%BE/">
+                        <span class="hidden-mobile">MySQL-19-视图</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"kKHw5YzfOlny9jMQJEjDkSBi-9Nh9j0Va","appKey":"3N5RE5Sl5hj96cTuho5YEMnY","path":"window.location.pathname","placeholder":"小伙伴们快来评论！","avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":true,"recordIP":true,"serverURLs":"https://kkhw5yzf.lc-cn-e1-shared.com","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          Fluid.plugins.initFancyBox('#valine .vcontent img:not(.vemoji)');
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+    <span>Copyright© 2021 huanfenz</span>
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        loader: {
+          load: ['ui/lazy']
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

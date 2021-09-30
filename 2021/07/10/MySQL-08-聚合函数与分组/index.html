@@ -1,0 +1,626 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210927131547.jpg">
+  <link rel="icon" href="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210927131547.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="该博客使用Hexo+Github创建">
+  <meta name="author" content="huanfenz">
+  <meta name="keywords" content="">
+  <meta name="description" content="分组函数与分组   分组函数 功能 分类 特点 例子 1、简单的使用 2、参数支持哪些类型 3、是否忽略null 4、和distinct搭配 5、count函数的详细介绍 6、和分组函数一同查询的字段有限制   作业5-分组函数 问题 我的解答     分组查询 语法 特点 例子 1. 简单的分组 2. 可以实现分组前的筛选 3. 分组后筛选 4. 添加排序 5. 按多个字段分组   作业6-分组">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL-08-聚合函数与分组">
+<meta property="og:url" content="https://huanfenz.top/2021/07/10/MySQL-08-%E8%81%9A%E5%90%88%E5%87%BD%E6%95%B0%E4%B8%8E%E5%88%86%E7%BB%84/index.html">
+<meta property="og:site_name" content="huanfenz的博客">
+<meta property="og:description" content="分组函数与分组   分组函数 功能 分类 特点 例子 1、简单的使用 2、参数支持哪些类型 3、是否忽略null 4、和distinct搭配 5、count函数的详细介绍 6、和分组函数一同查询的字段有限制   作业5-分组函数 问题 我的解答     分组查询 语法 特点 例子 1. 简单的分组 2. 可以实现分组前的筛选 3. 分组后筛选 4. 添加排序 5. 按多个字段分组   作业6-分组">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-07-10T12:00:01.000Z">
+<meta property="article:modified_time" content="2021-09-27T12:31:08.632Z">
+<meta property="article:author" content="huanfenz">
+<meta property="article:tag" content="数据库">
+<meta property="article:tag" content="MySQL">
+<meta name="twitter:card" content="summary_large_image">
+  
+  <title>MySQL-08-聚合函数与分组 - huanfenz的博客</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/obsidian.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"huanfenz.top","root":"/","version":"1.8.12","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4","collapseDepth":2},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname"}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>huanfenz&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210927141514.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="MySQL-08-聚合函数与分组">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-07-10 20:00" pubdate>
+        2021年7月10日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      4.5k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      14 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">MySQL-08-聚合函数与分组</h1>
+            
+            <div class="markdown-body">
+              <h1><span id="分组函数与分组">分组函数与分组</span></h1><!-- toc -->
+
+<ul>
+<li><a href="#%E5%88%86%E7%BB%84%E5%87%BD%E6%95%B0">分组函数</a><ul>
+<li><a href="#%E5%8A%9F%E8%83%BD">功能</a></li>
+<li><a href="#%E5%88%86%E7%B1%BB">分类</a></li>
+<li><a href="#%E7%89%B9%E7%82%B9">特点</a></li>
+<li><a href="#%E4%BE%8B%E5%AD%90">例子</a><ul>
+<li><a href="#1-%E7%AE%80%E5%8D%95%E7%9A%84%E4%BD%BF%E7%94%A8">1、简单的使用</a></li>
+<li><a href="#2-%E5%8F%82%E6%95%B0%E6%94%AF%E6%8C%81%E5%93%AA%E4%BA%9B%E7%B1%BB%E5%9E%8B">2、参数支持哪些类型</a></li>
+<li><a href="#3-%E6%98%AF%E5%90%A6%E5%BF%BD%E7%95%A5null">3、是否忽略null</a></li>
+<li><a href="#4-%E5%92%8Cdistinct%E6%90%AD%E9%85%8D">4、和distinct搭配</a></li>
+<li><a href="#5-count%E5%87%BD%E6%95%B0%E7%9A%84%E8%AF%A6%E7%BB%86%E4%BB%8B%E7%BB%8D">5、count函数的详细介绍</a></li>
+<li><a href="#6-%E5%92%8C%E5%88%86%E7%BB%84%E5%87%BD%E6%95%B0%E4%B8%80%E5%90%8C%E6%9F%A5%E8%AF%A2%E7%9A%84%E5%AD%97%E6%AE%B5%E6%9C%89%E9%99%90%E5%88%B6">6、和分组函数一同查询的字段有限制</a></li>
+</ul>
+</li>
+<li><a href="#%E4%BD%9C%E4%B8%9A5-%E5%88%86%E7%BB%84%E5%87%BD%E6%95%B0">作业5-分组函数</a><ul>
+<li><a href="#%E9%97%AE%E9%A2%98">问题</a></li>
+<li><a href="#%E6%88%91%E7%9A%84%E8%A7%A3%E7%AD%94">我的解答</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E5%88%86%E7%BB%84%E6%9F%A5%E8%AF%A2">分组查询</a><ul>
+<li><a href="#%E8%AF%AD%E6%B3%95">语法</a></li>
+<li><a href="#%E7%89%B9%E7%82%B9-1">特点</a></li>
+<li><a href="#%E4%BE%8B%E5%AD%90-1">例子</a><ul>
+<li><a href="#1-%E7%AE%80%E5%8D%95%E7%9A%84%E5%88%86%E7%BB%84">1. 简单的分组</a></li>
+<li><a href="#2-%E5%8F%AF%E4%BB%A5%E5%AE%9E%E7%8E%B0%E5%88%86%E7%BB%84%E5%89%8D%E7%9A%84%E7%AD%9B%E9%80%89">2. 可以实现分组前的筛选</a></li>
+<li><a href="#3-%E5%88%86%E7%BB%84%E5%90%8E%E7%AD%9B%E9%80%89">3. 分组后筛选</a></li>
+<li><a href="#4-%E6%B7%BB%E5%8A%A0%E6%8E%92%E5%BA%8F">4. 添加排序</a></li>
+<li><a href="#5-%E6%8C%89%E5%A4%9A%E4%B8%AA%E5%AD%97%E6%AE%B5%E5%88%86%E7%BB%84">5. 按多个字段分组</a></li>
+</ul>
+</li>
+<li><a href="#%E4%BD%9C%E4%B8%9A6-%E5%88%86%E7%BB%84%E6%9F%A5%E8%AF%A2">作业6-分组查询</a><ul>
+<li><a href="#%E9%97%AE%E9%A2%98-1">问题</a></li>
+<li><a href="#%E6%88%91%E7%9A%84%E8%A7%A3%E7%AD%94-1">我的解答</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<!-- tocstop -->
+
+<h2><span id="分组函数">分组函数</span></h2><h3><span id="功能">功能</span></h3><p>用作统计使用，又称为聚合函数或统计函数或组函数</p>
+<h3><span id="分类">分类</span></h3><p>sum 求和、avg 平均值、max 最大值 、min 最小值 、count 计算个数</p>
+<h3><span id="特点">特点</span></h3><p>1、sum、avg一般用于处理数值型<br>   max、min、count可以处理任何类型<br>2、以上分组函数都忽略null值</p>
+<p>3、可以和distinct搭配实现去重的运算</p>
+<p>4、count函数的单独介绍<br>一般使用count(*)用作统计行数</p>
+<p>5、和分组函数一同查询的字段要求是group by后的字段</p>
+<h3><span id="例子">例子</span></h3><h4><span id="1-简单的使用">1、简单的使用</span></h4><figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs mysql">SELECT SUM(salary) FROM employees;<br>SELECT AVG(salary) FROM employees;<br>SELECT MIN(salary) FROM employees;<br>SELECT MAX(salary) FROM employees;<br>SELECT COUNT(salary) FROM employees;<br><br><br>SELECT SUM(salary) 和,AVG(salary) 平均,MAX(salary) 最高,MIN(salary) 最低,COUNT(salary) 个数<br>FROM employees;<br><br>SELECT SUM(salary) 和,ROUND(AVG(salary),2) 平均,MAX(salary) 最高,MIN(salary) 最低,COUNT(salary) 个数<br>FROM employees;<br></code></pre></div></td></tr></table></figure>
+
+<h4><span id="2-参数支持哪些类型">2、参数支持哪些类型</span></h4><figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs mysql">SELECT SUM(last_name) ,AVG(last_name) FROM employees;<br>SELECT SUM(hiredate) ,AVG(hiredate) FROM employees;<br><br>SELECT MAX(last_name),MIN(last_name) FROM employees;<br><br>SELECT MAX(hiredate),MIN(hiredate) FROM employees;<br><br>SELECT COUNT(commission_pct) FROM employees;<br>SELECT COUNT(last_name) FROM employees;<br></code></pre></div></td></tr></table></figure>
+
+<h4><span id="3-是否忽略null">3、是否忽略null</span></h4><figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs mysql">SELECT SUM(commission_pct) ,AVG(commission_pct),SUM(commission_pct)/35,SUM(commission_pct)/107 FROM employees;<br><br>SELECT MAX(commission_pct) ,MIN(commission_pct) FROM employees;<br><br>SELECT COUNT(commission_pct) FROM employees;<br>SELECT commission_pct FROM employees;<br></code></pre></div></td></tr></table></figure>
+
+<h4><span id="4-和distinct搭配">4、和distinct搭配</span></h4><figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs mysql">SELECT SUM(DISTINCT salary),SUM(salary) FROM employees;<br><br>SELECT COUNT(DISTINCT salary),COUNT(salary) FROM employees;<br></code></pre></div></td></tr></table></figure>
+
+<h4><span id="5-count函数的详细介绍">5、count函数的详细介绍</span></h4><figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs mysql">SELECT COUNT(salary) FROM employees;<br><br><br>SELECT COUNT(*) FROM employees;<br><br>SELECT COUNT(1) FROM employees;<br><br>效率：<br>MYISAM存储引擎下  ，COUNT(*)的效率高<br>INNODB存储引擎下，COUNT(*)和COUNT(1)的效率差不多，比COUNT(字段)要高一些<br></code></pre></div></td></tr></table></figure>
+
+<h4><span id="6-和分组函数一同查询的字段有限制">6、和分组函数一同查询的字段有限制</span></h4><figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs mysql">SELECT AVG(salary),employee_id  FROM employees;<br></code></pre></div></td></tr></table></figure>
+
+<h3><span id="作业5-分组函数">作业5-分组函数</span></h3><h4><span id="问题">问题</span></h4><ol>
+<li>查询公司员工工资的最大值，最小值，平均值，总和 </li>
+<li>查询员工表中的最大入职时间和最小入职时间的相差天数 （DIFFRENCE） </li>
+<li>查询部门编号为90 的员工个数 </li>
+</ol>
+<h4><span id="我的解答">我的解答</span></h4><figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs mysql">1. 查询公司员工工资的最大值，最小值，平均值，总和<br>SELECT MAX(salary), MIN(salary), AVG(salary), SUM(salary)<br>FROM `employees`<br><br>2. 查询员工表中的最大入职时间和最小入职时间的相差天数 （DIFFRENCE）<br>SELECT DATEDIFF(MAX(hiredate), MIN(hiredate))<br>FROM employees;<br><br>3. 查询部门编号为90 的员工个数<br>SELECT COUNT(*)<br>FROM employees<br>WHERE department_id = 90;<br></code></pre></div></td></tr></table></figure>
+
+
+
+<h2><span id="分组查询">分组查询</span></h2><h3><span id="语法">语法</span></h3><p>select 查询列表<br>from 表<br>【where 筛选条件】<br>group by 分组的字段<br>【order by 排序的字段】;</p>
+<h3><span id="特点">特点</span></h3><p>1、和分组函数一同查询的字段必须是group by后出现的字段<br>2、筛选分为两类：分组前筛选和分组后筛选<br>针对的表            位置                                        连接的关键字<br>分组前筛选        原始表                                    group by前    where</p>
+<p>分组后筛选        group by后的结果集            group by后    having</p>
+<p>问题1：分组函数做筛选能不能放在where后面<br>答：不能</p>
+<p>问题2：where——group by——having</p>
+<p>一般来讲，能用分组前筛选的，尽量使用分组前筛选，提高效率</p>
+<p>3、分组可以按单个字段也可以按多个字段<br>4、可以搭配着排序使用</p>
+<h3><span id="例子">例子</span></h3><p>引入：查询每个部门的员工个数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs mysql">SELECT COUNT(*) FROM employees WHERE department_id=90;<br></code></pre></div></td></tr></table></figure>
+<h4><span id="1-简单的分组">1. 简单的分组</span></h4><p>#案例1：查询每个工种的员工平均工资</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs mysql">SELECT AVG(salary),job_id<br>FROM employees<br>GROUP BY job_id;<br></code></pre></div></td></tr></table></figure>
+<p>案例2：查询每个位置的部门个数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs mysql">SELECT COUNT(*),location_id<br>FROM departments<br>GROUP BY location_id;<br></code></pre></div></td></tr></table></figure>
+
+<h4><span id="2-可以实现分组前的筛选">2. 可以实现分组前的筛选</span></h4><figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs mysql">#案例1：查询邮箱中包含a字符的 每个部门的最高工资<br><br>SELECT MAX(salary),department_id<br>FROM employees<br>WHERE email LIKE &#x27;%a%&#x27;<br>GROUP BY department_id;<br><br>#案例2：查询有奖金的每个领导手下员工的平均工资<br><br>SELECT AVG(salary),manager_id<br>FROM employees<br>WHERE commission_pct IS NOT NULL<br>GROUP BY manager_id;<br></code></pre></div></td></tr></table></figure>
+
+<h4><span id="3-分组后筛选">3. 分组后筛选</span></h4><figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs mysql">#案例：查询哪个部门的员工个数&gt;5<br><br>#①查询每个部门的员工个数<br>SELECT COUNT(*),department_id<br>FROM employees<br>GROUP BY department_id;<br><br>#② 筛选刚才①结果<br><br>SELECT COUNT(*),department_id<br>FROM employees<br><br>GROUP BY department_id<br><br>HAVING COUNT(*)&gt;5;<br><br><br>#案例2：每个工种有奖金的员工的最高工资&gt;12000的工种编号和最高工资<br><br>SELECT job_id,MAX(salary)<br>FROM employees<br>WHERE commission_pct IS NOT NULL<br>GROUP BY job_id<br>HAVING MAX(salary)&gt;12000;<br><br><br>#案例3：领导编号&gt;102的每个领导手下的最低工资大于5000的领导编号和最低工资<br><br>manager_id&gt;102<br><br>SELECT manager_id,MIN(salary)<br>FROM employees<br>GROUP BY manager_id<br>HAVING MIN(salary)&gt;5000;<br></code></pre></div></td></tr></table></figure>
+
+<h4><span id="4-添加排序">4. 添加排序</span></h4><figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs mysql">#案例：每个工种有奖金的员工的最高工资&gt;6000的工种编号和最高工资,按最高工资升序<br><br>SELECT job_id,MAX(salary) m<br>FROM employees<br>WHERE commission_pct IS NOT NULL<br>GROUP BY job_id<br>HAVING m&gt;6000<br>ORDER BY m ;<br></code></pre></div></td></tr></table></figure>
+
+<h4><span id="5-按多个字段分组">5. 按多个字段分组</span></h4><figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs mysql">#案例：查询每个工种每个部门的最低工资,并按最低工资降序<br><br>SELECT MIN(salary),job_id,department_id<br>FROM employees<br>GROUP BY department_id,job_id<br>ORDER BY MIN(salary) DESC;<br></code></pre></div></td></tr></table></figure>
+
+
+
+<h3><span id="作业6-分组查询">作业6-分组查询</span></h3><h4><span id="问题">问题</span></h4><ol>
+<li>查询各job_id 的员工工资的最大值，最小值，平均值，总和，并按job_id 升序 </li>
+<li>查询员工最高工资和最低工资的差距（DIFFERENCE） </li>
+<li>查询各个管理者手下员工的最低工资，其中最低工资不能低于 6000，没有管理者的员<br>工不计算在内 </li>
+<li>查询所有部门的编号，员工数量和工资平均值,并按平均工资降序 </li>
+<li>选择具有各个job_id 的员工人数 </li>
+</ol>
+<h4><span id="我的解答">我的解答</span></h4><figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs mysql">1. 查询各job_id 的员工工资的最大值，最小值，平均值，总和，并按job_id 升序<br>SELECT MAX(salary), MIN(salary), ROUND(AVG(salary),2), SUM(salary), job_id<br>FROM `employees`<br>GROUP BY job_id;<br>ORDER BY job_id ASC;<br><br>2. 查询员工最高工资和最低工资的差距（DIFFERENCE）<br>SELECT MAX(salary),MIN(salary), MAX(salary)-MIN(salary) AS DIFFERENCE<br>FROM `employees`;<br><br>3. 查询 各个管理者 手下员工的最低工资，其中最低工资 不能低于 6000 ，没有管理者的员工 不计算在内<br>SELECT MIN(salary), manager_id<br>FROM employees<br>WHERE manager_id IS NOT NULL<br>GROUP BY `manager_id`<br>HAVING MIN(salary) &gt;= 6000;<br><br>4. 查询所有部门的编号，员工数量和工资平均值,并按平均工资降序<br>SELECT department_id, COUNT(*), AVG(salary)<br>FROM employees<br>GROUP BY department_id<br>ORDER BY AVG(salary) DESC;<br><br>5. 选择具有各个job_id 的员工人数 <br>SELECT COUNT(*), job_id<br>FROM employees<br>GROUP BY job_id;<br><br></code></pre></div></td></tr></table></figure>
+
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Java%E5%90%8E%E7%AB%AF/">Java后端</a>
+                    
+                      <a class="hover-with-bg" href="/categories/Java%E5%90%8E%E7%AB%AF/MySQL/">MySQL</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+                    
+                      <a class="hover-with-bg" href="/tags/MySQL/">MySQL</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/07/10/MySQL-07-%E5%B8%B8%E7%94%A8%E5%87%BD%E6%95%B0/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">MySQL-07-常用函数</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/07/10/MySQL-10-%E5%AD%90%E6%9F%A5%E8%AF%A2/">
+                        <span class="hidden-mobile">MySQL-10-子查询</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"kKHw5YzfOlny9jMQJEjDkSBi-9Nh9j0Va","appKey":"3N5RE5Sl5hj96cTuho5YEMnY","path":"window.location.pathname","placeholder":"小伙伴们快来评论！","avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":true,"recordIP":true,"serverURLs":"https://kkhw5yzf.lc-cn-e1-shared.com","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          Fluid.plugins.initFancyBox('#valine .vcontent img:not(.vemoji)');
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+    <span>Copyright© 2021 huanfenz</span>
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        loader: {
+          load: ['ui/lazy']
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

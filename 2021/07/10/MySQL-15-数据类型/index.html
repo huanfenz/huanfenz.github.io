@@ -1,0 +1,647 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210927131547.jpg">
+  <link rel="icon" href="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210927131547.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="该博客使用Hexo+Github创建">
+  <meta name="author" content="huanfenz">
+  <meta name="keywords" content="">
+  <meta name="description" content="数据类型   常见的数据类型 一、整型 分类 特点 例子 1.如何设置无符号和有符号     二、小数 分类 特点 测试M和D 原则   三、字符型 分类 特点 例子   四、日期型 分类 特点      常见的数据类型 数值型  整型  小数  定点数 浮点数      字符型： 较短的文本：char、varchar 较长的文本：text、blob（较长的二进制数据）   日期型   一、整型分">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL-15-数据类型">
+<meta property="og:url" content="https://huanfenz.top/2021/07/10/MySQL-15-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/index.html">
+<meta property="og:site_name" content="huanfenz的博客">
+<meta property="og:description" content="数据类型   常见的数据类型 一、整型 分类 特点 例子 1.如何设置无符号和有符号     二、小数 分类 特点 测试M和D 原则   三、字符型 分类 特点 例子   四、日期型 分类 特点      常见的数据类型 数值型  整型  小数  定点数 浮点数      字符型： 较短的文本：char、varchar 较长的文本：text、blob（较长的二进制数据）   日期型   一、整型分">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-07-10T12:00:01.000Z">
+<meta property="article:modified_time" content="2021-09-27T12:31:08.632Z">
+<meta property="article:author" content="huanfenz">
+<meta property="article:tag" content="数据库">
+<meta property="article:tag" content="MySQL">
+<meta name="twitter:card" content="summary_large_image">
+  
+  <title>MySQL-15-数据类型 - huanfenz的博客</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/obsidian.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"huanfenz.top","root":"/","version":"1.8.12","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4","collapseDepth":2},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname"}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>huanfenz&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210927141514.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="MySQL-15-数据类型">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-07-10 20:00" pubdate>
+        2021年7月10日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.2k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      7 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">MySQL-15-数据类型</h1>
+            
+            <div class="markdown-body">
+              <h1><span id="数据类型">数据类型</span></h1><!-- toc -->
+
+<ul>
+<li><a href="#%E5%B8%B8%E8%A7%81%E7%9A%84%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B">常见的数据类型</a></li>
+<li><a href="#%E4%B8%80-%E6%95%B4%E5%9E%8B">一、整型</a><ul>
+<li><a href="#%E5%88%86%E7%B1%BB">分类</a></li>
+<li><a href="#%E7%89%B9%E7%82%B9">特点</a></li>
+<li><a href="#%E4%BE%8B%E5%AD%90">例子</a><ul>
+<li><a href="#1%E5%A6%82%E4%BD%95%E8%AE%BE%E7%BD%AE%E6%97%A0%E7%AC%A6%E5%8F%B7%E5%92%8C%E6%9C%89%E7%AC%A6%E5%8F%B7">1.如何设置无符号和有符号</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E4%BA%8C-%E5%B0%8F%E6%95%B0">二、小数</a><ul>
+<li><a href="#%E5%88%86%E7%B1%BB-1">分类</a></li>
+<li><a href="#%E7%89%B9%E7%82%B9-1">特点</a></li>
+<li><a href="#%E6%B5%8B%E8%AF%95m%E5%92%8Cd">测试M和D</a></li>
+<li><a href="#%E5%8E%9F%E5%88%99">原则</a></li>
+</ul>
+</li>
+<li><a href="#%E4%B8%89-%E5%AD%97%E7%AC%A6%E5%9E%8B">三、字符型</a><ul>
+<li><a href="#%E5%88%86%E7%B1%BB-2">分类</a></li>
+<li><a href="#%E7%89%B9%E7%82%B9-2">特点</a></li>
+<li><a href="#%E4%BE%8B%E5%AD%90-1">例子</a></li>
+</ul>
+</li>
+<li><a href="#%E5%9B%9B-%E6%97%A5%E6%9C%9F%E5%9E%8B">四、日期型</a><ul>
+<li><a href="#%E5%88%86%E7%B1%BB-3">分类</a></li>
+<li><a href="#%E7%89%B9%E7%82%B9-3">特点</a></li>
+</ul>
+</li>
+</ul>
+<!-- tocstop -->
+
+<h2><span id="常见的数据类型">常见的数据类型</span></h2><ul>
+<li><p>数值型</p>
+<ul>
+<li><p>整型</p>
+</li>
+<li><p>小数</p>
+<ul>
+<li><p>定点数</p>
+<p>浮点数</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>字符型：</p>
+<div class="hljs code-wrapper"><pre><code>较短的文本：char、varchar
+较长的文本：text、blob（较长的二进制数据）
+</code></pre></div>
+</li>
+<li><p>日期型</p>
+</li>
+</ul>
+<h2><span id="一-整型">一、整型</span></h2><h3><span id="分类">分类</span></h3><p>| tinyint | smallint | mediumint | int/integer | bigint |<br>|–|<br>|1         |2        |3        |4        |8        |</p>
+<h3><span id="特点">特点</span></h3><p>① 如果不设置无符号还是有符号，<strong>默认是有符号</strong>，如果想设置无符号，<strong>需要添加unsigned关键字</strong><br>② 如果插入的数值超出了整型的范围，会报out of range异常，并且插入临界值<br>③ 如果不设置长度，<strong>会有默认的长度</strong><br>长度代表了<strong>显示的最大宽度</strong>，如果不够会用0在左边填充，<strong>但必须搭配zerofill使用！</strong></p>
+<h3><span id="例子">例子</span></h3><h4><span id="1如何设置无符号和有符号">1.如何设置无符号和有符号</span></h4><figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs mysql">DROP TABLE IF EXISTS tab_int;<br>CREATE TABLE tab_int(<br>	t1 INT(7) ZEROFILL,<br>	t2 INT(7) ZEROFILL <br>);<br><br>DESC tab_int;<br><br>INSERT INTO tab_int VALUES(-123456);<br>INSERT INTO tab_int VALUES(-123456,-123456);<br>INSERT INTO tab_int VALUES(214748364894967296);<br><br>INSERT INTO tab_int VALUES(123,123);<br><br>SELECT * FROM tab_int;<br></code></pre></div></td></tr></table></figure>
+
+<h2><span id="二-小数">二、小数</span></h2><h3><span id="分类">分类</span></h3><p>1.浮点型<br>float(M,D)<br>double(M,D)<br>2.定点型<br>dec(M，D)<br>decimal(M,D)</p>
+<h3><span id="特点">特点</span></h3><p>①<br>M：整数部位 + 小数部位<br>D：小数部位<br>如果超过范围，则插入临界值</p>
+<p>②<br>M和D都可以省略<br>如果是decimal，则M默认为10，D默认为0<br>如果是float和double，则会根据插入的数值的精度来决定精度</p>
+<p>③定点型的精确度较高，如果要求插入数值的精度较高如货币运算等则考虑使用</p>
+<h3><span id="测试m和d">测试M和D</span></h3><figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs mysql">DROP TABLE tab_float;<br>CREATE TABLE tab_float(<br>	f1 FLOAT,<br>	f2 DOUBLE,<br>	f3 DECIMAL<br>);<br>SELECT * FROM tab_float;<br>DESC tab_float;<br><br>INSERT INTO tab_float VALUES(123.4523,123.4523,123.4523);<br>INSERT INTO tab_float VALUES(123.456,123.456,123.456);<br>INSERT INTO tab_float VALUES(123.4,123.4,123.4);<br>INSERT INTO tab_float VALUES(1523.4,1523.4,1523.4);<br></code></pre></div></td></tr></table></figure>
+
+<h3><span id="原则">原则</span></h3><p>所选择的类型越简单越好，能保存数值的型越小越好</p>
+<h2><span id="三-字符型">三、字符型</span></h2><h3><span id="分类">分类</span></h3><p>较短的文本：</p>
+<p>char<br>varchar</p>
+<p>其他：</p>
+<p>binary和varbinary用于保存较短的二进制<br>enum用于保存枚举<br>set用于保存集合</p>
+<p>较长的文本<br>text<br>blob(较大的二进制)</p>
+<h3><span id="特点">特点</span></h3><table>
+<thead>
+<tr>
+<th>写法</th>
+<th>M的意思</th>
+<th>特点</th>
+<th>空间的耗费</th>
+<th>效率</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>char    char(M)</td>
+<td>最大的字符数，可以省略，默认为1</td>
+<td>固定长度的字符</td>
+<td>比较耗费</td>
+<td>高</td>
+</tr>
+<tr>
+<td>varchar    varchar(M)</td>
+<td>最大的字符数，不可以省略</td>
+<td>可变长度的字符</td>
+<td>比较节省</td>
+<td>低</td>
+</tr>
+</tbody></table>
+<h3><span id="例子">例子</span></h3><figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs mysql">CREATE TABLE tab_char(<br>	c1 ENUM(&#x27;a&#x27;,&#x27;b&#x27;,&#x27;c&#x27;)<br>);<br><br>INSERT INTO tab_char VALUES(&#x27;a&#x27;);<br>INSERT INTO tab_char VALUES(&#x27;b&#x27;);<br>INSERT INTO tab_char VALUES(&#x27;c&#x27;);<br>INSERT INTO tab_char VALUES(&#x27;m&#x27;);<br>INSERT INTO tab_char VALUES(&#x27;A&#x27;);<br><br>SELECT * FROM tab_set;<br><br>CREATE TABLE tab_set(<br><br>	s1 SET(&#x27;a&#x27;,&#x27;b&#x27;,&#x27;c&#x27;,&#x27;d&#x27;)<br>    <br>);<br>INSERT INTO tab_set VALUES(&#x27;a&#x27;);<br>INSERT INTO tab_set VALUES(&#x27;A,B&#x27;);<br>INSERT INTO tab_set VALUES(&#x27;a,c,d&#x27;);<br></code></pre></div></td></tr></table></figure>
+
+
+
+<h2><span id="四-日期型">四、日期型</span></h2><h3><span id="分类">分类</span></h3><p>date保存日期<br>time 只保存时间<br>year只保存年</p>
+<p>datetime保存日期+时间<br>timestamp保存日期+时间</p>
+<h3><span id="特点">特点</span></h3><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>字节</th>
+<th>范围</th>
+<th>时区等的影响</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>datetime</td>
+<td>8</td>
+<td>1000——9999</td>
+<td>不受</td>
+</tr>
+<tr>
+<td>timestamp</td>
+<td>4</td>
+<td>1970-2038</td>
+<td>受</td>
+</tr>
+</tbody></table>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs mysql">CREATE TABLE tab_date(<br>	t1 DATETIME,<br>	t2 TIMESTAMP<br>);<br><br>INSERT INTO tab_date VALUES(NOW(),NOW());<br><br>SELECT * FROM tab_date;<br><br>SHOW VARIABLES LIKE &#x27;time_zone&#x27;;<br><br>SET time_zone=&#x27;+9:00&#x27;;<br></code></pre></div></td></tr></table></figure>
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Java%E5%90%8E%E7%AB%AF/">Java后端</a>
+                    
+                      <a class="hover-with-bg" href="/categories/Java%E5%90%8E%E7%AB%AF/MySQL/">MySQL</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+                    
+                      <a class="hover-with-bg" href="/tags/MySQL/">MySQL</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/07/10/MySQL-14-%E5%BA%93%E5%92%8C%E8%A1%A8%E7%9A%84%E7%AE%A1%E7%90%86/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">MySQL-14-库和表的管理</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/07/10/MySQL-16-%E5%B8%B8%E8%A7%81%E7%BA%A6%E6%9D%9F/">
+                        <span class="hidden-mobile">MySQL-16-常见约束</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"kKHw5YzfOlny9jMQJEjDkSBi-9Nh9j0Va","appKey":"3N5RE5Sl5hj96cTuho5YEMnY","path":"window.location.pathname","placeholder":"小伙伴们快来评论！","avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":true,"recordIP":true,"serverURLs":"https://kkhw5yzf.lc-cn-e1-shared.com","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          Fluid.plugins.initFancyBox('#valine .vcontent img:not(.vemoji)');
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+    <span>Copyright© 2021 huanfenz</span>
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        loader: {
+          load: ['ui/lazy']
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

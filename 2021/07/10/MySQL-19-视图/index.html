@@ -1,0 +1,623 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210927131547.jpg">
+  <link rel="icon" href="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210927131547.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="该博客使用Hexo+Github创建">
+  <meta name="author" content="huanfenz">
+  <meta name="keywords" content="">
+  <meta name="description" content="视图   视图介绍 含义 例子   一、创建视图 语法 例子   二、视图的修改 方式一 方式二   三、删除视图 四、查看视图 五、视图的更新 具备以下特点的视图不允许更新 ①包含以下关键字的sql语句：分组函数、distinct、group by、having、union或者union all ②常量视图 ③Select中包含子查询 ④join ⑤from一个不能更新的视图 ⑥where子句的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL-19-视图">
+<meta property="og:url" content="https://huanfenz.top/2021/07/10/MySQL-19-%E8%A7%86%E5%9B%BE/index.html">
+<meta property="og:site_name" content="huanfenz的博客">
+<meta property="og:description" content="视图   视图介绍 含义 例子   一、创建视图 语法 例子   二、视图的修改 方式一 方式二   三、删除视图 四、查看视图 五、视图的更新 具备以下特点的视图不允许更新 ①包含以下关键字的sql语句：分组函数、distinct、group by、having、union或者union all ②常量视图 ③Select中包含子查询 ④join ⑤from一个不能更新的视图 ⑥where子句的">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210714131919.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210714132006.png">
+<meta property="article:published_time" content="2021-07-10T12:00:01.000Z">
+<meta property="article:modified_time" content="2021-09-27T12:31:08.632Z">
+<meta property="article:author" content="huanfenz">
+<meta property="article:tag" content="数据库">
+<meta property="article:tag" content="MySQL">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210714131919.png">
+  
+  <title>MySQL-19-视图 - huanfenz的博客</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/obsidian.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"huanfenz.top","root":"/","version":"1.8.12","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4","collapseDepth":2},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname"}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>huanfenz&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210927141514.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="MySQL-19-视图">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-07-10 20:00" pubdate>
+        2021年7月10日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      4.8k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      15 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">MySQL-19-视图</h1>
+            
+            <div class="markdown-body">
+              <h1><span id="视图">视图</span></h1><!-- toc -->
+
+<ul>
+<li><a href="#%E8%A7%86%E5%9B%BE%E4%BB%8B%E7%BB%8D">视图介绍</a><ul>
+<li><a href="#%E5%90%AB%E4%B9%89">含义</a></li>
+<li><a href="#%E4%BE%8B%E5%AD%90">例子</a></li>
+</ul>
+</li>
+<li><a href="#%E4%B8%80-%E5%88%9B%E5%BB%BA%E8%A7%86%E5%9B%BE">一、创建视图</a><ul>
+<li><a href="#%E8%AF%AD%E6%B3%95">语法</a></li>
+<li><a href="#%E4%BE%8B%E5%AD%90-1">例子</a></li>
+</ul>
+</li>
+<li><a href="#%E4%BA%8C-%E8%A7%86%E5%9B%BE%E7%9A%84%E4%BF%AE%E6%94%B9">二、视图的修改</a><ul>
+<li><a href="#%E6%96%B9%E5%BC%8F%E4%B8%80">方式一</a></li>
+<li><a href="#%E6%96%B9%E5%BC%8F%E4%BA%8C">方式二</a></li>
+</ul>
+</li>
+<li><a href="#%E4%B8%89-%E5%88%A0%E9%99%A4%E8%A7%86%E5%9B%BE">三、删除视图</a></li>
+<li><a href="#%E5%9B%9B-%E6%9F%A5%E7%9C%8B%E8%A7%86%E5%9B%BE">四、查看视图</a></li>
+<li><a href="#%E4%BA%94-%E8%A7%86%E5%9B%BE%E7%9A%84%E6%9B%B4%E6%96%B0">五、视图的更新</a><ul>
+<li><a href="#%E5%85%B7%E5%A4%87%E4%BB%A5%E4%B8%8B%E7%89%B9%E7%82%B9%E7%9A%84%E8%A7%86%E5%9B%BE%E4%B8%8D%E5%85%81%E8%AE%B8%E6%9B%B4%E6%96%B0">具备以下特点的视图不允许更新</a><ul>
+<li><a href="#1%E5%8C%85%E5%90%AB%E4%BB%A5%E4%B8%8B%E5%85%B3%E9%94%AE%E5%AD%97%E7%9A%84sql%E8%AF%AD%E5%8F%A5%E5%88%86%E7%BB%84%E5%87%BD%E6%95%B0-distinct-group-by-having-union%E6%88%96%E8%80%85union-all">①包含以下关键字的sql语句：分组函数、distinct、group by、having、union或者union all</a></li>
+<li><a href="#2%E5%B8%B8%E9%87%8F%E8%A7%86%E5%9B%BE">②常量视图</a></li>
+<li><a href="#3select%E4%B8%AD%E5%8C%85%E5%90%AB%E5%AD%90%E6%9F%A5%E8%AF%A2">③Select中包含子查询</a></li>
+<li><a href="#4join">④join</a></li>
+<li><a href="#5from%E4%B8%80%E4%B8%AA%E4%B8%8D%E8%83%BD%E6%9B%B4%E6%96%B0%E7%9A%84%E8%A7%86%E5%9B%BE">⑤from一个不能更新的视图</a></li>
+<li><a href="#6where%E5%AD%90%E5%8F%A5%E7%9A%84%E5%AD%90%E6%9F%A5%E8%AF%A2%E5%BC%95%E7%94%A8%E4%BA%86from%E5%AD%90%E5%8F%A5%E4%B8%AD%E7%9A%84%E8%A1%A8">⑥where子句的子查询引用了from子句中的表</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E4%BD%9C%E4%B8%9A">作业</a><ul>
+<li><a href="#%E9%97%AE%E9%A2%98">问题</a></li>
+<li><a href="#%E6%88%91%E7%9A%84%E8%A7%A3%E7%AD%94">我的解答</a></li>
+</ul>
+</li>
+<li><a href="#%E6%B5%8B%E8%AF%95%E9%A2%985">测试题5</a><ul>
+<li><a href="#%E9%97%AE%E9%A2%98-1">问题</a></li>
+<li><a href="#%E6%88%91%E7%9A%84%E8%A7%A3%E7%AD%94-1">我的解答</a></li>
+</ul>
+</li>
+</ul>
+<!-- tocstop -->
+
+<h2><span id="视图介绍">视图介绍</span></h2><h3><span id="含义">含义</span></h3><p>虚拟表，和普通表一样使用<br>mysql5.1版本出现的新特性，是通过表动态生成的数据</p>
+<p>比如：舞蹈班和普通班级的对比</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>创建语法的关键字</th>
+<th>是否实际占用物理空间</th>
+<th>使用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>视图</td>
+<td>create view</td>
+<td>只是保存了sql逻辑</td>
+<td>增删改查，只是一般不能增删改</td>
+</tr>
+<tr>
+<td>表</td>
+<td>create table</td>
+<td>保存了数据</td>
+<td>增删改查</td>
+</tr>
+</tbody></table>
+<h3><span id="例子">例子</span></h3><figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs mysql">案例：查询姓张的学生名和专业名<br>SELECT stuname,majorname<br>FROM stuinfo s<br>INNER JOIN major m ON s.`majorid`= m.`id`<br>WHERE s.`stuname` LIKE &#x27;张%&#x27;;<br><br>CREATE VIEW v1<br>AS<br>SELECT stuname,majorname<br>FROM stuinfo s<br>INNER JOIN major m ON s.`majorid`= m.`id`;<br><br>SELECT * FROM v1 WHERE stuname LIKE &#x27;张%&#x27;;<br></code></pre></div></td></tr></table></figure>
+
+<h2><span id="一-创建视图">一、创建视图</span></h2><h3><span id="语法">语法</span></h3><p>create view 视图名<br>as<br>查询语句;</p>
+<h3><span id="例子">例子</span></h3><figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs mysql">USE myemployees;<br><br><br>#1.查询姓名中包含a字符的员工名、部门名和工种信息<br><br>#①创建<br>CREATE VIEW myv1<br>AS<br><br>SELECT last_name,department_name,job_title<br>FROM employees e<br>JOIN departments d ON e.department_id  = d.department_id<br>JOIN jobs j ON j.job_id  = e.job_id;<br><br>#②使用<br>SELECT * FROM myv1 WHERE last_name LIKE &#x27;%a%&#x27;;<br><br><br>#2.查询各部门的平均工资级别<br><br>#①创建视图查看每个部门的平均工资<br>CREATE VIEW myv2<br>AS<br>SELECT AVG(salary) ag,department_id<br>FROM employees<br>GROUP BY department_id;<br><br>#②使用<br>SELECT myv2.`ag`,g.grade_level<br>FROM myv2<br>JOIN job_grades g<br>ON myv2.`ag` BETWEEN g.`lowest_sal` AND g.`highest_sal`;<br><br><br>#3.查询平均工资最低的部门信息<br><br>SELECT * FROM myv2 ORDER BY ag LIMIT 1;<br><br><br>#4.查询平均工资最低的部门名和工资<br><br>CREATE VIEW myv3<br>AS<br>SELECT * FROM myv2 ORDER BY ag LIMIT 1;<br><br>SELECT d.*,m.ag<br>FROM myv3 m<br>JOIN departments d<br>ON m.`department_id`=d.`department_id`;<br></code></pre></div></td></tr></table></figure>
+
+<h2><span id="二-视图的修改">二、视图的修改</span></h2><h3><span id="方式一">方式一</span></h3><figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs mysql">/*<br>create or replace view  视图名<br>as<br>查询语句;<br><br>*/<br>SELECT * FROM myv3 <br><br>CREATE OR REPLACE VIEW myv3<br>AS<br>SELECT AVG(salary),job_id<br>FROM employees<br>GROUP BY job_id;<br></code></pre></div></td></tr></table></figure>
+<h3><span id="方式二">方式二</span></h3><figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs mysql">/*<br>语法：<br>alter view 视图名<br>as <br>查询语句;<br><br>*/<br>ALTER VIEW myv3<br>AS<br>SELECT * FROM employees;<br></code></pre></div></td></tr></table></figure>
+
+<h2><span id="三-删除视图">三、删除视图</span></h2><figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs mysql">语法：drop view 视图名,视图名,...;<br><br>DROP VIEW emp_v1,emp_v2,myv3;<br></code></pre></div></td></tr></table></figure>
+
+<h2><span id="四-查看视图">四、查看视图</span></h2><figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs mysql">DESC myv3;<br><br>SHOW CREATE VIEW myv3;<br></code></pre></div></td></tr></table></figure>
+
+<h2><span id="五-视图的更新">五、视图的更新</span></h2><figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs mysql">CREATE OR REPLACE VIEW myv1<br>AS<br>SELECT last_name,email,salary*12*(1+IFNULL(commission_pct,0)) &quot;annual salary&quot;<br>FROM employees;<br><br>CREATE OR REPLACE VIEW myv1<br>AS<br>SELECT last_name,email<br>FROM employees;<br><br><br>SELECT * FROM myv1;<br>SELECT * FROM employees;<br>#1.插入<br><br>INSERT INTO myv1 VALUES(&#x27;张飞&#x27;,&#x27;zf@qq.com&#x27;);<br><br>#2.修改<br>UPDATE myv1 SET last_name = &#x27;张无忌&#x27; WHERE last_name=&#x27;张飞&#x27;;<br><br>#3.删除<br>DELETE FROM myv1 WHERE last_name = &#x27;张无忌&#x27;;<br></code></pre></div></td></tr></table></figure>
+
+<h3><span id="具备以下特点的视图不允许更新">具备以下特点的视图不允许更新</span></h3><h4><span id="1包含以下关键字的sql语句分组函数-distinct-group-by-having-union或者union-all">①包含以下关键字的sql语句：分组函数、distinct、group  by、having、union或者union all</span></h4><figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs mysql">CREATE OR REPLACE VIEW myv1<br>AS<br>SELECT MAX(salary) m,department_id<br>FROM employees<br>GROUP BY department_id;<br><br>SELECT * FROM myv1;<br><br>#更新<br>UPDATE myv1 SET m=9000 WHERE department_id=10;<br></code></pre></div></td></tr></table></figure>
+<h4><span id="2常量视图">②常量视图</span></h4><figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs mysql">CREATE OR REPLACE VIEW myv2<br>AS<br><br>SELECT &#x27;john&#x27; NAME;<br><br>SELECT * FROM myv2;<br><br>#更新<br>UPDATE myv2 SET NAME=&#x27;lucy&#x27;;<br></code></pre></div></td></tr></table></figure>
+
+<h4><span id="3select中包含子查询">③Select中包含子查询</span></h4><figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs mysql">CREATE OR REPLACE VIEW myv3<br>AS<br><br>SELECT department_id,(SELECT MAX(salary) FROM employees) 最高工资<br>FROM departments;<br><br>#更新<br>SELECT * FROM myv3;<br>UPDATE myv3 SET 最高工资=100000;<br></code></pre></div></td></tr></table></figure>
+
+<h4><span id="4join">④join</span></h4><figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs mysql">CREATE OR REPLACE VIEW myv4<br>AS<br><br>SELECT last_name,department_name<br>FROM employees e<br>JOIN departments d<br>ON e.department_id  = d.department_id;<br><br>#更新<br><br>SELECT * FROM myv4;<br>UPDATE myv4 SET last_name  = &#x27;张飞&#x27; WHERE last_name=&#x27;Whalen&#x27;;<br>INSERT INTO myv4 VALUES(&#x27;陈真&#x27;,&#x27;xxxx&#x27;);<br></code></pre></div></td></tr></table></figure>
+
+<h4><span id="5from一个不能更新的视图">⑤from一个不能更新的视图</span></h4><figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs mysql">CREATE OR REPLACE VIEW myv5<br>AS<br><br>SELECT * FROM myv3;<br><br>#更新<br><br>SELECT * FROM myv5;<br><br>UPDATE myv5 SET 最高工资=10000 WHERE department_id=60;<br></code></pre></div></td></tr></table></figure>
+
+<h4><span id="6where子句的子查询引用了from子句中的表">⑥where子句的子查询引用了from子句中的表</span></h4><figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs mysql">CREATE OR REPLACE VIEW myv6<br>AS<br><br>SELECT last_name,email,salary<br>FROM employees<br>WHERE employee_id IN(<br>	SELECT  manager_id<br>	FROM employees<br>	WHERE manager_id IS NOT NULL<br>);<br><br>#更新<br>SELECT * FROM myv6;<br>UPDATE myv6 SET salary=10000 WHERE last_name = &#x27;k_ing&#x27;;<br></code></pre></div></td></tr></table></figure>
+
+<h2><span id="作业">作业</span></h2><h3><span id="问题">问题</span></h3><ol>
+<li> 创建视图emp_v1,要求查询电话号码以‘011’开头的员工姓名和工资、邮箱</li>
+<li>创建视图emp_v2，要求查询部门的最高工资高于 12000 的部门信息</li>
+</ol>
+<h3><span id="我的解答">我的解答</span></h3><figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs mysql">1. 创建视图emp_v1,要求查询电话号码以‘011’开头的员工姓名和工资、邮箱<br>CREATE OR REPLACE VIEW emp_v1<br>AS<br>SELECT last_name, salary, email<br>FROM employees<br>WHERE phone_number LIKE &#x27;011%&#x27;;<br><br>SELECT *<br>FROM emp_v1;<br><br>2. 创建视图emp_v2，要求查询部门的最高工资高于 12000 的部门信息<br>① 按部门分组，找到各部门的最高工资，筛选大于12000<br>SELECT MAX(salary), department_id<br>FROM employees<br>GROUP BY department_id<br>HAVING MAX(salary) &gt; 12000<br>② 做视图<br>CREATE OR REPLACE VIEW emp_v2<br>AS<br>SELECT MAX(salary) mx_dep, department_id<br>FROM employees<br>GROUP BY department_id<br>HAVING MAX(salary) &gt; 12000;<br><br>SELECT d.*, emp_v2.mx_dep<br>FROM departments d<br>JOIN emp_v2<br>ON emp_v2.department_id = d.department_id;<br><br><br></code></pre></div></td></tr></table></figure>
+
+<h2><span id="测试题5">测试题5</span></h2><h3><span id="问题">问题</span></h3><p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210714131919.png" srcset="/img/loading.gif" lazyload alt="image-20210714131912109"></p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210714132006.png" srcset="/img/loading.gif" lazyload alt="image-20210714132006175"></p>
+<h3><span id="我的解答">我的解答</span></h3><figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs mysql">CREATE DATABASE test5;<br>USE test5;<br><br>已知bookType表，字段如下：<br>id<br>bname<br>CREATE TABLE bookType(<br>	id INT PRIMARY KEY AUTO_INCREMENT,<br>	bname VARCHAR(10)<br>);<br><br>1. 创建Book表<br>bid 整型，要求主键<br>bname 字符型， 要求设置唯一键，并非空<br>price 浮点型，要求有默认值 10<br>btypeId 类型编号，要求引用bookType表id字段<br><br>CREATE TABLE Book(<br>	bid INT PRIMARY KEY,<br>	bname VARCHAR(10) UNIQUE NOT NULL,<br>	price DOUBLE DEFAULT 10,<br>	btypeId INT,<br>	FOREIGN KEY(btypeId) REFERENCES bookType(id)<br>);<br><br>2. 开启事务，向表中插入1行数据，并结束<br>SET autocommit = 0;<br>INSERT INTO Book VALUE(1, &#x27;sunlei&#x27;, 100.0, NULL);<br>COMMIT;<br><br>3. 创建视图，实现查询价格大于100的书名和类型名<br>CREATE VIEW v1<br>AS<br>SELECT bname, btypeId<br>FROM Book<br>WHERE price &gt; 100;<br><br>SELECT * FROM v1;<br><br>4. 修改视图，实现查询价格在90-120之间的书名和价格<br>CREATE OR REPLACE VIEW v1<br>AS<br>SELECT bname, btypeId<br>FROM Book<br>WHERE price BETWEEN 90 AND 120;<br><br>SELECT * FROM v1;<br><br>5. 删除刚才建的视图<br>DROP VIEW v1;<br><br></code></pre></div></td></tr></table></figure>
+
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Java%E5%90%8E%E7%AB%AF/">Java后端</a>
+                    
+                      <a class="hover-with-bg" href="/categories/Java%E5%90%8E%E7%AB%AF/MySQL/">MySQL</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+                    
+                      <a class="hover-with-bg" href="/tags/MySQL/">MySQL</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/07/10/MySQL-18-%E4%BA%8B%E5%8A%A1/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">MySQL-18-事务</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"kKHw5YzfOlny9jMQJEjDkSBi-9Nh9j0Va","appKey":"3N5RE5Sl5hj96cTuho5YEMnY","path":"window.location.pathname","placeholder":"小伙伴们快来评论！","avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":true,"recordIP":true,"serverURLs":"https://kkhw5yzf.lc-cn-e1-shared.com","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          Fluid.plugins.initFancyBox('#valine .vcontent img:not(.vemoji)');
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+    <span>Copyright© 2021 huanfenz</span>
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        loader: {
+          load: ['ui/lazy']
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

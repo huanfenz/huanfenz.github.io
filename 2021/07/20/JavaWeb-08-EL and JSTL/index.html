@@ -1,0 +1,694 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210927131547.jpg">
+  <link rel="icon" href="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210927131547.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="该博客使用Hexo+Github创建">
+  <meta name="author" content="huanfenz">
+  <meta name="keywords" content="">
+  <meta name="description" content="EL and JSTL   1. EL表达式 1.1 什么是EL表达式，作用？ 1.2 EL 表达式搜索域数据的顺序 1.3 EL 表达式输出 Bean 的普通属性，数组属性。List 集合属性，map 集合属性 1.4 EL表达式——运算 1.5 EL 表达式的 11 个隐含对象 1.6 EL 获取四个特定域中的属性 1.7 pageContext 对象的使用 1.8 EL 表达式其他隐含对象的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaWeb-08-EL and JSTL">
+<meta property="og:url" content="https://huanfenz.top/2021/07/20/JavaWeb-08-EL%20and%20JSTL/index.html">
+<meta property="og:site_name" content="huanfenz的博客">
+<meta property="og:description" content="EL and JSTL   1. EL表达式 1.1 什么是EL表达式，作用？ 1.2 EL 表达式搜索域数据的顺序 1.3 EL 表达式输出 Bean 的普通属性，数组属性。List 集合属性，map 集合属性 1.4 EL表达式——运算 1.5 EL 表达式的 11 个隐含对象 1.6 EL 获取四个特定域中的属性 1.7 pageContext 对象的使用 1.8 EL 表达式其他隐含对象的">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210807160227.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210807160248.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210807160305.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210807160319.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210807160626.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210807160644.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210807160819.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210807161108.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210807161258.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210807161352.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210807161418.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210807184321.png">
+<meta property="article:published_time" content="2021-07-20T12:00:01.000Z">
+<meta property="article:modified_time" content="2021-09-27T12:31:08.632Z">
+<meta property="article:author" content="huanfenz">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="JavaWeb">
+<meta property="article:tag" content="EL">
+<meta property="article:tag" content="JSTL">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210807160227.png">
+  
+  <title>JavaWeb-08-EL and JSTL - huanfenz的博客</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/obsidian.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"huanfenz.top","root":"/","version":"1.8.12","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4","collapseDepth":2},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname"}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>huanfenz&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210927141514.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="JavaWeb-08-EL and JSTL">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-07-20 20:00" pubdate>
+        2021年7月20日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      9.6k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      30 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">JavaWeb-08-EL and JSTL</h1>
+            
+            <div class="markdown-body">
+              <h1><span id="el-and-jstl">EL and JSTL</span></h1><!-- toc -->
+
+<ul>
+<li><a href="#1-el%E8%A1%A8%E8%BE%BE%E5%BC%8F">1. EL表达式</a><ul>
+<li><a href="#11-%E4%BB%80%E4%B9%88%E6%98%AFel%E8%A1%A8%E8%BE%BE%E5%BC%8F%E4%BD%9C%E7%94%A8">1.1 什么是EL表达式，作用？</a></li>
+<li><a href="#12-el-%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%90%9C%E7%B4%A2%E5%9F%9F%E6%95%B0%E6%8D%AE%E7%9A%84%E9%A1%BA%E5%BA%8F">1.2 EL 表达式搜索域数据的顺序</a></li>
+<li><a href="#13-el-%E8%A1%A8%E8%BE%BE%E5%BC%8F%E8%BE%93%E5%87%BA-bean-%E7%9A%84%E6%99%AE%E9%80%9A%E5%B1%9E%E6%80%A7%E6%95%B0%E7%BB%84%E5%B1%9E%E6%80%A7-list-%E9%9B%86%E5%90%88%E5%B1%9E%E6%80%A7map-%E9%9B%86%E5%90%88%E5%B1%9E%E6%80%A7">1.3 EL 表达式输出 Bean 的普通属性，数组属性。List 集合属性，map 集合属性</a></li>
+<li><a href="#14-el%E8%A1%A8%E8%BE%BE%E5%BC%8F%E8%BF%90%E7%AE%97">1.4 EL表达式——运算</a></li>
+<li><a href="#15-el-%E8%A1%A8%E8%BE%BE%E5%BC%8F%E7%9A%84-11-%E4%B8%AA%E9%9A%90%E5%90%AB%E5%AF%B9%E8%B1%A1">1.5 EL 表达式的 11 个隐含对象</a></li>
+<li><a href="#16-el-%E8%8E%B7%E5%8F%96%E5%9B%9B%E4%B8%AA%E7%89%B9%E5%AE%9A%E5%9F%9F%E4%B8%AD%E7%9A%84%E5%B1%9E%E6%80%A7">1.6 EL 获取四个特定域中的属性</a></li>
+<li><a href="#17-pagecontext-%E5%AF%B9%E8%B1%A1%E7%9A%84%E4%BD%BF%E7%94%A8">1.7 pageContext 对象的使用</a></li>
+<li><a href="#18-el-%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%85%B6%E4%BB%96%E9%9A%90%E5%90%AB%E5%AF%B9%E8%B1%A1%E7%9A%84%E4%BD%BF%E7%94%A8">1.8 EL 表达式其他隐含对象的使用</a></li>
+</ul>
+</li>
+<li><a href="#2-font-colorredjstl%E6%A0%87%E7%AD%BE%E5%BA%93%E6%AC%A1%E9%87%8D%E7%82%B9font">2. <font color="red">JSTL标签库（次重点）</font></a><ul>
+<li><a href="#21-%E4%BB%8B%E7%BB%8D">2.1 介绍</a></li>
+<li><a href="#22-%E6%A0%87%E7%AD%BE%E7%BB%84%E6%88%90">2.2 标签组成</a></li>
+<li><a href="#23-%E4%BD%BF%E7%94%A8%E6%AD%A5%E9%AA%A4">2.3 使用步骤</a></li>
+<li><a href="#24-core%E6%A0%B8%E5%BF%83%E5%BA%93%E4%BD%BF%E7%94%A8">2.4 core核心库使用</a><ul>
+<li><a href="#1-cset-font-colorred%E5%BE%88%E5%B0%91%E4%BD%BF%E7%94%A8font">1. <code> &lt;c:set /&gt;</code><font color="red">很少使用</font></a></li>
+<li><a href="#2-cif">2. <code>&lt;c:if /&gt;</code></a></li>
+<li><a href="#3-cchoose-cwhen-cotherwise%E6%A0%87%E7%AD%BE">3. <code>&lt;c:choose&gt; &lt;c:when&gt; &lt;c:otherwise&gt;标签</code></a></li>
+<li><a href="#4-cforeach">4. <code>&lt;c:forEach /&gt;</code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<!-- tocstop -->
+
+<h2><span id="1-el表达式">1. EL表达式</span></h2><h3><span id="11-什么是el表达式作用">1.1 什么是EL表达式，作用？</span></h3><p>EL 表达式的全称是：Expression Language。是表达式语言。</p>
+<p>EL 表达式的什么作用：EL 表达式主要是代替 jsp 页面中的表达式脚本在 jsp 页面中进行数据的输出。</p>
+<p>因为 EL 表达式在输出数据的时候，要比 jsp 的表达式脚本要<strong>简洁</strong>很多。</p>
+<figure class="highlight jsp"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs jsp">&lt;body&gt;<br>    &lt;%<br>    	request.setAttribute(<span class="hljs-string">&quot;key&quot;</span>,<span class="hljs-string">&quot;值&quot;</span>);<br>    %&gt;<br>    表达式脚本输出 key 的值是：<br>  &lt;%=request.getAttribute(<span class="hljs-string">&quot;key1&quot;</span>)==<span class="hljs-keyword">null</span>?<span class="hljs-string">&quot;&quot;</span>:request.getAttribute(<span class="hljs-string">&quot;key1&quot;</span>)%&gt;&lt;br/&gt;<br>    EL 表达式输出 key 的值是：$&#123;key1&#125;<br>&lt;/body&gt;<br></code></pre></div></td></tr></table></figure>
+
+<h3><span id="12-el-表达式搜索域数据的顺序">1.2 EL 表达式搜索域数据的顺序</span></h3><p>当四个域中都有相同的 key 的数据的时候，EL 表达式会按照四个域的从小到大的顺序去进行搜索，找到就输出。</p>
+<figure class="highlight jsp"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs jsp">&lt;body&gt;<br>    &lt;%<br>    <span class="hljs-comment">//往四个域中都保存了相同的 key 的数据。</span><br>        request.setAttribute(<span class="hljs-string">&quot;key&quot;</span>, <span class="hljs-string">&quot;request&quot;</span>);<br>        session.setAttribute(<span class="hljs-string">&quot;key&quot;</span>, <span class="hljs-string">&quot;session&quot;</span>);<br>        application.setAttribute(<span class="hljs-string">&quot;key&quot;</span>, <span class="hljs-string">&quot;application&quot;</span>);<br>        pageContext.setAttribute(<span class="hljs-string">&quot;key&quot;</span>, <span class="hljs-string">&quot;pageContext&quot;</span>);<br>    %&gt;<br>	$&#123;key&#125;<br>&lt;/body&gt;<br></code></pre></div></td></tr></table></figure>
+
+<h3><span id="13-el-表达式输出-bean-的普通属性数组属性-list-集合属性map-集合属性">1.3 EL 表达式输出 Bean 的普通属性，数组属性。List 集合属性，map 集合属性</span></h3><figure class="highlight jsp"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs jsp">&lt;body&gt;<br>    &lt;%<br>        Person person = <span class="hljs-keyword">new</span> Person();<br>        person.setName(<span class="hljs-string">&quot;国哥好帅！&quot;</span>);<br>        person.setPhones(<span class="hljs-keyword">new</span> String[]&#123;<span class="hljs-string">&quot;18610541354&quot;</span>,<span class="hljs-string">&quot;18688886666&quot;</span>,<span class="hljs-string">&quot;18699998888&quot;</span>&#125;);<br><br>        List&lt;String&gt; cities = <span class="hljs-keyword">new</span><br><br>        ArrayList&lt;String&gt;();<br><br>        cities.add(<span class="hljs-string">&quot;北京&quot;</span>);<br>        cities.add(<span class="hljs-string">&quot;上海&quot;</span>);<br>        cities.add(<span class="hljs-string">&quot;深圳&quot;</span>);<br>        person.setCities(cities);<br><br>        Map&lt;String,Object&gt;map = <span class="hljs-keyword">new</span><br><br>        HashMap&lt;&gt;();<br><br>        map.put(<span class="hljs-string">&quot;key1&quot;</span>,<span class="hljs-string">&quot;value1&quot;</span>);<br>        map.put(<span class="hljs-string">&quot;key2&quot;</span>,<span class="hljs-string">&quot;value2&quot;</span>);<br>        map.put(<span class="hljs-string">&quot;key3&quot;</span>,<span class="hljs-string">&quot;value3&quot;</span>);<br>        person.setMap(map);<br>        pageContext.setAttribute(<span class="hljs-string">&quot;p&quot;</span>, person);<br>    %&gt;<br><br>    输出 Person：$&#123; p &#125;&lt;br/&gt;<br>    输出 Person 的 name 属性：$&#123;p.name&#125; &lt;br&gt;<br>    输出 Person 的 pnones 数组属性值：$&#123;p.phones[<span class="hljs-number">2</span>]&#125; &lt;br&gt;<br>    输出 Person 的 cities 集合中的元素值：$&#123;p.cities&#125; &lt;br&gt;<br>    输出 Person 的 List 集合中个别元素值：$&#123;p.cities[<span class="hljs-number">2</span>]&#125; &lt;br&gt;<br>    输出 Person 的 Map 集合: $&#123;p.map&#125; &lt;br&gt;<br>    输出 Person 的 Map 集合中某个 key 的值: $&#123;p.map.key3&#125; &lt;br&gt;<br>    输出 Person 的 age 属性：$&#123;p.age&#125; &lt;br&gt;<br>&lt;/body&gt;<br></code></pre></div></td></tr></table></figure>
+
+<h3><span id="14-el表达式运算">1.4 EL表达式——运算</span></h3><p>语法：${运算表达式}，EL表达式支持如下运算符：</p>
+<p><strong>1）关系运算</strong></p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210807160227.png" srcset="/img/loading.gif" lazyload alt="image-20210807160220850"></p>
+<p><strong>2）逻辑运算</strong></p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210807160248.png" srcset="/img/loading.gif" lazyload alt="image-20210807160248588"></p>
+<p><strong>3）算数运算</strong></p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210807160305.png" srcset="/img/loading.gif" lazyload alt="image-20210807160305781"></p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210807160319.png" srcset="/img/loading.gif" lazyload alt="image-20210807160319578"></p>
+<p><strong>4）empty 运算</strong></p>
+<p>empty 运算可以判断一个数据是否为空，如果为空，则输出 true,不为空输出 false。</p>
+<p>以下几种情况为空：<br>1、值为 null 值的时候，为空<br>2、值为空串的时候，为空<br>3、值是 Object 类型数组，长度为零的时候<br>4、list 集合，元素个数为零<br>5、map 集合，元素个数为零</p>
+<p><strong>5）三元运算</strong></p>
+<p>表达式 1？表达式 2：表达式 3<br>如果表达式 1 的值为真，返回表达式 2 的值，如果表达式 1 的值为假，返回表达式 3 的值。</p>
+<p><strong>6）“.”点运算和[]中括号运算符</strong></p>
+<p><font color="red">.点运算，可以输出 Bean 对象中某个属性的值</font>。</p>
+<p>.运算还能直接通过key输出value</p>
+<p>[]中括号运算，可以输出有序集合中某个元素的值。<br>并且[]中括号运算，还可以输出 map 集合中 key 里含有特殊字符的 key 的值。</p>
+<p>演示</p>
+<figure class="highlight jsp"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs jsp">&lt;body&gt;<br>    &lt;%<br>        Map&lt;String,Object&gt; map = <span class="hljs-keyword">new</span> HashMap&lt;String,Object&gt;();<br>        map.put(<span class="hljs-string">&quot;a.a.a&quot;</span>, <span class="hljs-string">&quot;aaaValue&quot;</span>);<br>        map.put(<span class="hljs-string">&quot;b+b+b&quot;</span>, <span class="hljs-string">&quot;bbbValue&quot;</span>);<br>        map.put(<span class="hljs-string">&quot;c-c-c&quot;</span>, <span class="hljs-string">&quot;cccValue&quot;</span>);<br>        <br>    	request.setAttribute(<span class="hljs-string">&quot;map&quot;</span>,map);<br>    %&gt;<br>    $&#123;map[<span class="hljs-string">&#x27;a.a.a&#x27;</span>]&#125; &lt;br&gt;<br>    $&#123;map[<span class="hljs-string">&quot;b+b+b&quot;</span>]&#125; &lt;br&gt;<br>    $&#123;map[<span class="hljs-string">&#x27;c-c-c&#x27;</span>]&#125; &lt;br&gt;<br>&lt;/body&gt;<br></code></pre></div></td></tr></table></figure>
+
+
+
+<h3><span id="15-el-表达式的-11-个隐含对象">1.5 EL 表达式的 11 个隐含对象</span></h3><p>EL 个达式中 11 个隐含对象，是 EL 表达式中自己定义的，可以直接使用。</p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210807160626.png" srcset="/img/loading.gif" lazyload alt="image-20210807160626615"></p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210807160644.png" srcset="/img/loading.gif" lazyload alt="image-20210807160644364"></p>
+<h3><span id="16-el-获取四个特定域中的属性">1.6 EL 获取四个特定域中的属性</span></h3><p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210807160819.png" srcset="/img/loading.gif" lazyload alt="image-20210807160819764"></p>
+<p>演示</p>
+<figure class="highlight jsp"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs jsp">&lt;body&gt;<br>	&lt;%<br>        pageContext.setAttribute(<span class="hljs-string">&quot;key1&quot;</span>, <span class="hljs-string">&quot;pageContext1&quot;</span>);<br>        pageContext.setAttribute(<span class="hljs-string">&quot;key2&quot;</span>, <span class="hljs-string">&quot;pageContext2&quot;</span>);<br>        request.setAttribute(<span class="hljs-string">&quot;key2&quot;</span>, <span class="hljs-string">&quot;request&quot;</span>);<br>        session.setAttribute(<span class="hljs-string">&quot;key2&quot;</span>, <span class="hljs-string">&quot;session&quot;</span>);<br>        application.setAttribute(<span class="hljs-string">&quot;key2&quot;</span>, <span class="hljs-string">&quot;application&quot;</span>);<br>    %&gt;<br>    $&#123; applicationScope.key2 &#125;<br>&lt;/body&gt;<br></code></pre></div></td></tr></table></figure>
+
+
+
+<h3><span id="17-pagecontext-对象的使用">1.7 pageContext 对象的使用</span></h3><p>1.协议：</p>
+<p>2.服务器 ip：</p>
+<p>3.服务器端口：</p>
+<p>4.获取工程路径：</p>
+<p>5.获取请求方法：</p>
+<p>6.获取客户端 ip 地址：</p>
+<p>7.获取会话的 id 编号：</p>
+<p>演示</p>
+<figure class="highlight jsp"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs jsp">&lt;body&gt;<br>    &lt;%<br>    	pageContext.setAttribute(<span class="hljs-string">&quot;req&quot;</span>, request);<br>    %&gt;<br>    &lt;%=request.getScheme() %&gt; &lt;br&gt;<br>    <span class="hljs-number">1.</span>协议： $&#123; req.scheme &#125;&lt;br&gt;<br>    <span class="hljs-number">2.</span>服务器 ip：$&#123; pageContext.request.serverName &#125;&lt;br&gt;<br>    <span class="hljs-number">3.</span>服务器端口：$&#123; pageContext.request.serverPort &#125;&lt;br&gt;<br>    <span class="hljs-number">4.</span>获取工程路径：$&#123; pageContext.request.contextPath &#125;&lt;br&gt;<br>    <span class="hljs-number">5.</span>获取请求方法：$&#123; pageContext.request.method &#125;&lt;br&gt;<br>    <span class="hljs-number">6.</span>获取客户端 ip 地址：$&#123; pageContext.request.remoteHost &#125;&lt;br&gt;<br>    <span class="hljs-number">7.</span>获取会话的 id 编号：$&#123; pageContext.session.id &#125;&lt;br&gt;<br>&lt;/body&gt;<br></code></pre></div></td></tr></table></figure>
+
+
+
+<h3><span id="18-el-表达式其他隐含对象的使用">1.8 EL 表达式其他隐含对象的使用</span></h3><p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210807161108.png" srcset="/img/loading.gif" lazyload alt="image-20210807161108276"></p>
+<p><font color="red">注意是请求参数</font></p>
+<p>演示</p>
+<figure class="highlight jsp"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs jsp">输出请求参数 username 的值：$&#123;param.username&#125; &lt;br&gt;<br><br>输出请求参数 password 的值：$&#123;param.password&#125; &lt;br&gt;<br>输出请求参数 username 的值：$&#123; paramValues.username[<span class="hljs-number">0</span>] &#125; &lt;br&gt;<br><br>输出请求参数 hobby 的值：$&#123; paramValues.hobby[<span class="hljs-number">0</span>] &#125; &lt;br&gt;<br>输出请求参数 hobby 的值：$&#123; paramValues.hobby[<span class="hljs-number">1</span>] &#125; &lt;br&gt;<br></code></pre></div></td></tr></table></figure>
+
+<p>请求地址</p>
+<figure class="highlight http"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs http">http://localhost:8080/09_EL_JSTL/other_el_obj.jsp?username=wzg168&amp;password=666666&amp;hobby=java&amp;hobby=cpp<br></code></pre></div></td></tr></table></figure>
+
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210807161258.png" srcset="/img/loading.gif" lazyload alt="image-20210807161258952"></p>
+<p>演示</p>
+<figure class="highlight jsp"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs jsp">输出请求头【User-Agent】的值：$&#123;header[<span class="hljs-string">&#x27;User-Agent&#x27;</span>] &#125; &lt;br&gt;<br><br>输出请求头【Connection】的值：$&#123;header.Connection &#125; &lt;br&gt;<br><br>输出请求头【User-Agent】的值：$&#123;headerValues[<span class="hljs-string">&#x27;User-Agent&#x27;</span>][<span class="hljs-number">0</span>]&#125; &lt;br&gt;<br></code></pre></div></td></tr></table></figure>
+
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210807161352.png" srcset="/img/loading.gif" lazyload alt="image-20210807161352199"></p>
+<p>演示</p>
+<figure class="highlight jsp"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs jsp">获取 Cookie 的名称：$&#123; cookie.JSESSIONID.name &#125; &lt;br&gt;<br>获取 Cookie 的值：$&#123; cookie.JSESSIONID.value &#125; &lt;br&gt;<br></code></pre></div></td></tr></table></figure>
+
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210807161418.png" srcset="/img/loading.gif" lazyload alt="image-20210807161418935"></p>
+<p>web.xml中的配置（在web.xml中的都是使用getInitParameter方法）</p>
+<figure class="highlight xml"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">context-param</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">param-name</span>&gt;</span>username<span class="hljs-tag">&lt;/<span class="hljs-name">param-name</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">param-value</span>&gt;</span>root<span class="hljs-tag">&lt;/<span class="hljs-name">param-value</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">context-param</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">context-param</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">param-name</span>&gt;</span>url<span class="hljs-tag">&lt;/<span class="hljs-name">param-name</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">param-value</span>&gt;</span>jdbc:mysql:///test<span class="hljs-tag">&lt;/<span class="hljs-name">param-value</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">context-param</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+
+<p>演示</p>
+<figure class="highlight jsp"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs jsp">输出&amp;lt;Context-param&amp;gt;username 的值：$&#123; initParam.username &lt;br&gt;<br>输出&amp;lt;Context-param&amp;gt;url 的值：$&#123; initParam.url &#125; &lt;br&gt;<br></code></pre></div></td></tr></table></figure>
+
+
+
+<h2><span id="2-jstl标签库次重点">2. <font color="red">JSTL标签库（次重点）</font></span></h2><h3><span id="21-介绍">2.1 介绍</span></h3><p>​    JSTL 标签库 全称是指 JSP Standard Tag Library JSP 标准标签库。是一个不断完善的开放源代码的 JSP 标<br>签库。<br>​    EL 表达式主要是为了替换 jsp 中的表达式脚本，而标签库则是为了替换代码脚本。这样使得整个 jsp 页面变得更佳简洁。</p>
+<h3><span id="22-标签组成">2.2 标签组成</span></h3><p>JSTL 由五个不同功能的标签库组成</p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210807184321.png" srcset="/img/loading.gif" lazyload alt="image-20210807184321452"></p>
+<p>在 jsp 标签库中使用 taglib 指令引入标签库</p>
+<figure class="highlight jsp"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs jsp">CORE 标签库<br>&lt;%@ taglib prefix=<span class="hljs-string">&quot;c&quot;</span> uri=<span class="hljs-string">&quot;http://java.sun.com/jsp/jstl/core&quot;</span>%&gt;<br>XML 标签库<br>&lt;%@ taglib prefix=<span class="hljs-string">&quot;x&quot;</span> uri=<span class="hljs-string">&quot;http://java.sun.com/jsp/jstl/xml&quot;</span> %&gt;<br>FMT 标签库<br>&lt;%@ taglib prefix=<span class="hljs-string">&quot;fmt&quot;</span> uri=<span class="hljs-string">&quot;http://java.sun.com/jsp/jstl/fmt&quot;</span>%&gt;<br>SQL 标签库<br>&lt;%@ taglib prefix=<span class="hljs-string">&quot;sql&quot;</span> uri=<span class="hljs-string">&quot;http://java.sun.com/jsp/jstl/sql&quot;</span>%&gt;<br>FUNCTIONS 标签库<br>&lt;%@ taglib prefix=<span class="hljs-string">&quot;fn&quot;</span> uri=<span class="hljs-string">&quot;http://java.sun.com/jsp/jstl/functions&quot;</span>%&gt;<br></code></pre></div></td></tr></table></figure>
+
+
+
+<h3><span id="23-使用步骤">2.3 使用步骤</span></h3><p>1、先导入 jstl 标签库的 jar 包。<br>taglibs-standard-impl-1.2.1.jar<br>taglibs-standard-spec-1.2.1.jar<br>2、第二步，使用 taglib 指令引入标签库。</p>
+<figure class="highlight jsp"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs jsp">&lt;%@ taglib prefix=<span class="hljs-string">&quot;c&quot;</span> uri=<span class="hljs-string">&quot;http://java.sun.com/jsp/jstl/core&quot;</span>%&gt;<br></code></pre></div></td></tr></table></figure>
+
+
+
+<h3><span id="24-core核心库使用">2.4 core核心库使用</span></h3><h4><span id="1-ltcset-gt很少使用">1. <code> &lt;c:set /&gt;</code><font color="red">很少使用</font></span></h4><p>作用：set 标签可以往域中保存数据</p>
+<figure class="highlight jsp"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs jsp">保存之前：$&#123; sessionScope.abc &#125; &lt;br&gt;<br>&lt;c:set scope=<span class="hljs-string">&quot;session&quot;</span> <span class="hljs-keyword">var</span>=<span class="hljs-string">&quot;abc&quot;</span> value=<span class="hljs-string">&quot;abcValue&quot;</span>/&gt;<br>保存之后：$&#123; sessionScope.abc &#125; &lt;br&gt;<br></code></pre></div></td></tr></table></figure>
+
+<p>scope是域名</p>
+<p>​    page 表示 PageContext 域（默认值）<br>​    request 表示 Request 域<br>​    session 表示 Session 域<br>​    application 表示 ServletContext 域</p>
+<p>var是key；value是value</p>
+<h4><span id="2-ltcif-gt">2. <code>&lt;c:if /&gt;</code></span></h4><p>作用：if 标签用来做 if 判断</p>
+<p><strong>test 属性表示判断的条件（使用 EL 表达式输出）</strong></p>
+<p><font color="red">注意，没有if…else…，所以只能像下面这样写。</font></p>
+<figure class="highlight jsp"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs jsp">&lt;c:<span class="hljs-keyword">if</span> test=<span class="hljs-string">&quot;$&#123; 12 == 12 &#125;&quot;</span>&gt;<br>	&lt;h1&gt;<span class="hljs-number">12</span> 等于 <span class="hljs-number">12</span>&lt;/h1&gt;<br>&lt;/c:<span class="hljs-keyword">if</span>&gt;<br>&lt;c:<span class="hljs-keyword">if</span> test=<span class="hljs-string">&quot;$&#123; 12 != 12 &#125;&quot;</span>&gt;<br>	&lt;h1&gt;<span class="hljs-number">12</span> 不等于 <span class="hljs-number">12</span>&lt;/h1&gt;<br>&lt;/c:<span class="hljs-keyword">if</span>&gt;<br></code></pre></div></td></tr></table></figure>
+
+
+
+<h4><span id="3-ltcchoosegt-ltcwhengt-ltcotherwisegt标签">3. <code>&lt;c:choose&gt; &lt;c:when&gt; &lt;c:otherwise&gt;标签</code></span></h4><p>作用：多路判断。跟 switch … case ….default 非常接近</p>
+<figure class="highlight jsp"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs jsp">&lt;% request.setAttribute(<span class="hljs-string">&quot;height&quot;</span>, <span class="hljs-number">180</span>); %&gt;<br><br>&lt;c:choose&gt;<br>    &lt;%-- 这是 html 注释 --%&gt;<br>    &lt;c:when test=<span class="hljs-string">&quot;$&#123; requestScope.height &gt; 190 &#125;&quot;</span>&gt;<br>        &lt;h2&gt;小巨人&lt;/h2&gt;<br>    &lt;/c:when&gt;<br>    <br>    &lt;c:when test=<span class="hljs-string">&quot;$&#123; requestScope.height &gt; 180 &#125;&quot;</span>&gt;<br>    	&lt;h2&gt;很高&lt;/h2&gt;<br>    &lt;/c:when&gt;<br>    <br>    &lt;c:when test=<span class="hljs-string">&quot;$&#123; requestScope.height &gt; 170 &#125;&quot;</span>&gt;<br>    	&lt;h2&gt;还可以&lt;/h2&gt;<br>    &lt;/c:when&gt;<br>    <br>    &lt;c:otherwise&gt;<br>        &lt;h2&gt;一般&lt;/h2&gt;<br>    &lt;/c:otherwise&gt;<br>&lt;/c:choose&gt;<br></code></pre></div></td></tr></table></figure>
+
+
+
+<h4><span id="4-ltcforeach-gt">4. <code>&lt;c:forEach /&gt;</code></span></h4><p>作用：遍历输出使用。</p>
+<p><strong>遍历 1 到 10，输出</strong></p>
+<figure class="highlight jsp"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs jsp">&lt;%--<span class="hljs-number">1.</span>遍历 <span class="hljs-number">1</span> 到 <span class="hljs-number">10</span>，输出<br>begin 属性设置开始的索引<br>end 属性设置结束的索引<br><span class="hljs-keyword">var</span> 属性表示循环的变量(也是当前正在遍历到的数据)<br><span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt; <span class="hljs-number">10</span>; i++) --%&gt;<br><br>&lt;table border=<span class="hljs-string">&quot;1&quot;</span>&gt;<br>    &lt;c:forEach begin=<span class="hljs-string">&quot;1&quot;</span> end=<span class="hljs-string">&quot;10&quot;</span> <span class="hljs-keyword">var</span>=<span class="hljs-string">&quot;i&quot;</span>&gt;<br>        &lt;tr&gt;<br>        	&lt;td&gt;第$&#123;i&#125;行&lt;/td&gt;<br>        &lt;/tr&gt;<br>    &lt;/c:forEach&gt;<br>&lt;/table&gt;<br></code></pre></div></td></tr></table></figure>
+
+<p><strong>遍历 Object 数组</strong></p>
+<figure class="highlight jsp"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs jsp">&lt;%<br>	request.setAttribute(<span class="hljs-string">&quot;arr&quot;</span>, <span class="hljs-keyword">new</span> String[]	&#123;<span class="hljs-string">&quot;18610541354&quot;</span>,<span class="hljs-string">&quot;18688886666&quot;</span>,<span class="hljs-string">&quot;18699998888&quot;</span>&#125;);<br>%&gt;<br>&lt;c:forEach items=<span class="hljs-string">&quot;$&#123; requestScope.arr &#125;&quot;</span> <span class="hljs-keyword">var</span>=<span class="hljs-string">&quot;item&quot;</span>&gt;<br>	$&#123; item &#125; &lt;br&gt;<br>&lt;/c:forEach&gt;<br></code></pre></div></td></tr></table></figure>
+
+<p><strong>遍历Map集合</strong></p>
+<figure class="highlight jsp"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs jsp">&lt;%<br>    Map&lt;String,Object&gt; map = <span class="hljs-keyword">new</span> HashMap&lt;String, Object&gt;();<br>    map.put(<span class="hljs-string">&quot;key1&quot;</span>, <span class="hljs-string">&quot;value1&quot;</span>);<br>    map.put(<span class="hljs-string">&quot;key2&quot;</span>, <span class="hljs-string">&quot;value2&quot;</span>);<br>    map.put(<span class="hljs-string">&quot;key3&quot;</span>, <span class="hljs-string">&quot;value3&quot;</span>);<br>request.setAttribute(<span class="hljs-string">&quot;map&quot;</span>, map);<br>%&gt;<br><br>&lt;c:forEach items=<span class="hljs-string">&quot;$&#123; requestScope.map &#125;&quot;</span> <span class="hljs-keyword">var</span>=<span class="hljs-string">&quot;entry&quot;</span>&gt;<br>	&lt;h1&gt;$&#123;entry.key&#125; = $&#123;entry.value&#125;&lt;/h1&gt;<br>&lt;/c:forEach&gt;<br></code></pre></div></td></tr></table></figure>
+
+<p><strong>遍历 List 集合—list 中存放Student 类，有属性：编号，用户名，密码，年龄，电话信息</strong></p>
+<figure class="highlight jsp"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs jsp">&lt;%<br>    List&lt;Student&gt; studentList = <span class="hljs-keyword">new</span> ArrayList&lt;Student&gt;();<br>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt;= <span class="hljs-number">10</span>; i++) &#123;<br>    	studentList.add(<span class="hljs-keyword">new</span> Student(i,<span class="hljs-string">&quot;username&quot;</span>+i ,<span class="hljs-string">&quot;pass&quot;</span>+i,<span class="hljs-number">18</span>+i,<span class="hljs-string">&quot;phone&quot;</span>+i));<br>    &#125;<br>    request.setAttribute(<span class="hljs-string">&quot;stus&quot;</span>, studentList);<br>%&gt;<br><br>&lt;table&gt;<br>    &lt;tr&gt;<br>        &lt;th&gt;编号&lt;/th&gt;<br>        &lt;th&gt;用户名&lt;/th&gt;<br>        &lt;th&gt;密码&lt;/th&gt;<br>        &lt;th&gt;年龄&lt;/th&gt;<br>        &lt;th&gt;电话&lt;/th&gt;<br>        &lt;th&gt;操作&lt;/th&gt;<br>    &lt;/tr&gt;<br><br>    &lt;c:forEach begin=<span class="hljs-string">&quot;2&quot;</span> end=<span class="hljs-string">&quot;7&quot;</span> step=<span class="hljs-string">&quot;2&quot;</span> varStatus=<span class="hljs-string">&quot;status&quot;</span> items=<span class="hljs-string">&quot;$&#123;requestScope.stus&#125;&quot;</span> <span class="hljs-keyword">var</span>=<span class="hljs-string">&quot;stu&quot;</span>&gt;<br><br>    &lt;tr&gt;<br>        &lt;td&gt;$&#123;stu.id&#125;&lt;/td&gt;<br>        &lt;td&gt;$&#123;stu.username&#125;&lt;/td&gt;<br>        &lt;td&gt;$&#123;stu.password&#125;&lt;/td&gt;<br>        &lt;td&gt;$&#123;stu.age&#125;&lt;/td&gt;<br>        &lt;td&gt;$&#123;stu.phone&#125;&lt;/td&gt;<br>        &lt;td&gt;$&#123;status.step&#125;&lt;/td&gt;<br>    &lt;/tr&gt;<br>&lt;/c:forEach&gt;<br></code></pre></div></td></tr></table></figure>
+
+<p>items 表示遍历的集合<br>var 表示遍历到的数据<br>begin 表示遍历的开始索引值<br>end 表示结束的索引值<br>step 属性表示遍历的步长值<br>varStatus 属性表示当前遍历到的数据的状态<br>for（int i = 1; i &lt; 10; i+=2）</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Java%E5%90%8E%E7%AB%AF/">Java后端</a>
+                    
+                      <a class="hover-with-bg" href="/categories/Java%E5%90%8E%E7%AB%AF/JavaWeb/">JavaWeb</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Java/">Java</a>
+                    
+                      <a class="hover-with-bg" href="/tags/JavaWeb/">JavaWeb</a>
+                    
+                      <a class="hover-with-bg" href="/tags/EL/">EL</a>
+                    
+                      <a class="hover-with-bg" href="/tags/JSTL/">JSTL</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/07/20/JavaWeb-07-jsp/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">JavaWeb-07-jsp</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/07/20/JavaWeb-09-Update%20and%20Download/">
+                        <span class="hidden-mobile">JavaWeb-09-Update and Download</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"kKHw5YzfOlny9jMQJEjDkSBi-9Nh9j0Va","appKey":"3N5RE5Sl5hj96cTuho5YEMnY","path":"window.location.pathname","placeholder":"小伙伴们快来评论！","avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":true,"recordIP":true,"serverURLs":"https://kkhw5yzf.lc-cn-e1-shared.com","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          Fluid.plugins.initFancyBox('#valine .vcontent img:not(.vemoji)');
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+    <span>Copyright© 2021 huanfenz</span>
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        loader: {
+          load: ['ui/lazy']
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

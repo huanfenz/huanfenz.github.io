@@ -1,0 +1,666 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210927131547.jpg">
+  <link rel="icon" href="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210927131547.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="该博客使用Hexo+Github创建">
+  <meta name="author" content="huanfenz">
+  <meta name="keywords" content="">
+  <meta name="description" content="Tomcat   1. JavaWeb概念 2.Web 资源的分类 3.常用的 Web 服务器 4.Tomcat 服务器和Servlet 版本的对应关系 5.Tomcat 的使用 a)安装 b)目录介绍 c)如何启动 Tomcat 服务器 另一种启动 tomcat 服务器的方式 d)Tomcat 的停止 e)如何修改 Tomcat 的端口号 f) 如何部暑 web 工程到 Tomcat 中 g)手">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaWeb-05-Tomcat">
+<meta property="og:url" content="https://huanfenz.top/2021/07/20/JavaWeb-05-Tomcat/index.html">
+<meta property="og:site_name" content="huanfenz的博客">
+<meta property="og:description" content="Tomcat   1. JavaWeb概念 2.Web 资源的分类 3.常用的 Web 服务器 4.Tomcat 服务器和Servlet 版本的对应关系 5.Tomcat 的使用 a)安装 b)目录介绍 c)如何启动 Tomcat 服务器 另一种启动 tomcat 服务器的方式 d)Tomcat 的停止 e)如何修改 Tomcat 的端口号 f) 如何部暑 web 工程到 Tomcat 中 g)手">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210725174123.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210725174623.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210725174837.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210725175146.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210725194837.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210725195016.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210725195111.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210725200147.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210725200211.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210725200214.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210725200915.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210725200828.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210725202007.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210725202248.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210725204056.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210725204853.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210725205111.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210725205117.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210725212122.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210725205124.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210725205130.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210725205302.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210725205349.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210725205504.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210725205616.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210725213135.png">
+<meta property="article:published_time" content="2021-07-20T12:00:01.000Z">
+<meta property="article:modified_time" content="2021-09-27T12:31:08.632Z">
+<meta property="article:author" content="huanfenz">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="JavaWeb">
+<meta property="article:tag" content="Tomcat">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210725174123.png">
+  
+  <title>JavaWeb-05-Tomcat - huanfenz的博客</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/obsidian.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"huanfenz.top","root":"/","version":"1.8.12","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4","collapseDepth":2},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname"}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>huanfenz&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210927141514.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="JavaWeb-05-Tomcat">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-07-20 20:00" pubdate>
+        2021年7月20日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.8k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      9 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">JavaWeb-05-Tomcat</h1>
+            
+            <div class="markdown-body">
+              <h1><span id="tomcat">Tomcat</span></h1><!-- toc -->
+
+<ul>
+<li><a href="#1-javaweb%E6%A6%82%E5%BF%B5">1. JavaWeb概念</a></li>
+<li><a href="#2web-%E8%B5%84%E6%BA%90%E7%9A%84%E5%88%86%E7%B1%BB">2.Web 资源的分类</a></li>
+<li><a href="#3%E5%B8%B8%E7%94%A8%E7%9A%84-web-%E6%9C%8D%E5%8A%A1%E5%99%A8">3.常用的 Web 服务器</a></li>
+<li><a href="#4tomcat-%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%92%8Cservlet-%E7%89%88%E6%9C%AC%E7%9A%84%E5%AF%B9%E5%BA%94%E5%85%B3%E7%B3%BB">4.Tomcat 服务器和Servlet 版本的对应关系</a></li>
+<li><a href="#5tomcat-%E7%9A%84%E4%BD%BF%E7%94%A8">5.Tomcat 的使用</a><ul>
+<li><a href="#a%E5%AE%89%E8%A3%85">a)安装</a></li>
+<li><a href="#b%E7%9B%AE%E5%BD%95%E4%BB%8B%E7%BB%8D">b)目录介绍</a></li>
+<li><a href="#c%E5%A6%82%E4%BD%95%E5%90%AF%E5%8A%A8-tomcat-%E6%9C%8D%E5%8A%A1%E5%99%A8">c)如何启动 Tomcat 服务器</a></li>
+<li><a href="#%E5%8F%A6%E4%B8%80%E7%A7%8D%E5%90%AF%E5%8A%A8-tomcat-%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84%E6%96%B9%E5%BC%8F">另一种启动 tomcat 服务器的方式</a></li>
+<li><a href="#dtomcat-%E7%9A%84%E5%81%9C%E6%AD%A2">d)Tomcat 的停止</a></li>
+<li><a href="#e%E5%A6%82%E4%BD%95%E4%BF%AE%E6%94%B9-tomcat-%E7%9A%84%E7%AB%AF%E5%8F%A3%E5%8F%B7">e)如何修改 Tomcat 的端口号</a></li>
+<li><a href="#f-%E5%A6%82%E4%BD%95%E9%83%A8%E6%9A%91-web-%E5%B7%A5%E7%A8%8B%E5%88%B0-tomcat-%E4%B8%AD">f) 如何部暑 web 工程到 Tomcat 中</a></li>
+<li><a href="#g%E6%89%8B%E6%89%98html-%E9%A1%B5%E9%9D%A2%E5%88%B0%E6%B5%8F%E8%A7%88%E5%99%A8%E5%92%8C%E5%9C%A8%E6%B5%8F%E8%A7%88%E5%99%A8%E4%B8%AD%E8%BE%93%E5%85%A5httpip%E7%AB%AF%E5%8F%A3%E5%8F%B7%E5%B7%A5%E7%A8%8B%E5%90%8D%E8%AE%BF%E9%97%AE%E7%9A%84%E5%8C%BA%E5%88%AB">g)手托html 页面到浏览器和在浏览器中输入http://ip:端口号/工程名/访问的区别</a></li>
+<li><a href="#hroot-%E7%9A%84%E5%B7%A5%E7%A8%8B%E7%9A%84%E8%AE%BF%E9%97%AE%E4%BB%A5%E5%8F%8A-%E9%BB%98%E8%AE%A4-indexhtml-%E9%A1%B5%E9%9D%A2%E7%9A%84%E8%AE%BF%E9%97%AE">h)ROOT 的工程的访问，以及 默认 index.html 页面的访问</a></li>
+</ul>
+</li>
+<li><a href="#6idea-%E6%95%B4%E5%90%88tomcat-%E6%9C%8D%E5%8A%A1%E5%99%A8">6.IDEA 整合Tomcat 服务器</a></li>
+</ul>
+<!-- tocstop -->
+
+<h2><span id="1-javaweb概念">1. JavaWeb概念</span></h2><p>a)什么是 JavaWeb<br>JavaWeb 是指，所有通过 Java 语言编写可以通过浏览器访问的程序的总称，叫 JavaWeb。<br>JavaWeb 是基于请求和响应来开发的。</p>
+<p>b)什么是请求<br>请求是指客户端给服务器发送数据，叫请求 Request。</p>
+<p>c)什么是响应<br>响应是指服务器给客户端回传数据，叫响应 Response。</p>
+<p>d)请求和响应的关系<br>请求和响应是成对出现的，有请求就有响应。</p>
+<h2><span id="2web-资源的分类">2.Web 资源的分类</span></h2><p>web 资源按实现的技术和呈现的效果的不同，又分为静态资源和动态资源两种。<br>静态资源： html、css、js、txt、mp4 视频 , jpg 图片<br>动态资源： jsp 页面、Servlet 程序</p>
+<h2><span id="3常用的-web-服务器">3.常用的 Web 服务器</span></h2><p>Tomcat：由 Apache 组织提供的一种 Web 服务器，提供对 jsp 和 Servlet 的支持。它是一种轻量级的 javaWeb 容器（服务器），也是当前应用最广的 JavaWeb 服务器（免费）。</p>
+<p>Jboss：是一个遵从 JavaEE 规范的、开放源代码的、纯 Java 的 EJB 服务器，它支持所有的 JavaEE 规范（免费）。</p>
+<p>GlassFish： 由 Oracle 公司开发的一款 JavaWeb 服务器，是一款强健的商业服务器，达到产品级质量（应用很少）。</p>
+<p>Resin：是 CAUCHO 公司的产品，是一个非常流行的服务器，对 servlet 和 JSP 提供了良好的支持，性能也比较优良，resin 自身采用 JAVA 语言开发（收费，应用比较多）。</p>
+<p>WebLogic：是 Oracle 公司的产品，是目前应用最广泛的 Web 服务器，支持 JavaEE 规范，而且不断的完善以适应新的开发要求，适合大型项目（收费，用的不多，适合大公司）。</p>
+<h2><span id="4tomcat-服务器和servlet-版本的对应关系">4.Tomcat 服务器和Servlet 版本的对应关系</span></h2><p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210725174123.png" srcset="/img/loading.gif" lazyload alt="image-20210725174123836"></p>
+<p>Servlet 程序从 2.5 版本是现在世面使用最多的版本（xml 配置）<br>到了 Servlet3.0 之后。就是注解版本的 Servlet 使用。<br>以 2.5 版本为主线讲解 Servlet 程序。</p>
+<h2><span id="5tomcat-的使用">5.Tomcat 的使用</span></h2><h3><span id="a安装">a)安装</span></h3><p>找到你需要用的 Tomcat 版本对应的 zip 压缩包，解压到需要安装的目录即可。</p>
+<h3><span id="b目录介绍">b)目录介绍</span></h3><p>bin 专门用来存放 Tomcat 服务器的可执行程序<br>conf 专门用来存放 Tocmat 服务器的配置文件<br>lib 专门用来存放 Tomcat 服务器的 jar 包<br>logs 专门用来存放 Tomcat 服务器运行时输出的日记信息<br>temp 专门用来存放 Tomcdat 运行时产生的临时数据<br>webapps 专门用来存放部署的 Web 工程。<br>work 是 Tomcat 工作时的目录，用来存放 Tomcat 运行时 jsp 翻译为 Servlet 的源码，和 Session 钝化的目录。</p>
+<h3><span id="c如何启动-tomcat-服务器">c)如何启动 Tomcat 服务器</span></h3><p>找到 Tomcat 目录下的 bin 目录下的 startup.bat 文件，双击，就可以启动 Tomcat 服务器。</p>
+<p>如何测试 Tomcat 服务器启动成功？？？</p>
+<p>打开浏览器，在浏览器地址栏中输入以下地址测试：<br>1、<a target="_blank" rel="noopener" href="http://localhost:8080/">http://localhost:8080</a><br>2、<a target="_blank" rel="noopener" href="http://127.0.0.1:8080/">http://127.0.0.1:8080</a><br>3、http://真实 ip:8080<br>当出现如下界面，说明 Tomcat 服务器启动成功！！！</p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210725174623.png" srcset="/img/loading.gif" lazyload alt="image-20210725174617271"></p>
+<p>常见的启动失败的情况有，双击 startup.bat 文件，就会出现一个小黑窗口一闪而来。<br>这个时候，失败的原因基本上都是因为没有配置好 JAVA_HOME 环境变量。</p>
+<h3><span id="另一种启动-tomcat-服务器的方式">另一种启动 tomcat 服务器的方式</span></h3><p>1、打开命令行<br>2、cd 到 你的 Tomcat 的 bin 目录下</p>
+<p>3、敲入启动命令： catalina run</p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210725174837.png" srcset="/img/loading.gif" lazyload alt="image-20210725174837752"></p>
+<h3><span id="dtomcat-的停止">d)Tomcat 的停止</span></h3><p>1、点击 tomcat 服务器窗口的 x 关闭按钮<br>2、把 Tomcat 服务器窗口置为当前窗口，然后按快捷键 Ctrl+C<br>3、找到 Tomcat 的 bin 目录下的 shutdown.bat 双击，就可以停止 Tomcat 服务器</p>
+<h3><span id="e如何修改-tomcat-的端口号">e)如何修改 Tomcat 的端口号</span></h3><p>Mysql 默认的端口号是：3306<br>Tomcat 默认的端口号是：8080<br>找到 Tomcat 目录下的 conf 目录，找到 server.xml 配置文件。</p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210725175146.png" srcset="/img/loading.gif" lazyload alt="image-20210725175146856"></p>
+<p>平时上百度：<a target="_blank" rel="noopener" href="http://www.baidu.com/">http://www.baidu.com:80</a><br>HTTP 协议默认的端口号是：80</p>
+<h3><span id="f-如何部暑-web-工程到-tomcat-中">f) 如何部暑 web 工程到 Tomcat 中</span></h3><p>第一种部署方法：只需要把 web 工程的目录拷贝到 Tomcat 的 webapps 目录下<br>即可。</p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210725194837.png" srcset="/img/loading.gif" lazyload alt="image-20210725194837037"></p>
+<p>如何访问 Tomcat 下的web 工程。</p>
+<p>只需要在浏览器中输入访问地址格式如下：<br><a href="http://ip:port/工程名/目录下/文件名">http://ip:port/工程名/目录下/文件名</a></p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210725195016.png" srcset="/img/loading.gif" lazyload alt="image-20210725195016686"></p>
+<p>第二种部署方法：</p>
+<p>找到 Tomcat 下的 conf 目录\Catalina\localhost\ 下,创建如下的配置文件：</p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210725195111.png" srcset="/img/loading.gif" lazyload alt="image-20210725195111889"></p>
+<!-- Context 表示一个工程上下文path 表示工程的访问路径:/abcdocBase 表示你的工程目录在哪里-->
+
+<figure class="highlight xml"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">Context</span> <span class="hljs-attr">path</span>=<span class="hljs-string">&quot;/abc&quot;</span> <span class="hljs-attr">docBase</span>=<span class="hljs-string">&quot;D:\MyProject\BookStore&quot;</span> /&gt;</span><br></code></pre></div></td></tr></table></figure>
+
+<p>访问这个工程的路径如下:<a href="http://ip:port/abc/">http://ip:port/abc/</a> 就表示访问 E:\book 目录</p>
+<p>注意要重启tomcat</p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210725200147.png" srcset="/img/loading.gif" lazyload alt="image-20210725200140871"></p>
+<h3><span id="g手托html-页面到浏览器和在浏览器中输入httpip端口号工程名访问的区别">g)手托html 页面到浏览器和在浏览器中输入</span></h3><p>手托 html 页面的原理：</p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210725200211.png" srcset="/img/loading.gif" lazyload alt="image-20210725200211576"></p>
+<p>输入访问地址访问的原因：</p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210725200214.png" srcset="/img/loading.gif" lazyload alt="image-20210725200214776"></p>
+<h3><span id="hroot-的工程的访问以及-默认-indexhtml-页面的访问">h)ROOT 的工程的访问，以及 默认 index.html 页面的访问</span></h3><p>当我们在浏览器地址栏中输入访问地址如下：<br><a href="http://ip:port/">http://ip:port/</a> ====&gt;&gt;&gt;&gt; 没有工程名的时候，默认访问的是 ROOT 工程。</p>
+<p>当我们在浏览器地址栏中输入的访问地址如下：<br><a href="http://ip:port/工程名/">http://ip:port/工程名/</a> ====&gt;&gt;&gt;&gt; 没有资源名，默认访问 index.html 页面</p>
+<h2><span id="6idea-整合tomcat-服务器">6.IDEA 整合Tomcat 服务器</span></h2><ol>
+<li>添加tomcat Server</li>
+</ol>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210725200915.png" srcset="/img/loading.gif" lazyload alt="image-20210725200915098"></p>
+<ol start="2">
+<li>选择tomcat的路径</li>
+</ol>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210725200828.png" srcset="/img/loading.gif" lazyload alt="image-20210725200828125"></p>
+<ol start="3">
+<li>添加成功</li>
+</ol>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210725202007.png" srcset="/img/loading.gif" lazyload alt="image-20210725202007527"></p>
+<ol start="4">
+<li>CTRL + SHIFT + A 打开窗口，或者 CTRL+ALT+SHIFT + / 打开Registry，找到javaee…，勾上，close</li>
+</ol>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210725202248.png" srcset="/img/loading.gif" lazyload alt="image-20210725202248257"></p>
+<ol start="5">
+<li>new moudle，新建JavaWeb工程，注意选择应用服务器：Tomcat</li>
+</ol>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210725204056.png" srcset="/img/loading.gif" lazyload alt="image-20210725204056661"></p>
+<p>默认就选了web application，所以不用勾选了.</p>
+<ol start="6">
+<li>结构说明</li>
+</ol>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210725204853.png" srcset="/img/loading.gif" lazyload alt="image-20210725204853527"></p>
+<p>如何给动态 web 工程添加额外 jar 包</p>
+<p>1、可以打开项目结构菜单操作界面，添加一个自己的类库：</p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210725205111.png" srcset="/img/loading.gif" lazyload alt="image-20210725205111503"></p>
+<p>2、添加你你类库需要的 jar 包文件。</p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210725205117.png" srcset="/img/loading.gif" lazyload alt="image-20210725205117735"></p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210725212122.png" srcset="/img/loading.gif" lazyload alt="image-20210725212122367"></p>
+<p>3、选择你添加的类库，给哪个模块使用：</p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210725205124.png" srcset="/img/loading.gif" lazyload alt="image-20210725205124427"></p>
+<p>4、选择 Artifacts 选项，将类库，添加到打包部署中：</p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210725205130.png" srcset="/img/loading.gif" lazyload alt="image-20210725205130452"></p>
+<p>如何在 IDEA 中部署工程到 Tomcat 上运行</p>
+<ol>
+<li>给服务器改下名字</li>
+</ol>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210725205302.png" srcset="/img/loading.gif" lazyload alt="image-20210725205302198"></p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210725205349.png" srcset="/img/loading.gif" lazyload alt="image-20210725205349725"></p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210725205504.png" srcset="/img/loading.gif" lazyload alt="image-20210725205504669"></p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210725205616.png" srcset="/img/loading.gif" lazyload alt="image-20210725205616417"></p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210725213135.png" srcset="/img/loading.gif" lazyload alt="image-20210725213135164"></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Java%E5%90%8E%E7%AB%AF/">Java后端</a>
+                    
+                      <a class="hover-with-bg" href="/categories/Java%E5%90%8E%E7%AB%AF/JavaWeb/">JavaWeb</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Java/">Java</a>
+                    
+                      <a class="hover-with-bg" href="/tags/JavaWeb/">JavaWeb</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Tomcat/">Tomcat</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/07/20/JavaWeb-04-xml/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">JavaWeb-04-xml</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/07/20/JavaWeb-07-jsp/">
+                        <span class="hidden-mobile">JavaWeb-07-jsp</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"kKHw5YzfOlny9jMQJEjDkSBi-9Nh9j0Va","appKey":"3N5RE5Sl5hj96cTuho5YEMnY","path":"window.location.pathname","placeholder":"小伙伴们快来评论！","avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":true,"recordIP":true,"serverURLs":"https://kkhw5yzf.lc-cn-e1-shared.com","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          Fluid.plugins.initFancyBox('#valine .vcontent img:not(.vemoji)');
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+    <span>Copyright© 2021 huanfenz</span>
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        loader: {
+          load: ['ui/lazy']
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

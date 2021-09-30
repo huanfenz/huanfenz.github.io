@@ -1,0 +1,676 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210927131547.jpg">
+  <link rel="icon" href="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210927131547.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="该博客使用Hexo+Github创建">
+  <meta name="author" content="huanfenz">
+  <meta name="keywords" content="">
+  <meta name="description" content="毕业设计Java后端题目整理   宿舍管理系统（SSM） 地址 技术选型 评价   CRM客户关系管理系统（SpringBoot） 地址 技术选型 评价   学生信息管理系统（SSM） 地址 技术选型 评价   学生管理系统(SpringBoot) 地址 技术选型 评价   Mail电商系统（SpringBoot） 地址 技术选型 评价   Video在线电影网站(SSM) 地址 技术选型 评价">
+<meta property="og:type" content="article">
+<meta property="og:title" content="毕业设计Java后端题目整理">
+<meta property="og:url" content="https://huanfenz.top/2021/09/30/%E6%AF%95%E4%B8%9A%E8%AE%BE%E8%AE%A1Java%E5%90%8E%E7%AB%AF%E9%A1%B9%E7%9B%AE%E6%95%B4%E7%90%86/index.html">
+<meta property="og:site_name" content="huanfenz的博客">
+<meta property="og:description" content="毕业设计Java后端题目整理   宿舍管理系统（SSM） 地址 技术选型 评价   CRM客户关系管理系统（SpringBoot） 地址 技术选型 评价   学生信息管理系统（SSM） 地址 技术选型 评价   学生管理系统(SpringBoot) 地址 技术选型 评价   Mail电商系统（SpringBoot） 地址 技术选型 评价   Video在线电影网站(SSM) 地址 技术选型 评价">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210930144632.jpg">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210930144633.jpg">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210930144634.jpg">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210930144635.jpg">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210930144636.jpg">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210930144637.jpg">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210930150653.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210930144638.jpg">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210930144639.jpg">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210930144640.jpg">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210930144641.jpg">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210930150743.png">
+<meta property="og:image" content="https://camo.githubusercontent.com/5a3c28d0f1b579f7983d26b469e57f1eadc91d0d9f3f3a40324165dbfcfc3a1c/687474703a2f2f63646e2e6a6179682e636c75622f626c6f672f32303230303430352f706a664a4e66756958566e462e676966">
+<meta property="article:published_time" content="2021-09-30T06:50:01.000Z">
+<meta property="article:modified_time" content="2021-09-30T07:08:57.986Z">
+<meta property="article:author" content="huanfenz">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="SSM">
+<meta property="article:tag" content="SpringBoot">
+<meta property="article:tag" content="毕业设计">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210930144632.jpg">
+  
+  <title>毕业设计Java后端题目整理 - huanfenz的博客</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/obsidian.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"huanfenz.top","root":"/","version":"1.8.12","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4","collapseDepth":2},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname"}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>huanfenz&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210927141514.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="毕业设计Java后端题目整理">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-09-30 14:50" pubdate>
+        2021年9月30日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      3.2k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      10 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">毕业设计Java后端题目整理</h1>
+            
+            <div class="markdown-body">
+              <h1><span id="毕业设计java后端题目整理">毕业设计Java后端题目整理</span></h1><!-- toc -->
+
+<ul>
+<li><a href="#%E5%AE%BF%E8%88%8D%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9Fssm">宿舍管理系统（SSM）</a><ul>
+<li><a href="#%E5%9C%B0%E5%9D%80">地址</a></li>
+<li><a href="#%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B">技术选型</a></li>
+<li><a href="#%E8%AF%84%E4%BB%B7">评价</a></li>
+</ul>
+</li>
+<li><a href="#crm%E5%AE%A2%E6%88%B7%E5%85%B3%E7%B3%BB%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9Fspringboot">CRM客户关系管理系统（SpringBoot）</a><ul>
+<li><a href="#%E5%9C%B0%E5%9D%80-1">地址</a></li>
+<li><a href="#%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B-1">技术选型</a></li>
+<li><a href="#%E8%AF%84%E4%BB%B7-1">评价</a></li>
+</ul>
+</li>
+<li><a href="#%E5%AD%A6%E7%94%9F%E4%BF%A1%E6%81%AF%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9Fssm">学生信息管理系统（SSM）</a><ul>
+<li><a href="#%E5%9C%B0%E5%9D%80-2">地址</a></li>
+<li><a href="#%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B-2">技术选型</a></li>
+<li><a href="#%E8%AF%84%E4%BB%B7-2">评价</a></li>
+</ul>
+</li>
+<li><a href="#%E5%AD%A6%E7%94%9F%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9Fspringboot">学生管理系统(SpringBoot)</a><ul>
+<li><a href="#%E5%9C%B0%E5%9D%80-3">地址</a></li>
+<li><a href="#%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B-3">技术选型</a></li>
+<li><a href="#%E8%AF%84%E4%BB%B7-3">评价</a></li>
+</ul>
+</li>
+<li><a href="#mail%E7%94%B5%E5%95%86%E7%B3%BB%E7%BB%9Fspringboot">Mail电商系统（SpringBoot）</a><ul>
+<li><a href="#%E5%9C%B0%E5%9D%80-4">地址</a></li>
+<li><a href="#%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B-4">技术选型</a></li>
+<li><a href="#%E8%AF%84%E4%BB%B7-4">评价</a></li>
+</ul>
+</li>
+<li><a href="#video%E5%9C%A8%E7%BA%BF%E7%94%B5%E5%BD%B1%E7%BD%91%E7%AB%99ssm">Video在线电影网站(SSM)</a><ul>
+<li><a href="#%E5%9C%B0%E5%9D%80-5">地址</a></li>
+<li><a href="#%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B-5">技术选型</a></li>
+<li><a href="#%E8%AF%84%E4%BB%B7-5">评价</a></li>
+</ul>
+</li>
+<li><a href="#%E7%A0%81%E9%97%AE%E7%A4%BE%E5%8C%BAspringboot">码问社区（SpringBoot）</a><ul>
+<li><a href="#%E5%9C%B0%E5%9D%80-6">地址</a></li>
+<li><a href="#%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B-6">技术选型</a></li>
+<li><a href="#%E8%AF%84%E4%BB%B7-6">评价</a></li>
+</ul>
+</li>
+<li><a href="#moti-cloud%E8%8E%AB%E6%8F%90%E7%BD%91%E7%9B%98springboot">moti-cloud莫提网盘（SpringBoot）</a><ul>
+<li><a href="#%E5%9C%B0%E5%9D%80-7">地址</a></li>
+<li><a href="#%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B-7">技术选型</a></li>
+<li><a href="#%E8%AF%84%E4%BB%B7-7">评价</a></li>
+</ul>
+</li>
+<li><a href="#%E5%B0%BC%E7%89%B9%E7%A4%BE%E5%8C%BAspringboot">尼特社区(SpringBoot)</a><ul>
+<li><a href="#%E5%9C%B0%E5%9D%80-8">地址</a></li>
+<li><a href="#%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B-8">技术选型</a></li>
+<li><a href="#%E8%AF%84%E4%BB%B7-8">评价</a></li>
+</ul>
+</li>
+<li><a href="#%E5%B0%8F%E8%AF%B4%E7%B2%BE%E5%93%81%E5%B1%8Bspringboot">小说精品屋（SpringBoot）</a><ul>
+<li><a href="#%E5%9C%B0%E5%9D%80-9">地址</a></li>
+<li><a href="#%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B-9">技术选型</a></li>
+<li><a href="#%E8%AF%84%E4%BB%B7-9">评价</a></li>
+</ul>
+</li>
+<li><a href="#seckill%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9Fspringboot">Seckill秒杀系统(SpringBoot)</a><ul>
+<li><a href="#%E5%9C%B0%E5%9D%80-10">地址</a></li>
+<li><a href="#%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B-10">技术选型</a></li>
+<li><a href="#%E8%AF%84%E4%BB%B7-10">评价</a></li>
+</ul>
+</li>
+<li><a href="#%E5%AD%A6%E4%B9%8B%E6%80%9D%E5%9C%A8%E7%BA%BF%E8%80%83%E8%AF%95%E7%B3%BB%E7%BB%9Fspringboot">学之思在线考试系统(SpringBoot)</a><ul>
+<li><a href="#%E5%9C%B0%E5%9D%80-11">地址</a></li>
+<li><a href="#%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B-11">技术选型</a></li>
+<li><a href="#%E8%AF%84%E4%BB%B7-11">评价</a></li>
+</ul>
+</li>
+<li><a href="#passjava%E9%9D%A2%E8%AF%95%E5%88%B7%E9%A2%98%E7%B3%BB%E7%BB%9Fspring-boot">PassJava面试刷题系统（Spring Boot）</a><ul>
+<li><a href="#%E5%9C%B0%E5%9D%80-12">地址</a></li>
+<li><a href="#%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B-12">技术选型</a></li>
+<li><a href="#%E8%AF%84%E4%BB%B7-12">评价</a></li>
+</ul>
+</li>
+</ul>
+<!-- tocstop -->
+
+<h2><span id="宿舍管理系统ssm">宿舍管理系统（SSM）</span></h2><p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210930144632.jpg" srcset="/img/loading.gif" lazyload alt="dorm1"></p>
+<h3><span id="地址">地址</span></h3><p>Github：<a target="_blank" rel="noopener" href="https://github.com/Joyrocky/DormitoryManager">Joyrocky/DormitoryManager: 学生宿舍管理系统（SSM/Layui框架；毕业设计） (github.com)</a> </p>
+<h3><span id="技术选型">技术选型</span></h3><p>SSM、MySQL、LayUI</p>
+<h3><span id="评价">评价</span></h3><p>以CRUD为主，难度教低。</p>
+<h2><span id="crm客户关系管理系统springboot">CRM客户关系管理系统（SpringBoot）</span></h2><p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210930144633.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<h3><span id="地址">地址</span></h3><p>Github：<a target="_blank" rel="noopener" href="https://github.com/ChangeWeDer/crm">ChangeWeDer/crm: CRM客户管理系统（Springboot+MySQL+mybatis-plus+druid+swagger2+layui） (github.com)</a></p>
+<h3><span id="技术选型">技术选型</span></h3><p>SpringBoot、Mybatis-plus、MySQL、LayUI</p>
+<h3><span id="评价">评价</span></h3><p>结构比较清晰、以CRUD为主，难度较小。</p>
+<h2><span id="学生信息管理系统ssm">学生信息管理系统（SSM）</span></h2><p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210930144634.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<h3><span id="地址">地址</span></h3><p>Github：<a target="_blank" rel="noopener" href="https://github.com/huanfenz/StudentManager/tree/master">huanfenz/StudentManager (github.com)</a></p>
+<h3><span id="技术选型">技术选型</span></h3><p>Spring、SpringMVC、Mybatis、MySQL、LayUI</p>
+<h3><span id="评价">评价</span></h3><p>原创作品，快做完了。界面美观、功能丰富、以CRUD为主，整体难度较小。</p>
+<h2><span id="学生管理系统springboot">学生管理系统(SpringBoot)</span></h2><p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210930144635.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<h3><span id="地址">地址</span></h3><p>Github：<a target="_blank" rel="noopener" href="https://github.com/ZeroWdd/studentmanager">ZeroWdd/studentmanager: 基于springboot+mybatis学生管理系统 (github.com)</a></p>
+<h3><span id="技术选型">技术选型</span></h3><p>SpringBoot、Mybatis、MySQL、EasyUI</p>
+<h3><span id="评价">评价</span></h3><p>依然是经典的学生管理系统，功能丰富，以CRUD为主，难度较低。</p>
+<h2><span id="mail电商系统springboot">Mail电商系统（SpringBoot）</span></h2><p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210930144636.jpg" srcset="/img/loading.gif" lazyload alt="后台管理系统功能演示"></p>
+<h3><span id="地址">地址</span></h3><p>Github：<a target="_blank" rel="noopener" href="https://github.com/macrozheng/mall-learning">macrozheng/mall-learning: mall学习教程，架构、业务、技术要点全方位解析。mall项目（40k+star）是一套电商系统，使用现阶段主流技术实现。涵盖了SpringBoot 2.3.0、MyBatis 3.4.6、Elasticsearch 7.6.2、RabbitMQ 3.7.15、Redis 5.0、MongoDB 4.2.5、Mysql5.7等技术，采用Docker容器化部署。 (github.com)</a> </p>
+<p>演示地址：<a target="_blank" rel="noopener" href="http://www.macrozheng.com/admin/index.html#/login">mall-admin-web (macrozheng.com)</a></p>
+<p>演示账号：root      演示密码：macro123</p>
+<p>前台演示地址：<a target="_blank" rel="noopener" href="http://www.macrozheng.com/app/mainpage.html">MainPage (macrozheng.com)</a></p>
+<h3><span id="技术选型">技术选型</span></h3><p>SpringBoot、Mybatis、MySQL、Redis</p>
+<h3><span id="评价">评价</span></h3><p>项目功能齐全，文档详细，整体难度正常。</p>
+<h2><span id="video在线电影网站ssm">Video在线电影网站(SSM)</span></h2><p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210930144637.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<h3><span id="地址">地址</span></h3><p>Github：<a target="_blank" rel="noopener" href="https://github.com/Joyrocky/DormitoryManager">Joyrocky/DormitoryManager: 学生宿舍管理系统（SSM/Layui框架；毕业设计） (github.com)</a> </p>
+<h3><span id="技术选型">技术选型</span></h3><p>SSM、LayUI、MySQL</p>
+<h3><span id="评价">评价</span></h3><p>比较有意思，难度不大。</p>
+<h2><span id="码问社区springboot">码问社区（SpringBoot）</span></h2><p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210930150653.png" srcset="/img/loading.gif" lazyload alt="image-20210930150653473"></p>
+<h3><span id="地址">地址</span></h3><p>Github： <a target="_blank" rel="noopener" href="https://github.com/codedrinker/community">codedrinker/community: 开源论坛、问答系统，现有功能提问、回复、通知、最新、最热、消除零回复功能。功能持续更新中…… 技术栈 Spring、Spring Boot、MyBatis、MySQL/H2、Bootstrap (github.com)</a></p>
+<h3><span id="技术选型">技术选型</span></h3><p>Spring Boot、MyBaits、MySQL、Bootstrap</p>
+<h3><span id="评价">评价</span></h3><p>文档丰富、居然还有视频、点个赞，整体难度不大。</p>
+<h2><span id="moti-cloud莫提网盘springboot">moti-cloud莫提网盘（SpringBoot）</span></h2><p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210930144638.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<h3><span id="地址">地址</span></h3><p>Github： <a target="_blank" rel="noopener" href="https://github.com/373675032/moti-cloud">373675032/moti-cloud: 莫提网盘：SpringBoot+MyBatis+ThymeLeaf+BootStrap。适合初学者，喜欢的小伙伴可以点上面的⭐支持一下嘛！ (github.com)</a></p>
+<h3><span id="技术选型">技术选型</span></h3><p>Spring Boot、MyBaits、MySQL、BootStrap</p>
+<h3><span id="评价">评价</span></h3><p>界面美观、有实用价值，整体难度比较简单。</p>
+<h2><span id="尼特社区springboot">尼特社区(SpringBoot)</span></h2><p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210930144639.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<h3><span id="地址">地址</span></h3><p>Github： <a target="_blank" rel="noopener" href="https://github.com/yourkevin/NiterForum">yourkevin/NiterForum: 尼特社区-NiterForum-一个论坛/社区程序。后端Springboot/MyBatis/Maven/MySQL，前端Thymeleaf/Layui。可供初学者，学习、交流使用，喜欢的话，恳请给个star(*❦ω❦)。同时我也更新了NiterApp，完美适配NiterForum，欢迎移步md下载体验。 (github.com)</a></p>
+<h3><span id="技术选型">技术选型</span></h3><p>Spring Boot、MyBaits、MySQL、BootStrap、LayUI</p>
+<h3><span id="评价">评价</span></h3><p>功能完善，还有一个移动端APP。难度不大。</p>
+<h2><span id="小说精品屋springboot">小说精品屋（SpringBoot）</span></h2><p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210930144640.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<h3><span id="地址">地址</span></h3><p>Github：<a target="_blank" rel="noopener" href="https://github.com/201206030/fiction_house">201206030/fiction_house: 小说精品屋是一个多平台（web、安卓app、微信小程序）、功能完善的屏幕自适应小说漫画连载系统，包含精品小说专区、轻小说专区和漫画专区。包括小说/漫画分类、小说/漫画搜索、小说/漫画排行、完本小说/漫画、小说/漫画评分、小说/漫画在线阅读、小说/漫画书架、小说/漫画阅读记录、小说下载、小说弹幕、小说/漫画自动采集/更新/纠错、小说内容自动分享到微博、邮件自动推广、链接自动推送到百度搜索引擎等功能。 (github.com)</a> </p>
+<h3><span id="技术选型">技术选型</span></h3><p>SpringBoot、Mybatis、MySQL、LayUI</p>
+<h3><span id="评价">评价</span></h3><p>比较有意思，难度不大。</p>
+<h2><span id="seckill秒杀系统springboot">Seckill秒杀系统(SpringBoot)</span></h2><p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210930144641.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<h3><span id="地址">地址</span></h3><p>Github：<a target="_blank" rel="noopener" href="https://github.com/hfbin/Seckill">https://github.com/hfbin/Seckill </a></p>
+<h3><span id="技术选型">技术选型</span></h3><p>SpringBoot、MyBatis、MySQL、Redis、BootStrap</p>
+<h3><span id="评价">评价</span></h3><p>要求我们不光要会简单的增删查改，还需要掌握处理高并发的能力。难度正常。</p>
+<h2><span id="学之思在线考试系统springboot">学之思在线考试系统(SpringBoot)</span></h2><p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210930150743.png" srcset="/img/loading.gif" lazyload alt="image-20210930150743600"></p>
+<h3><span id="地址">地址</span></h3><p>Github：<a target="_blank" rel="noopener" href="https://github.com/mindskip/xzs-mysql">mindskip/xzs-mysql: 学之思开源考试系统 - mysql版，支持多种题型：选择题、多选题、判断题、填空题、解答题以及数学公式，包含PC端、小程序端，扩展性强，部署方便(集成部署、前后端分离部署、docker部署)、界面设计友好、代码结构清晰 (github.com)</a></p>
+<p>演示地址：<a target="_blank" rel="noopener" href="https://www.mindskip.net/xzs.html">学之思开源考试系统 - 武汉思维跳跃科技有限公司 (mindskip.net)</a></p>
+<h3><span id="技术选型">技术选型</span></h3><p>SpringBoot、MyBatis、MySQL、Redis、element-ui（Vue）</p>
+<h3><span id="评价">评价</span></h3><p>项目新颖，功能丰富、文档详细、缺点是前端框架不熟悉。整体难度较大。</p>
+<h2><span id="passjava面试刷题系统spring-boot">PassJava面试刷题系统（Spring Boot）</span></h2><p><img src="https://camo.githubusercontent.com/5a3c28d0f1b579f7983d26b469e57f1eadc91d0d9f3f3a40324165dbfcfc3a1c/687474703a2f2f63646e2e6a6179682e636c75622f626c6f672f32303230303430352f706a664a4e66756958566e462e676966" srcset="/img/loading.gif" lazyload alt="img"></p>
+<h3><span id="地址">地址</span></h3><p>Github：<a target="_blank" rel="noopener" href="https://github.com/Jackson0714/PassJava-Platform">Jackson0714/PassJava-Platform: 一款面试刷题的 Spring Cloud 开源系统。零碎时间利用小程序查看常见面试题，夯实Java基础。 该项目可以教会你如何搭建SpringBoot项目，Spring Cloud项目。 采用流行的技术，如 SpringBoot、MyBatis、Redis、 MySql、 MongoDB、 RabbitMQ、Elasticsearch，采用Docker容器化部署。 (github.com)</a> </p>
+<h3><span id="技术选型">技术选型</span></h3><p>SpringBoot、MyBatis、MySQL、Redis、Vue</p>
+<h3><span id="评价">评价</span></h3><p>项目新颖，功能丰富、文档详细，缺点是前端框架不熟悉，整体难度较大。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Java%E5%90%8E%E7%AB%AF/">Java后端</a>
+                    
+                      <a class="hover-with-bg" href="/categories/Java%E5%90%8E%E7%AB%AF/Java%E9%A1%B9%E7%9B%AE/">Java项目</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Java/">Java</a>
+                    
+                      <a class="hover-with-bg" href="/tags/SSM/">SSM</a>
+                    
+                      <a class="hover-with-bg" href="/tags/SpringBoot/">SpringBoot</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%AF%95%E4%B8%9A%E8%AE%BE%E8%AE%A1/">毕业设计</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/09/25/Linux%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+                        <span class="hidden-mobile">Linux学习笔记</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"kKHw5YzfOlny9jMQJEjDkSBi-9Nh9j0Va","appKey":"3N5RE5Sl5hj96cTuho5YEMnY","path":"window.location.pathname","placeholder":"小伙伴们快来评论！","avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":true,"recordIP":true,"serverURLs":"https://kkhw5yzf.lc-cn-e1-shared.com","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          Fluid.plugins.initFancyBox('#valine .vcontent img:not(.vemoji)');
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+    <span>Copyright© 2021 huanfenz</span>
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        loader: {
+          load: ['ui/lazy']
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

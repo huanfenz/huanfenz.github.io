@@ -1,0 +1,630 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210927131547.jpg">
+  <link rel="icon" href="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210927131547.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="该博客使用Hexo+Github创建">
+  <meta name="author" content="huanfenz">
+  <meta name="keywords" content="">
+  <meta name="description" content="Cookie 和 Session   1. Cookie 1.1 什么是 Cookie? 1.2 如何创建 Cookie 1.3 服务器如何获取 Cookie 1.4 Cookie 值的修改 浏览器查看 Cookie 1.5 Cookie 生命控制 1.6 Cookie 有效路径 Path 的设置 1.7 Cookie 练习—免输入用户名登录   2. Session 会话 2.1 什么是 Ses">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaWeb-10-Cookie and Session">
+<meta property="og:url" content="https://huanfenz.top/2021/07/20/JavaWeb-10-Cookie%20and%20Session/index.html">
+<meta property="og:site_name" content="huanfenz的博客">
+<meta property="og:description" content="Cookie 和 Session   1. Cookie 1.1 什么是 Cookie? 1.2 如何创建 Cookie 1.3 服务器如何获取 Cookie 1.4 Cookie 值的修改 浏览器查看 Cookie 1.5 Cookie 生命控制 1.6 Cookie 有效路径 Path 的设置 1.7 Cookie 练习—免输入用户名登录   2. Session 会话 2.1 什么是 Ses">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210811220033.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210811220247.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210811221627.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210811221805.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210811222907.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210811224923.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210811225011.png">
+<meta property="article:published_time" content="2021-07-20T12:00:01.000Z">
+<meta property="article:modified_time" content="2021-09-27T12:31:08.632Z">
+<meta property="article:author" content="huanfenz">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="JavaWeb">
+<meta property="article:tag" content="Cookie">
+<meta property="article:tag" content="Session">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210811220033.png">
+  
+  <title>JavaWeb-10-Cookie and Session - huanfenz的博客</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/obsidian.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"huanfenz.top","root":"/","version":"1.8.12","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4","collapseDepth":2},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname"}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>huanfenz&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210927141514.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="JavaWeb-10-Cookie and Session">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-07-20 20:00" pubdate>
+        2021年7月20日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      6.1k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      19 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">JavaWeb-10-Cookie and Session</h1>
+            
+            <div class="markdown-body">
+              <h1><span id="cookie-和-session">Cookie 和 Session</span></h1><!-- toc -->
+
+<ul>
+<li><a href="#1-cookie">1. Cookie</a><ul>
+<li><a href="#11-%E4%BB%80%E4%B9%88%E6%98%AF-cookie">1.1 什么是 Cookie?</a></li>
+<li><a href="#12-%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA-cookie">1.2 如何创建 Cookie</a></li>
+<li><a href="#13-%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%A6%82%E4%BD%95%E8%8E%B7%E5%8F%96-cookie">1.3 服务器如何获取 Cookie</a></li>
+<li><a href="#14-cookie-%E5%80%BC%E7%9A%84%E4%BF%AE%E6%94%B9">1.4 Cookie 值的修改</a></li>
+<li><a href="#%E6%B5%8F%E8%A7%88%E5%99%A8%E6%9F%A5%E7%9C%8B-cookie">浏览器查看 Cookie</a></li>
+<li><a href="#15-cookie-%E7%94%9F%E5%91%BD%E6%8E%A7%E5%88%B6">1.5 Cookie 生命控制</a></li>
+<li><a href="#16-cookie-%E6%9C%89%E6%95%88%E8%B7%AF%E5%BE%84-path-%E7%9A%84%E8%AE%BE%E7%BD%AE">1.6 Cookie 有效路径 Path 的设置</a></li>
+<li><a href="#17-cookie-%E7%BB%83%E4%B9%A0-%E5%85%8D%E8%BE%93%E5%85%A5%E7%94%A8%E6%88%B7%E5%90%8D%E7%99%BB%E5%BD%95">1.7 Cookie 练习—免输入用户名登录</a></li>
+</ul>
+</li>
+<li><a href="#2-session-%E4%BC%9A%E8%AF%9D">2. Session 会话</a><ul>
+<li><a href="#21-%E4%BB%80%E4%B9%88%E6%98%AF-session-%E4%BC%9A%E8%AF%9D">2.1 什么是 Session 会话?</a></li>
+<li><a href="#22-%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA-session-%E5%92%8C%E8%8E%B7%E5%8F%96id-%E5%8F%B7%E6%98%AF%E5%90%A6%E4%B8%BA%E6%96%B0">2.2 如何创建 Session 和获取(id 号,是否为新)</a></li>
+<li><a href="#23-session-%E5%9F%9F%E6%95%B0%E6%8D%AE%E7%9A%84%E5%AD%98%E5%8F%96">2.3 Session 域数据的存取</a></li>
+<li><a href="#24-session-%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E6%8E%A7%E5%88%B6">2.4 Session 生命周期控制</a></li>
+<li><a href="#25-%E6%B5%8F%E8%A7%88%E5%99%A8%E5%92%8C-session-%E4%B9%8B%E9%97%B4%E5%85%B3%E8%81%94%E7%9A%84%E6%8A%80%E6%9C%AF%E5%86%85%E5%B9%95">2.5 浏览器和 Session 之间关联的技术内幕</a></li>
+</ul>
+</li>
+</ul>
+<!-- tocstop -->
+
+<h2><span id="1-cookie">1. Cookie</span></h2><h3><span id="11-什么是-cookie">1.1 什么是 Cookie?</span></h3><p>1、Cookie 翻译过来是饼干的意思。<br>2、Cookie 是服务器通知客户端保存键值对的一种技术。<br>3、客户端有了 Cookie 后，每次请求都发送给服务器。<br>4、每个 Cookie 的大小不能超过 4kb</p>
+<h3><span id="12-如何创建-cookie">1.2 如何创建 Cookie</span></h3><p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210811220033.png" srcset="/img/loading.gif" lazyload alt="image-20210811220033792"></p>
+<p>Servlet 程序中的代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs JAVA"><span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title">createCookie</span><span class="hljs-params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="hljs-keyword">throws</span> ServletException,</span><br><span class="hljs-function">IOException </span>&#123;<br>    <span class="hljs-comment">//1 创建 Cookie 对象</span><br>    Cookie cookie = <span class="hljs-keyword">new</span> Cookie(<span class="hljs-string">&quot;key4&quot;</span>, <span class="hljs-string">&quot;value4&quot;</span>);<br>    <span class="hljs-comment">//2 通知客户端保存 Cookie</span><br>    resp.addCookie(cookie);<br>    <span class="hljs-comment">//1 创建 Cookie 对象</span><br>    Cookie cookie1 = <span class="hljs-keyword">new</span> Cookie(<span class="hljs-string">&quot;key5&quot;</span>, <span class="hljs-string">&quot;value5&quot;</span>);<br>    <span class="hljs-comment">//2 通知客户端保存 Cookie</span><br>    resp.addCookie(cookie1);<br>    resp.getWriter().write(<span class="hljs-string">&quot;Cookie 创建成功&quot;</span>);<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<h3><span id="13-服务器如何获取-cookie">1.3 服务器如何获取 Cookie</span></h3><p>服务器获取客户端的 Cookie 只需要一行代码：req.getCookies():Cookie[]</p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210811220247.png" srcset="/img/loading.gif" lazyload alt="image-20210811220247839"></p>
+<p>Cookie 的工具类：</p>
+<figure class="highlight java"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CookieUtils</span> </span>&#123;<br><span class="hljs-comment">/**</span><br><span class="hljs-comment">* 查找指定名称的 Cookie 对象</span><br><span class="hljs-comment">* <span class="hljs-doctag">@param</span> name</span><br><span class="hljs-comment">* <span class="hljs-doctag">@param</span> cookies</span><br><span class="hljs-comment">* <span class="hljs-doctag">@return</span></span><br><span class="hljs-comment">*/</span><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> Cookie <span class="hljs-title">findCookie</span><span class="hljs-params">(String name , Cookie[] cookies)</span></span>&#123;<br>    <span class="hljs-keyword">if</span> (name == <span class="hljs-keyword">null</span> || cookies == <span class="hljs-keyword">null</span> || cookies.length == <span class="hljs-number">0</span>) &#123;<br>    	<span class="hljs-keyword">return</span> <span class="hljs-keyword">null</span>;<br>	&#125;<br>    <span class="hljs-keyword">for</span> (Cookie cookie : cookies) &#123;<br>        <span class="hljs-keyword">if</span> (name.equals(cookie.getName())) &#123;<br>            <span class="hljs-keyword">return</span> cookie;<br>        &#125;<br>        <span class="hljs-keyword">for</span> (Cookie cookie : cookies) &#123;<br>            <span class="hljs-keyword">if</span> (name.equals(cookie.getName())) &#123;<br>                <span class="hljs-keyword">return</span> cookie;<br>            &#125;<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">null</span>;<br>    &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>Servlet 程序中的代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs java">Cookie iWantCookie = CookieUtils.findCookie(<span class="hljs-string">&quot;key1&quot;</span>, cookies);<br><span class="hljs-keyword">if</span> (iWantCookie != <span class="hljs-keyword">null</span>) &#123;<br>resp.getWriter().write(<span class="hljs-string">&quot;找到了需要的 Cookie&quot;</span>);<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<h3><span id="14-cookie-值的修改">1.4 Cookie 值的修改</span></h3><p>方案一：<br>1、先创建一个要修改的同名（指的就是 key）的 Cookie 对象<br>2、在构造器，同时赋于新的 Cookie 值。<br>3、调用 response.addCookie( Cookie );</p>
+<figure class="highlight java"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs java">Cookie cookie = <span class="hljs-keyword">new</span> Cookie(<span class="hljs-string">&quot;key1&quot;</span>,<span class="hljs-string">&quot;newValue1&quot;</span>);<br>resp.addCookie(cookie);<br></code></pre></div></td></tr></table></figure>
+
+<p>方案二：<br>1、先查找到需要修改的 Cookie 对象<br>2、调用 setValue()方法赋于新的 Cookie 值。<br>3、调用 response.addCookie()通知客户端保存修改</p>
+<figure class="highlight java"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs java"><span class="hljs-comment">// 方案二：</span><br><span class="hljs-comment">// 1、先查找到需要修改的 Cookie 对象</span><br>Cookie cookie = CookieUtils.findCookie(<span class="hljs-string">&quot;key2&quot;</span>, req.getCookies());<br><span class="hljs-keyword">if</span> (cookie != <span class="hljs-keyword">null</span>) &#123;<br>    <span class="hljs-comment">// 2、调用 setValue()方法赋于新的 Cookie 值。</span><br>    cookie.setValue(<span class="hljs-string">&quot;newValue2&quot;</span>);<br>    <span class="hljs-comment">// 3、调用 response.addCookie()通知客户端保存修改</span><br>    resp.addCookie(cookie);<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<h3><span id="浏览器查看-cookie">浏览器查看 Cookie</span></h3><p>谷歌浏览器如何查看 Cookie</p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210811221627.png" srcset="/img/loading.gif" lazyload alt="image-20210811221627868"></p>
+<p>火狐浏览器如何查看 Cookie</p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210811221805.png" srcset="/img/loading.gif" lazyload alt="image-20210811221805888"></p>
+<h3><span id="15-cookie-生命控制">1.5 Cookie 生命控制</span></h3><p>Cookie 的生命控制指的是如何管理 Cookie 什么时候被销毁（删除）</p>
+<p>setMaxAge()<br>正数，表示在指定的秒数后过期<br>负数，表示浏览器一关，Cookie 就会被删除（默认值是-1）<br>零，表示马上删除 Cookie</p>
+<figure class="highlight java"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs java">Cookie cookie = <span class="hljs-keyword">new</span> Cookie(<span class="hljs-string">&quot;life3600&quot;</span>, <span class="hljs-string">&quot;life3600&quot;</span>);<br>cookie.setMaxAge(<span class="hljs-number">60</span> * <span class="hljs-number">60</span>); <span class="hljs-comment">// 设置 Cookie 一小时之后被删除。无效</span><br>resp.addCookie(cookie);<br>resp.getWriter().write(<span class="hljs-string">&quot;已经创建了一个存活一小时的 Cookie&quot;</span>);<br></code></pre></div></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs java">Cookie cookie = CookieUtils.findCookie(<span class="hljs-string">&quot;key4&quot;</span>, req.getCookies());<br><span class="hljs-keyword">if</span> (cookie != <span class="hljs-keyword">null</span>) &#123;<br>    <span class="hljs-comment">// 调用 setMaxAge(0);</span><br>    cookie.setMaxAge(<span class="hljs-number">0</span>); <span class="hljs-comment">// 表示马上删除，都不需要等待浏览器关闭</span><br>    <span class="hljs-comment">// 调用 response.addCookie(cookie);</span><br>    resp.addCookie(cookie);<br>    resp.getWriter().write(<span class="hljs-string">&quot;key4 的 Cookie 已经被删除&quot;</span>);<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs java">Cookie cookie = <span class="hljs-keyword">new</span> Cookie(<span class="hljs-string">&quot;defalutLife&quot;</span>,<span class="hljs-string">&quot;defaultLife&quot;</span>);<br>cookie.setMaxAge(-<span class="hljs-number">1</span>);<span class="hljs-comment">//设置存活时间</span><br>resp.addCookie(cookie);<br></code></pre></div></td></tr></table></figure>
+
+<h3><span id="16-cookie-有效路径-path-的设置">1.6 Cookie 有效路径 Path 的设置</span></h3><p>Cookie 的 path 属性可以有效的过滤哪些 Cookie 可以发送给服务器。哪些不发。<br>path 属性是通过请求的地址来进行有效的过滤。</p>
+<p>CookieA path=/工程路径<br>CookieB path=/工程路径/abc</p>
+<p>请求地址如下：<br><a href="http://ip:port/工程路径/a.html">http://ip:port/工程路径/a.html</a><br>CookieA 发送<br>CookieB 不发送<br><a href="http://ip:port/工程路径/abc/a.html">http://ip:port/工程路径/abc/a.html</a><br>CookieA 发送<br>CookieB 发送</p>
+<figure class="highlight java"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs java">Cookie cookie = <span class="hljs-keyword">new</span> Cookie(<span class="hljs-string">&quot;path1&quot;</span>, <span class="hljs-string">&quot;path1&quot;</span>);<br><span class="hljs-comment">// getContextPath() ===&gt;&gt;&gt;&gt; 得到工程路径</span><br>cookie.setPath( req.getContextPath() + <span class="hljs-string">&quot;/abc&quot;</span> ); <span class="hljs-comment">// ===&gt;&gt;&gt;&gt; /工程路径/abc</span><br>resp.addCookie(cookie);<br>resp.getWriter().write(<span class="hljs-string">&quot;创建了一个带有 Path 路径的 Cookie&quot;</span>);<br></code></pre></div></td></tr></table></figure>
+
+<h3><span id="17-cookie-练习免输入用户名登录">1.7 Cookie 练习—免输入用户名登录</span></h3><p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210811222907.png" srcset="/img/loading.gif" lazyload alt="image-20210811222907049"></p>
+<p>login.jsp 页面</p>
+<figure class="highlight jsp"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs jsp">&lt;form action=<span class="hljs-string">&quot;http://localhost:8080/13_cookie_session/loginServlet&quot;</span> method=<span class="hljs-string">&quot;get&quot;</span>&gt;<br>用户名：&lt;input type=<span class="hljs-string">&quot;text&quot;</span> name=<span class="hljs-string">&quot;username&quot;</span> value=<span class="hljs-string">&quot;$&#123;cookie.username.value&#125;&quot;</span>&gt; &lt;br&gt;<br>密码：&lt;input type=<span class="hljs-string">&quot;password&quot;</span> name=<span class="hljs-string">&quot;password&quot;</span>&gt; &lt;br&gt;<br>&lt;input type=<span class="hljs-string">&quot;submit&quot;</span> value=<span class="hljs-string">&quot;登录&quot;</span>&gt;<br>&lt;/form&gt;<br></code></pre></div></td></tr></table></figure>
+
+<p>LoginServlet 程序：</p>
+<figure class="highlight java"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs java"><span class="hljs-meta">@Override</span><br><span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title">doGet</span><span class="hljs-params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="hljs-keyword">throws</span> ServletException,</span><br><span class="hljs-function">IOException </span>&#123;<br>    String username = req.getParameter(<span class="hljs-string">&quot;username&quot;</span>);<br>    String password = req.getParameter(<span class="hljs-string">&quot;password&quot;</span>);<br>    <span class="hljs-keyword">if</span> (<span class="hljs-string">&quot;wzg168&quot;</span>.equals(username) &amp;&amp; <span class="hljs-string">&quot;123456&quot;</span>.equals(password)) &#123;<br>        <span class="hljs-comment">//登录 成功</span><br>        Cookie cookie = <span class="hljs-keyword">new</span> Cookie(<span class="hljs-string">&quot;username&quot;</span>, username);<br>        cookie.setMaxAge(<span class="hljs-number">60</span> * <span class="hljs-number">60</span> * <span class="hljs-number">24</span> * <span class="hljs-number">7</span>);<span class="hljs-comment">//当前 Cookie 一周内有效</span><br>        resp.addCookie(cookie);<br>        System.out.println(<span class="hljs-string">&quot;登录 成功&quot;</span>);<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-comment">// 登录 失败</span><br>        System.out.println(<span class="hljs-string">&quot;登录 失败&quot;</span>);<br>    &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<h2><span id="2-session-会话">2. Session 会话</span></h2><h3><span id="21-什么是-session-会话">2.1 什么是 Session 会话?</span></h3><p>1、Session 就一个接口（HttpSession）。<br>2、Session 就是会话。它是用来维护一个客户端和服务器之间关联的一种技术。<br>3、每个客户端都有自己的一个 Session 会话。<br>4、Session 会话中，我们经常用来保存用户登录之后的信息。</p>
+<h3><span id="22-如何创建-session-和获取id-号是否为新">2.2 如何创建 Session 和获取(id 号,是否为新)</span></h3><p>如何创建和获取 Session。它们的 API 是一样的。<br>request.getSession()<br>    第一次调用是：创建 Session 会话<br>    之后调用都是：获取前面创建好的 Session 会话对象。<br>isNew(); 判断到底是不是刚创建出来的（新的）<br>    true 表示刚创建<br>    false 表示获取之前创建<br>每个会话都有一个身份证号。也就是 ID 值。而且这个 ID 是唯一的。<br>getId() 得到 Session 的会话 id 值。</p>
+<h3><span id="23-session-域数据的存取">2.3 Session 域数据的存取</span></h3><figure class="highlight java"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs java">req.getSession().setAttribute(<span class="hljs-string">&quot;key1&quot;</span>, <span class="hljs-string">&quot;value1&quot;</span>);<br>resp.getWriter().write(<span class="hljs-string">&quot;已经往 Session 中保存了数据&quot;</span>);<br></code></pre></div></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs java">Object attribute = req.getSession().getAttribute(<span class="hljs-string">&quot;key1&quot;</span>);<br>resp.getWriter().write(<span class="hljs-string">&quot;从 Session 中获取出 key1 的数据是：&quot;</span> + attribute);<br></code></pre></div></td></tr></table></figure>
+
+<h3><span id="24-session-生命周期控制">2.4 Session 生命周期控制</span></h3><p>public void setMaxInactiveInterval(int interval) 设置 Session 的超时时间（以秒为单位），超过指定的时长，Session就会被销毁。<br>值为正数的时候，设定 Session 的超时时长。<br>负数表示永不超时（极少使用）</p>
+<p>public int getMaxInactiveInterval()获取 Session 的超时时间<br>public void invalidate() 让当前 Session 会话马上超时无效。</p>
+<p>Session 默认的超时时间长为 30 分钟。</p>
+<p>因为在 Tomcat 服务器的配置文件 web.xml 中默认有以下的配置，它就表示配置了当前 Tomcat 服务器下所有的 Session<br>超时配置默认时长为：30 分钟。</p>
+<figure class="highlight xml"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">session-config</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">session-timeout</span>&gt;</span>30<span class="hljs-tag">&lt;/<span class="hljs-name">session-timeout</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">session-config</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+
+<p>如果说。你希望你的 web 工程，默认的 Session 的超时时长为其他时长。你可以在你自己的 web.xml 配置文件中做以上相同的配置。就可以修改你的 web 工程所有 Seession 的默认超时时长。</p>
+<figure class="highlight xml"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">session-config</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">session-timeout</span>&gt;</span>20<span class="hljs-tag">&lt;/<span class="hljs-name">session-timeout</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">session-config</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+
+<p>如果你想只修改个别 Session 的超时时长。就可以使用上面的 API。setMaxInactiveInterval(int interval)来进行单独的设置。</p>
+<p>session.setMaxInactiveInterval(int interval)单独设置超时时长。</p>
+<p>Session 超时的概念介绍：</p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210811224923.png" srcset="/img/loading.gif" lazyload alt="image-20210811224923485"></p>
+<figure class="highlight java"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs java"><span class="hljs-comment">// 先获取 Session 对象</span><br>HttpSession session = req.getSession();<br><span class="hljs-comment">// 设置当前 Session3 秒后超时</span><br>session.setMaxInactiveInterval(<span class="hljs-number">3</span>);<br>resp.getWriter().write(<span class="hljs-string">&quot;当前 Session 已经设置为 3 秒后超时&quot;</span>);<br></code></pre></div></td></tr></table></figure>
+
+<p>Session 马上被超时示例：</p>
+<figure class="highlight java"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs java"><span class="hljs-comment">// 先获取 Session 对象</span><br>HttpSession session = req.getSession();<br><span class="hljs-comment">// 让 Session 会话马上超时</span><br>session.invalidate();<br>resp.getWriter().write(<span class="hljs-string">&quot;Session 已经设置为超时（无效）&quot;</span>);<br></code></pre></div></td></tr></table></figure>
+
+<h3><span id="25-浏览器和-session-之间关联的技术内幕">2.5 浏览器和 Session 之间关联的技术内幕</span></h3><p>Session 技术，底层其实是基于 Cookie 技术来实现的。</p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210811225011.png" srcset="/img/loading.gif" lazyload alt="image-20210811225011609"></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Java%E5%90%8E%E7%AB%AF/">Java后端</a>
+                    
+                      <a class="hover-with-bg" href="/categories/Java%E5%90%8E%E7%AB%AF/JavaWeb/">JavaWeb</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Java/">Java</a>
+                    
+                      <a class="hover-with-bg" href="/tags/JavaWeb/">JavaWeb</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Cookie/">Cookie</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Session/">Session</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/07/20/JavaWeb-09-Update%20and%20Download/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">JavaWeb-09-Update and Download</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/07/20/JavaWeb-12-JSON%20and%20Ajax/">
+                        <span class="hidden-mobile">JavaWeb-12-JSON and Ajax</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"kKHw5YzfOlny9jMQJEjDkSBi-9Nh9j0Va","appKey":"3N5RE5Sl5hj96cTuho5YEMnY","path":"window.location.pathname","placeholder":"小伙伴们快来评论！","avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":true,"recordIP":true,"serverURLs":"https://kkhw5yzf.lc-cn-e1-shared.com","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          Fluid.plugins.initFancyBox('#valine .vcontent img:not(.vemoji)');
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+    <span>Copyright© 2021 huanfenz</span>
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        loader: {
+          load: ['ui/lazy']
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

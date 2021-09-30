@@ -1,0 +1,622 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210927131547.jpg">
+  <link rel="icon" href="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210927131547.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="该博客使用Hexo+Github创建">
+  <meta name="author" content="huanfenz">
+  <meta name="keywords" content="">
+  <meta name="description" content="常见约束   常见约束 含义 分类 添加约束的时机 约束的添加分类   一、创建表时添加约束 1.添加列级约束 语法   2.添加表级约束 语法：在各个字段的最下面   通用的写法：★ 二、修改表时添加约束 1、添加列级约束 2、添加表级约束   三、修改表时删除约束 作业12-约束 问题 我的解答 总结   级联    常见约束含义一种限制，用于限制表中的数据，为了保证表中的数据的准确和可靠性">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL-16-常见约束">
+<meta property="og:url" content="https://huanfenz.top/2021/07/10/MySQL-16-%E5%B8%B8%E8%A7%81%E7%BA%A6%E6%9D%9F/index.html">
+<meta property="og:site_name" content="huanfenz的博客">
+<meta property="og:description" content="常见约束   常见约束 含义 分类 添加约束的时机 约束的添加分类   一、创建表时添加约束 1.添加列级约束 语法   2.添加表级约束 语法：在各个字段的最下面   通用的写法：★ 二、修改表时添加约束 1、添加列级约束 2、添加表级约束   三、修改表时删除约束 作业12-约束 问题 我的解答 总结   级联    常见约束含义一种限制，用于限制表中的数据，为了保证表中的数据的准确和可靠性">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210713173843.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210713174106.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210713174144.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210713174044.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210713174208.png">
+<meta property="article:published_time" content="2021-07-10T12:00:01.000Z">
+<meta property="article:modified_time" content="2021-09-27T12:31:08.632Z">
+<meta property="article:author" content="huanfenz">
+<meta property="article:tag" content="数据库">
+<meta property="article:tag" content="MySQL">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210713173843.png">
+  
+  <title>MySQL-16-常见约束 - huanfenz的博客</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/obsidian.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"huanfenz.top","root":"/","version":"1.8.12","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4","collapseDepth":2},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname"}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>huanfenz&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210927141514.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="MySQL-16-常见约束">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-07-10 20:00" pubdate>
+        2021年7月10日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      3.6k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      11 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">MySQL-16-常见约束</h1>
+            
+            <div class="markdown-body">
+              <h1><span id="常见约束">常见约束</span></h1><!-- toc -->
+
+<ul>
+<li><a href="#%E5%B8%B8%E8%A7%81%E7%BA%A6%E6%9D%9F">常见约束</a><ul>
+<li><a href="#%E5%90%AB%E4%B9%89">含义</a></li>
+<li><a href="#%E5%88%86%E7%B1%BB">分类</a></li>
+<li><a href="#%E6%B7%BB%E5%8A%A0%E7%BA%A6%E6%9D%9F%E7%9A%84%E6%97%B6%E6%9C%BA">添加约束的时机</a></li>
+<li><a href="#%E7%BA%A6%E6%9D%9F%E7%9A%84%E6%B7%BB%E5%8A%A0%E5%88%86%E7%B1%BB">约束的添加分类</a></li>
+</ul>
+</li>
+<li><a href="#%E4%B8%80-%E5%88%9B%E5%BB%BA%E8%A1%A8%E6%97%B6%E6%B7%BB%E5%8A%A0%E7%BA%A6%E6%9D%9F">一、创建表时添加约束</a></li>
+<li><a href="#1%E6%B7%BB%E5%8A%A0%E5%88%97%E7%BA%A7%E7%BA%A6%E6%9D%9F">1.添加列级约束</a><ul>
+<li><a href="#%E8%AF%AD%E6%B3%95">语法</a></li>
+</ul>
+</li>
+<li><a href="#2%E6%B7%BB%E5%8A%A0%E8%A1%A8%E7%BA%A7%E7%BA%A6%E6%9D%9F">2.添加表级约束</a><ul>
+<li><a href="#%E8%AF%AD%E6%B3%95%E5%9C%A8%E5%90%84%E4%B8%AA%E5%AD%97%E6%AE%B5%E7%9A%84%E6%9C%80%E4%B8%8B%E9%9D%A2">语法：在各个字段的最下面</a></li>
+</ul>
+</li>
+<li><a href="#%E9%80%9A%E7%94%A8%E7%9A%84%E5%86%99%E6%B3%95">通用的写法：★</a></li>
+<li><a href="#%E4%BA%8C-%E4%BF%AE%E6%94%B9%E8%A1%A8%E6%97%B6%E6%B7%BB%E5%8A%A0%E7%BA%A6%E6%9D%9F">二、修改表时添加约束</a><ul>
+<li><a href="#1-%E6%B7%BB%E5%8A%A0%E5%88%97%E7%BA%A7%E7%BA%A6%E6%9D%9F">1、添加列级约束</a></li>
+<li><a href="#2-%E6%B7%BB%E5%8A%A0%E8%A1%A8%E7%BA%A7%E7%BA%A6%E6%9D%9F">2、添加表级约束</a></li>
+</ul>
+</li>
+<li><a href="#%E4%B8%89-%E4%BF%AE%E6%94%B9%E8%A1%A8%E6%97%B6%E5%88%A0%E9%99%A4%E7%BA%A6%E6%9D%9F">三、修改表时删除约束</a></li>
+<li><a href="#%E4%BD%9C%E4%B8%9A12-%E7%BA%A6%E6%9D%9F">作业12-约束</a><ul>
+<li><a href="#%E9%97%AE%E9%A2%98">问题</a></li>
+<li><a href="#%E6%88%91%E7%9A%84%E8%A7%A3%E7%AD%94">我的解答</a></li>
+<li><a href="#%E6%80%BB%E7%BB%93">总结</a></li>
+</ul>
+</li>
+<li><a href="#%E7%BA%A7%E8%81%94">级联</a></li>
+</ul>
+<!-- tocstop -->
+
+<h2><span id="常见约束">常见约束</span></h2><h3><span id="含义">含义</span></h3><p>一种限制，用于限制表中的数据，为了保证表中的数据的准确和可靠性</p>
+<h3><span id="分类">分类</span></h3><p>六大约束<br>    <strong>NOT NULL</strong>：非空，用于保证该字段的值不能为空<br>    比如姓名、学号等<br>    <strong>DEFAULT</strong>:默认，用于保证该字段有默认值<br>    比如性别<br>    <strong>PRIMARY KEY</strong>:主键，用于保证该字段的值具有唯一性，并且非空<br>    比如学号、员工编号等<br>    <strong>UNIQUE</strong>:唯一，用于保证该字段的值具有唯一性，可以为空<br>    比如座位号<br>    <strong>CHECK</strong>:检查约束【mysql中不支持】<br>    比如年龄、性别<br>    <strong>FOREIGN KEY</strong>:外键，用于限制两个表的关系，用于保证该字段的值必须来自于主表的关联列的值<br>        在从表添加外键约束，用于引用主表中某列的值<br>    比如学生表的专业编号，员工表的部门编号，员工表的工种编号</p>
+<p>记忆以下：</p>
+<p>主键、非空、唯一、外键</p>
+<p>默认、检查</p>
+<h3><span id="添加约束的时机">添加约束的时机</span></h3><p>​    1.创建表时<br>​    2.修改表时</p>
+<h3><span id="约束的添加分类">约束的添加分类</span></h3><p>​    列级约束：六大约束语法上都支持，但外键约束没有效果<br>​<br>​    表级约束：除了非空、默认，其他的都支持</p>
+<p>主键和唯一的大对比：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs markdown"><span class="hljs-code">	保证唯一性  是否允许为空    一个表中可以有多少个   是否允许组合</span><br><span class="hljs-code">主键	√		×		至多有1个           √，但不推荐</span><br><span class="hljs-code">唯一	√		√		可以有多个          √，但不推荐</span><br></code></pre></div></td></tr></table></figure>
+<p>外键：<br>    1、要求在从表设置外键关系<br>    2、从表的外键列的类型和主表的关联列的类型要求一致或兼容，名称无要求<br>    3、主表的关联列必须是一个key（一般是主键或唯一）<br>    4、插入数据时，先插入主表，再插入从表<br>    删除数据时，先删除从表，再删除主表</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs mysql">CREATE TABLE 表名(<br>	字段名 字段类型 列级约束,<br>	字段名 字段类型,<br>	表级约束<br><br>)<br>CREATE DATABASE students;<br></code></pre></div></td></tr></table></figure>
+
+<p>书上例子</p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210713173843.png" srcset="/img/loading.gif" lazyload alt="image-20210713173836080"></p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210713174106.png" srcset="/img/loading.gif" lazyload alt="image-20210713174106279"></p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210713174144.png" srcset="/img/loading.gif" lazyload alt="image-20210713174143974"></p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210713174044.png" srcset="/img/loading.gif" lazyload alt="image-20210713174044517"></p>
+<h2><span id="一-创建表时添加约束">一、创建表时添加约束</span></h2><h2><span id="1添加列级约束">1.添加列级约束</span></h2><h3><span id="语法">语法</span></h3><p>直接在字段名和类型后面追加 约束类型即可。</p>
+<p>只支持：默认、非空、主键、唯一</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs mysql">USE students;<br>DROP TABLE stuinfo;<br>CREATE TABLE stuinfo(<br>	id INT PRIMARY KEY,#主键<br>	stuName VARCHAR(20) NOT NULL UNIQUE,#非空<br>	gender CHAR(1) CHECK(gender=&#x27;男&#x27; OR gender =&#x27;女&#x27;),#检查<br>	seat INT UNIQUE,#唯一<br>	age INT DEFAULT  18,#默认约束<br>	majorId INT REFERENCES major(id)#外键<br><br>);<br><br>CREATE TABLE major(<br>	id INT PRIMARY KEY,<br>	majorName VARCHAR(20)<br>);<br><br>#查看stuinfo中的所有索引，包括主键、外键、唯一<br>SHOW INDEX FROM stuinfo;<br></code></pre></div></td></tr></table></figure>
+
+
+
+<h2><span id="2添加表级约束">2.添加表级约束</span></h2><h3><span id="语法在各个字段的最下面">语法：在各个字段的最下面</span></h3><p> 【constraint 约束名】 约束类型(字段名) </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs mysql">DROP TABLE IF EXISTS stuinfo;<br>CREATE TABLE stuinfo(<br>	id INT,<br>	stuname VARCHAR(20),<br>	gender CHAR(1),<br>	seat INT,<br>	age INT,<br>	majorid INT,<br>	<br>	CONSTRAINT pk PRIMARY KEY(id),#主键<br>	CONSTRAINT uq UNIQUE(seat),#唯一键<br>	CONSTRAINT ck CHECK(gender =&#x27;男&#x27; OR gender  = &#x27;女&#x27;),#检查<br>	CONSTRAINT fk_stuinfo_major FOREIGN KEY(majorid) REFERENCES major(id)#外键<br>);<br><br>SHOW INDEX FROM stuinfo;<br></code></pre></div></td></tr></table></figure>
+
+
+
+<h2><span id="通用的写法">通用的写法：★</span></h2><figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs mysql">CREATE TABLE IF NOT EXISTS stuinfo(<br>	id INT PRIMARY KEY,<br>	stuname VARCHAR(20),<br>	sex CHAR(1),<br>	age INT DEFAULT 18,<br>	seat INT UNIQUE,<br>	majorid INT,<br>	CONSTRAINT fk_stuinfo_major FOREIGN KEY(majorid) REFERENCES major(id)<br>);<br></code></pre></div></td></tr></table></figure>
+
+
+
+<h2><span id="二-修改表时添加约束">二、修改表时添加约束</span></h2><h3><span id="1-添加列级约束">1、添加列级约束</span></h3><p>alter table 表名 modify column 字段名 字段类型 新约束;</p>
+<h3><span id="2-添加表级约束">2、添加表级约束</span></h3><p>alter table 表名 add 【constraint 约束名】 约束类型(字段名) 【外键的引用】;</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs mysql">DROP TABLE IF EXISTS stuinfo;<br>CREATE TABLE stuinfo(<br>	id INT,<br>	stuname VARCHAR(20),<br>	gender CHAR(1),<br>	seat INT,<br>	age INT,<br>	majorid INT<br>)<br>DESC stuinfo;<br>#1.添加非空约束<br>ALTER TABLE stuinfo MODIFY COLUMN stuname VARCHAR(20)  NOT NULL;<br>#2.添加默认约束<br>ALTER TABLE stuinfo MODIFY COLUMN age INT DEFAULT 18;<br>#3.添加主键<br>#①列级约束<br>ALTER TABLE stuinfo MODIFY COLUMN id INT PRIMARY KEY;<br>#②表级约束<br>ALTER TABLE stuinfo ADD PRIMARY KEY(id);<br><br>#4.添加唯一<br><br>#①列级约束<br>ALTER TABLE stuinfo MODIFY COLUMN seat INT UNIQUE;<br>#②表级约束<br>ALTER TABLE stuinfo ADD UNIQUE(seat);<br><br><br>#5.添加外键<br>ALTER TABLE stuinfo ADD CONSTRAINT fk_stuinfo_major FOREIGN KEY(majorid) REFERENCES major(id); <br></code></pre></div></td></tr></table></figure>
+
+
+
+<h2><span id="三-修改表时删除约束">三、修改表时删除约束</span></h2><figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs mysql">#1.删除非空约束<br>ALTER TABLE stuinfo MODIFY COLUMN stuname VARCHAR(20) NULL;<br><br>#2.删除默认约束<br>ALTER TABLE stuinfo MODIFY COLUMN age INT ;<br><br>#3.删除主键<br>ALTER TABLE stuinfo DROP PRIMARY KEY;<br><br>#4.删除唯一<br>ALTER TABLE stuinfo DROP INDEX seat;<br><br>#5.删除外键<br>ALTER TABLE stuinfo DROP FOREIGN KEY fk_stuinfo_major;<br><br>SHOW INDEX FROM stuinfo;<br></code></pre></div></td></tr></table></figure>
+
+
+
+<h2><span id="作业12-约束">作业12-约束</span></h2><h3><span id="问题">问题</span></h3><ol>
+<li><p>向表 emp2 的id 列中添加PRIMARY KEY 约束（my_emp_id_pk） </p>
+</li>
+<li><p>向表 dept2 的id 列中添加PRIMARY KEY 约束（my_dept_id_pk） </p>
+</li>
+<li><p>向表 emp2 中添加列 dept_id，并在其中定义 FOREIGN</p>
+</li>
+</ol>
+<p>KEY 约束，与之相关联的列是</p>
+<p>dept2 表中的id 列。 </p>
+<h3><span id="我的解答">我的解答</span></h3><figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs mysql">1. 向表 emp2 的id 列中添加PRIMARY KEY 约束（my_emp_id_pk） <br><br>ALTER TABLE emp2 MODIFY COLUMN id INT PRIMARY KEY;<br>ALTER TABLE emp2 ADD CONSTRAINT my_emp_id_pk PRIMARY KEY(id);<br><br>2. 向表 dept2 的id 列中添加PRIMARY KEY 约束（my_dept_id_pk） <br>ALTER TABLE dept2 MODIFY COLUMN id PRIMARY KEY;<br>ALTER TABLE dept2 ADD CONSTRAINT my_dept_id_pk PRIMARY KEY(id);<br><br>3. 向表 emp2 中添加列 dept_id，并在其中定义 FOREIGN KEY 约束，与之相关联的列是<br>dept2 表中的id 列。 <br>ALTER TABLE ADD COLUMN dept_id INT;<br>ALTER TABLE ADD CONSTRAINT fk FOREIGN KEY(dept_id) REFERENCES dept2(id);<br></code></pre></div></td></tr></table></figure>
+
+<h3><span id="总结">总结</span></h3><p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210713174208.png" srcset="/img/loading.gif" lazyload alt="image-20210713174208149"></p>
+<h2><span id="级联">级联</span></h2><p>可以通过以下两种方式来删除主表的记录</p>
+<p>#方式一：级联删除<br>ALTER TABLE stuinfo ADD CONSTRAINT fk_stu_major FOREIGN KEY(majorid) REFERENCES major(id) ON DELETE CASCADE;</p>
+<p>#方式二：级联置空<br>ALTER TABLE stuinfo ADD CONSTRAINT fk_stu_major FOREIGN KEY(majorid) REFERENCES major(id) ON DELETE SET NULL;</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Java%E5%90%8E%E7%AB%AF/">Java后端</a>
+                    
+                      <a class="hover-with-bg" href="/categories/Java%E5%90%8E%E7%AB%AF/MySQL/">MySQL</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+                    
+                      <a class="hover-with-bg" href="/tags/MySQL/">MySQL</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/07/10/MySQL-15-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">MySQL-15-数据类型</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/07/10/MySQL-17-%E6%A0%87%E8%AF%86%E5%88%97/">
+                        <span class="hidden-mobile">MySQL-17-标识列</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"kKHw5YzfOlny9jMQJEjDkSBi-9Nh9j0Va","appKey":"3N5RE5Sl5hj96cTuho5YEMnY","path":"window.location.pathname","placeholder":"小伙伴们快来评论！","avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":true,"recordIP":true,"serverURLs":"https://kkhw5yzf.lc-cn-e1-shared.com","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          Fluid.plugins.initFancyBox('#valine .vcontent img:not(.vemoji)');
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+    <span>Copyright© 2021 huanfenz</span>
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        loader: {
+          load: ['ui/lazy']
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

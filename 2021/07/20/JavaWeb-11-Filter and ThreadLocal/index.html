@@ -1,0 +1,659 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210927131547.jpg">
+  <link rel="icon" href="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210927131547.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="该博客使用Hexo+Github创建">
+  <meta name="author" content="huanfenz">
+  <meta name="keywords" content="">
+  <meta name="description" content="Filter and ThreadLocal   1. Filter介绍 2. Filter 的初体验 完整的用户登录   3. Filter 的生命周期 4. FilterConfig 类 5. FilterChain 过滤器链 6. Filter 的拦截路径 –精确匹配 –目录匹配 –后缀名匹配   7. ThreadLocal 的使用 8. 使用 Filter 和 ThreadLocal 组">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaWeb-11-Filter and ThreadLocal">
+<meta property="og:url" content="https://huanfenz.top/2021/07/20/JavaWeb-11-Filter%20and%20ThreadLocal/index.html">
+<meta property="og:site_name" content="huanfenz的博客">
+<meta property="og:description" content="Filter and ThreadLocal   1. Filter介绍 2. Filter 的初体验 完整的用户登录   3. Filter 的生命周期 4. FilterConfig 类 5. FilterChain 过滤器链 6. Filter 的拦截路径 –精确匹配 –目录匹配 –后缀名匹配   7. ThreadLocal 的使用 8. 使用 Filter 和 ThreadLocal 组">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210816221453.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210816222701.png">
+<meta property="article:published_time" content="2021-07-20T12:00:01.000Z">
+<meta property="article:modified_time" content="2021-09-27T12:31:08.632Z">
+<meta property="article:author" content="huanfenz">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="JavaWeb">
+<meta property="article:tag" content="Filter">
+<meta property="article:tag" content="ThreadLocal">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210816221453.png">
+  
+  <title>JavaWeb-11-Filter and ThreadLocal - huanfenz的博客</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/obsidian.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"huanfenz.top","root":"/","version":"1.8.12","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4","collapseDepth":2},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname"}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>huanfenz&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210927141514.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="JavaWeb-11-Filter and ThreadLocal">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-07-20 20:00" pubdate>
+        2021年7月20日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      17k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      52 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">JavaWeb-11-Filter and ThreadLocal</h1>
+            
+            <div class="markdown-body">
+              <h1><span id="filter-and-threadlocal">Filter and ThreadLocal</span></h1><!-- toc -->
+
+<ul>
+<li><a href="#1-filter%E4%BB%8B%E7%BB%8D">1. Filter介绍</a></li>
+<li><a href="#2-filter-%E7%9A%84%E5%88%9D%E4%BD%93%E9%AA%8C">2. Filter 的初体验</a><ul>
+<li><a href="#%E5%AE%8C%E6%95%B4%E7%9A%84%E7%94%A8%E6%88%B7%E7%99%BB%E5%BD%95">完整的用户登录</a></li>
+</ul>
+</li>
+<li><a href="#3-filter-%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F">3. Filter 的生命周期</a></li>
+<li><a href="#4-filterconfig-%E7%B1%BB">4. FilterConfig 类</a></li>
+<li><a href="#5-filterchain-%E8%BF%87%E6%BB%A4%E5%99%A8%E9%93%BE">5. FilterChain 过滤器链</a></li>
+<li><a href="#6-filter-%E7%9A%84%E6%8B%A6%E6%88%AA%E8%B7%AF%E5%BE%84">6. Filter 的拦截路径</a><ul>
+<li><a href="#-%E7%B2%BE%E7%A1%AE%E5%8C%B9%E9%85%8D">–精确匹配</a></li>
+<li><a href="#-%E7%9B%AE%E5%BD%95%E5%8C%B9%E9%85%8D">–目录匹配</a></li>
+<li><a href="#-%E5%90%8E%E7%BC%80%E5%90%8D%E5%8C%B9%E9%85%8D">–后缀名匹配</a></li>
+</ul>
+</li>
+<li><a href="#7-threadlocal-%E7%9A%84%E4%BD%BF%E7%94%A8">7. ThreadLocal 的使用</a></li>
+<li><a href="#8-%E4%BD%BF%E7%94%A8-filter-%E5%92%8C-threadlocal-%E7%BB%84%E5%90%88%E7%AE%A1%E7%90%86%E4%BA%8B%E5%8A%A1">8. 使用 Filter 和 ThreadLocal 组合管理事务</a><ul>
+<li><a href="#81-%E4%BD%BF%E7%94%A8threadlocal">8.1 使用ThreadLocal</a></li>
+<li><a href="#82-%E4%BD%BF%E7%94%A8filter%E8%BF%87%E6%BB%A4%E5%99%A8">8.2 使用Filter过滤器</a></li>
+<li><a href="#83-%E5%B0%86%E6%89%80%E6%9C%89%E5%BC%82%E5%B8%B8%E9%83%BD%E7%BB%9F%E4%B8%80%E4%BA%A4%E7%BB%99-tomcat%E8%AE%A9-tomcat-%E5%B1%95%E7%A4%BA%E5%8F%8B%E5%A5%BD%E7%9A%84%E9%94%99%E8%AF%AF%E4%BF%A1%E6%81%AF%E9%A1%B5%E9%9D%A2">8.3 将所有异常都统一交给 Tomcat，让 Tomcat 展示友好的错误信息页面。</a></li>
+</ul>
+</li>
+</ul>
+<!-- tocstop -->
+
+<h2><span id="1-filter介绍">1. Filter介绍</span></h2><p>1、Filter 过滤器它是 JavaWeb 的三大组件之一。三大组件分别是：<strong>Servlet 程序、Listener 监听器、Filter 过滤器</strong><br>2、Filter 过滤器它是 JavaEE 的规范（接口）。<br>3、Filter 过滤器它的作用是：拦截请求，过滤响应。</p>
+<p>拦截请求常见的应用场景有：<br>1、权限检查<br>2、日记操作<br>3、事务管理<br>……等等</p>
+<h2><span id="2-filter-的初体验">2. Filter 的初体验</span></h2><p>要求：在你的 web 工程下，有一个 admin 目录。这个 admin 目录下的所有资源（html 页面、jpg 图片、jsp 文件、等等）都必<br>须是用户登录之后才允许访问。</p>
+<p>思考：根据之前我们学过内容。我们知道，用户登录之后都会把用户登录的信息保存到 Session 域中。所以要检查用户是否<br>登录，可以判断 Session 中否包含有用户登录的信息即可！！！</p>
+<figure class="highlight jsp"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs jsp">&lt;%<br>    Object user = session.getAttribute(<span class="hljs-string">&quot;user&quot;</span>);<br>    <span class="hljs-comment">// 如果等于 null，说明还没有登录</span><br>    <span class="hljs-keyword">if</span> (user == <span class="hljs-keyword">null</span>) &#123;<br>        request.getRequestDispatcher(<span class="hljs-string">&quot;/login.jsp&quot;</span>).forward(request,response);<br>        <span class="hljs-keyword">return</span>;<br>    &#125;<br>%&gt;<br></code></pre></div></td></tr></table></figure>
+
+<p>Filter 的工作流程图：</p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210816221453.png" srcset="/img/loading.gif" lazyload alt="image-20210816221446438"></p>
+<p>web.xml 中的配置：</p>
+<figure class="highlight xml"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs xml"><span class="hljs-comment">&lt;!--filter 标签用于配置一个 Filter 过滤器--&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">filter</span>&gt;</span><br>    <span class="hljs-comment">&lt;!--给 filter 起一个别名--&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">filter-name</span>&gt;</span>AdminFilter<span class="hljs-tag">&lt;/<span class="hljs-name">filter-name</span>&gt;</span><br>    <span class="hljs-comment">&lt;!--配置 filter 的全类名--&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">filter-class</span>&gt;</span>com.atguigu.filter.AdminFilter<span class="hljs-tag">&lt;/<span class="hljs-name">filter-class</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">filter</span>&gt;</span><br><span class="hljs-comment">&lt;!--filter-mapping 配置 Filter 过滤器的拦截路径--&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">filter-mapping</span>&gt;</span><br>    <span class="hljs-comment">&lt;!--filter-name 表示当前的拦截路径给哪个 filter使用--&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">filter-name</span>&gt;</span>AdminFilter<span class="hljs-tag">&lt;/<span class="hljs-name">filter-name</span>&gt;</span><br>	<span class="hljs-comment">&lt;!--url-pattern 配置拦截路径--&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">url-pattern</span>&gt;</span>/admin/*<span class="hljs-tag">&lt;/<span class="hljs-name">url-pattern</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">filter-mapping</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+
+<p><code>/admin/* 表示请求地址为：http://ip:port/工程路径/admin/*</code></p>
+<p>Filter 的代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AdminFilter</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">Filter</span> </span>&#123;<br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">    * doFilter 方法，专门用于拦截请求。可以做权限检查</span><br><span class="hljs-comment">    */</span><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">doFilter</span><span class="hljs-params">(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain</span></span><br><span class="hljs-params"><span class="hljs-function">    filterChain)</span> <span class="hljs-keyword">throws</span> IOException, ServletException </span>&#123;<br>        HttpServletRequest req = (HttpServletRequest) servletRequest;<br>        HttpServletResponse resp = (HttpServletResponse) servletResponse;<br>        <br>        User user = (User) req.getSession().getAttribute(<span class="hljs-string">&quot;user&quot;</span>);<br>        <span class="hljs-comment">// 如果等于 null，说明还没有登录</span><br>        <span class="hljs-keyword">if</span> (user == <span class="hljs-keyword">null</span>) &#123;<br>            req.getRequestDispatcher(<span class="hljs-string">&quot;/login.jsp&quot;</span>).forward(req,resp);<br>            <span class="hljs-keyword">return</span>;<br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            <span class="hljs-comment">// 让程序继续往下访问用户的目标资源</span><br>            filterChain.doFilter(servletRequest,servletResponse);<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>Filter 过滤器的使用步骤：<br>1、编写一个类去实现 Filter 接口<br>2、实现过滤方法 doFilter()<br>3、到 web.xml 中去配置 Filter 的拦截路径</p>
+<h3><span id="完整的用户登录">完整的用户登录</span></h3><p>login.jsp 页面 == 登录表单</p>
+<figure class="highlight jsp"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs jsp">这是登录页面。login.jsp 页面 &lt;br&gt;<br>&lt;form action=<span class="hljs-string">&quot;http://localhost:8080/15_filter/loginServlet&quot;</span> method=<span class="hljs-string">&quot;get&quot;</span>&gt;<br>    用户名：&lt;input type=<span class="hljs-string">&quot;text&quot;</span> name=<span class="hljs-string">&quot;username&quot;</span>/&gt; &lt;br&gt;<br>    密 码：&lt;input type=<span class="hljs-string">&quot;password&quot;</span> name=<span class="hljs-string">&quot;password&quot;</span>/&gt; &lt;br&gt;<br>    &lt;input type=<span class="hljs-string">&quot;submit&quot;</span> /&gt;<br>&lt;/form&gt;<br></code></pre></div></td></tr></table></figure>
+
+<p>LoginServlet 程序</p>
+<figure class="highlight java"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">LoginServlet</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">HttpServlet</span> </span>&#123;<br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title">doGet</span><span class="hljs-params">(HttpServletRequest req, HttpServletResponseresp)</span> <span class="hljs-keyword">throws</span> ServletException, IOException </span>&#123;<br>        resp.setContentType(<span class="hljs-string">&quot;text/html; charset=UTF-8&quot;</span>);<br>        String username = req.getParameter(<span class="hljs-string">&quot;username&quot;</span>);<br>        String password = req.getParameter(<span class="hljs-string">&quot;password&quot;</span>);<br>        <br>        <span class="hljs-keyword">if</span> (username.equals(<span class="hljs-string">&quot;wzg168&quot;</span>) &amp;&amp; password.equals(<span class="hljs-string">&quot;123456&quot;</span>)) &#123;<br>            req.getSession().setAttribute(<span class="hljs-string">&quot;user&quot;</span>,username);<br>            resp.getWriter().write(<span class="hljs-string">&quot;登录 成功！！！&quot;</span>);<br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>        	req.getRequestDispatcher(<span class="hljs-string">&quot;/login.jsp&quot;</span>).forward(req,resp);<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+
+
+<h2><span id="3-filter-的生命周期">3. Filter 的生命周期</span></h2><p>Filter 的生命周期包含几个方法<br>1、构造器方法</p>
+<p>2、init 初始化方法<br>    第 1，2 步，在 web 工程启动的时候执行（Filter 已经创建）</p>
+<p>3、doFilter 过滤方法<br>    第 3 步，每次拦截到请求，就会执行</p>
+<p>4、destroy 销毁<br>    第 4 步，停止 web 工程的时候，就会执行（停止 web 工程，也会销毁 Filter 过滤器）</p>
+<h2><span id="4-filterconfig-类">4. FilterConfig 类</span></h2><p>FilterConfig 类见名知义，它是 Filter 过滤器的配置文件类。<br>Tomcat 每次创建 Filter 的时候，也会同时创建一个 FilterConfig 类，这里包含了 Filter 配置文件的配置信息。</p>
+<p>FilterConfig 类的作用是获取 filter 过滤器的配置内容<br>1、获取 Filter 的名称 filter-name 的内容<br>2、获取在 Filter 中配置的 init-param 初始化参数<br>3、获取 ServletContext 对象</p>
+<p>java 代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs java"><span class="hljs-meta">@Override</span><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">init</span><span class="hljs-params">(FilterConfig filterConfig)</span> <span class="hljs-keyword">throws</span> ServletException </span>&#123;<br>    System.out.println(<span class="hljs-string">&quot;2.Filter 的 init(FilterConfig filterConfig)初始化&quot;</span>);<br>    <span class="hljs-comment">// 1、获取 Filter 的名称 filter-name 的内容</span><br>    System.out.println(<span class="hljs-string">&quot;filter-name 的值是：&quot;</span> + filterConfig.getFilterName());<br>    <span class="hljs-comment">// 2、获取在 web.xml 中配置的 init-param 初始化参数</span><br>    System.out.println(<span class="hljs-string">&quot;初始化参数 username 的值是：&quot;</span> + filterConfig.getInitParameter(<span class="hljs-string">&quot;username&quot;</span>));<br>    System.out.println(<span class="hljs-string">&quot;初始化参数 url 的值是：&quot;</span> + filterConfig.getInitParameter(<span class="hljs-string">&quot;url&quot;</span>));<br>    <span class="hljs-comment">// 3、获取 ServletContext 对象</span><br>    System.out.println(filterConfig.getServletContext());<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>web.xml 配置：</p>
+<figure class="highlight xml"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs xml"><span class="hljs-comment">&lt;!--filter 标签用于配置一个 Filter 过滤器--&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">filter</span>&gt;</span><br>    <span class="hljs-comment">&lt;!--给 filter 起一个别名--&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">filter-name</span>&gt;</span>AdminFilter<span class="hljs-tag">&lt;/<span class="hljs-name">filter-name</span>&gt;</span><br>    <span class="hljs-comment">&lt;!--配置 filter 的全类名--&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">filter-class</span>&gt;</span>com.atguigu.filter.AdminFilter<span class="hljs-tag">&lt;/<span class="hljs-name">filter-class</span>&gt;</span><br>    <br>    <span class="hljs-tag">&lt;<span class="hljs-name">init-param</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">param-name</span>&gt;</span>username<span class="hljs-tag">&lt;/<span class="hljs-name">param-name</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">param-value</span>&gt;</span>root<span class="hljs-tag">&lt;/<span class="hljs-name">param-value</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">init-param</span>&gt;</span><br>    <br>    <span class="hljs-tag">&lt;<span class="hljs-name">init-param</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">param-name</span>&gt;</span>url<span class="hljs-tag">&lt;/<span class="hljs-name">param-name</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">param-value</span>&gt;</span>jdbc:mysql://localhost3306/test<span class="hljs-tag">&lt;/<span class="hljs-name">param-value</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">init-param</span>&gt;</span><br>    <br><span class="hljs-tag">&lt;/<span class="hljs-name">filter</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+
+
+
+<h2><span id="5-filterchain-过滤器链">5. FilterChain 过滤器链</span></h2><p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210816222701.png" srcset="/img/loading.gif" lazyload alt="image-20210816222701388"></p>
+<p>过滤地址是Filter</p>
+<h2><span id="6-filter-的拦截路径">6. Filter 的拦截路径</span></h2><h3><span id="精确匹配">–精确匹配</span></h3><figure class="highlight xml"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">url-pattern</span>&gt;</span>/target.jsp<span class="hljs-tag">&lt;/<span class="hljs-name">url-pattern</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+
+<p>以上配置的路径，表示请求地址必须为：<a href="http://ip:port/工程路径/target.jsp">http://ip:port/工程路径/target.jsp</a></p>
+<h3><span id="目录匹配">–目录匹配</span></h3><figure class="highlight xml"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">url-pattern</span>&gt;</span>/admin/*<span class="hljs-tag">&lt;/<span class="hljs-name">url-pattern</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+
+<p>以上配置的路径，表示请求地址必须为：<a href="http://ip:port/工程路径/admin/">http://ip:port/工程路径/admin/</a>*</p>
+<h3><span id="后缀名匹配">–后缀名匹配</span></h3><figure class="highlight xml"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">url-pattern</span>&gt;</span>*.html<span class="hljs-tag">&lt;/<span class="hljs-name">url-pattern</span>&gt;</span><br>以上配置的路径，表示请求地址必须以.html 结尾才会拦截到<br><span class="hljs-tag">&lt;<span class="hljs-name">url-pattern</span>&gt;</span>*.do<span class="hljs-tag">&lt;/<span class="hljs-name">url-pattern</span>&gt;</span><br>以上配置的路径，表示请求地址必须以.do 结尾才会拦截到<br><span class="hljs-tag">&lt;<span class="hljs-name">url-pattern</span>&gt;</span>*.action<span class="hljs-tag">&lt;/<span class="hljs-name">url-pattern</span>&gt;</span><br>以上配置的路径，表示请求地址必须以.action 结尾才会拦截到<br></code></pre></div></td></tr></table></figure>
+
+<p>Filter 过滤器它只关心请求的地址是否匹配，不关心请求的资源是否存在！！！</p>
+<h2><span id="7-threadlocal-的使用">7. ThreadLocal 的使用</span></h2><p>ThreadLocal 的作用，它可以解决多线程的数据安全问题。</p>
+<p>ThreadLocal 它可以给当前线程关联一个数据（可以是普通变量，可以是对象，也可以是数组，集合）</p>
+<p>ThreadLocal 的特点：</p>
+<ol>
+<li>  ThreadLocal 可以为当前线程关联一个数据。（它可以像 Map 一样存取数据，key 为当前线程）</li>
+<li>  每一个 ThreadLocal 对象，只能为当前线程关联一个数据，如果要为当前线程关联多个数据，就需要使用多个ThreadLocal 对象实例。</li>
+<li>  每个 ThreadLocal 对象实例定义的时候，一般都是 static 类型</li>
+<li>  ThreadLocal 中保存数据，在线程销毁后。会由 JVM 虚拟自动释放。</li>
+</ol>
+<p>原理：</p>
+<p>ThreadLocal本质上就是一个map来关联，key是当前线程的线程名（Thread.currentThread().getName()），value是自己存的数据。</p>
+<p>因为key已经帮你写好是线程名了，所以使用的时候就不需要key的参数了。</p>
+<p>测试类：</p>
+<figure class="highlight java"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ThreadLocalTest</span> </span>&#123;<br>	<span class="hljs-comment">// public static Map&lt;String,Object&gt; data = new Hashtable&lt;String,Object&gt;();</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> ThreadLocal&lt;Object&gt; threadLocal = <span class="hljs-keyword">new</span> ThreadLocal&lt;Object&gt;();<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> Random random = <span class="hljs-keyword">new</span> Random();<br><br>	<span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Task</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">Runnable</span> </span>&#123;<br>        <span class="hljs-meta">@Override</span> <br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">run</span><span class="hljs-params">()</span> </span>&#123;<br>            <span class="hljs-comment">// 在 Run 方法中，随机生成一个变量（线程要关联的数据），然后以当前线程名为 key 保存到 map 中</span><br>            Integer i = random.nextInt(<span class="hljs-number">1000</span>);<br>            <span class="hljs-comment">// 获取当前线程名</span><br>            String name = Thread.currentThread().getName();<br>            System.out.println(<span class="hljs-string">&quot;线程[&quot;</span>+name+<span class="hljs-string">&quot;]生成的随机数是：&quot;</span> + i);<br>            <span class="hljs-comment">// data.put(name,i);</span><br>            threadLocal.set(i);<br>            <span class="hljs-keyword">try</span> &#123;<br>            	Thread.sleep(<span class="hljs-number">3000</span>);<br>            &#125; <span class="hljs-keyword">catch</span> (InterruptedException e) &#123;<br>            	e.printStackTrace();<br>            &#125;<br>            <span class="hljs-keyword">new</span> OrderService().createOrder();<br>            <span class="hljs-comment">// 在 Run 方法结束之前，以当前线程名获取出数据并打印。查看是否可以取出操作</span><br>            <span class="hljs-comment">// Object o = data.get(name);</span><br>            Object o = threadLocal.get();<br>            System.out.println(<span class="hljs-string">&quot;在线程[&quot;</span>+name+<span class="hljs-string">&quot;]快结束时取出关联的数据是：&quot;</span> + o);<br>		&#125;<br>	&#125;<br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">3</span>; i++)&#123;<br>            <span class="hljs-keyword">new</span> Thread(<span class="hljs-keyword">new</span> Task()).start();<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+
+
+<h2><span id="8-使用-filter-和-threadlocal-组合管理事务">8. 使用 Filter 和 ThreadLocal 组合管理事务</span></h2><h3><span id="81-使用threadlocal">8.1 使用ThreadLocal</span></h3><p>使用事务管理来包裹订单功能，因为订单功能很明显就是要么全做要么全不做的需要事务管理的功能。</p>
+<p>要使用事务管理，就需要所有的操作都使用同一个Connection对象，所以我们可以用ThreadLocal来管理。</p>
+<p>ThreadLocal需要使用同一个线程，显然没有问题。</p>
+<p>注意事务管理包裹的是最外层Servlet层的内容，里层的错误一层一层往外抛，统一管理。</p>
+<p>代码改动：</p>
+<p>JdbcUtils里改动，添加ThreadLocal来绑定线程。</p>
+<p>这样有三种操作：</p>
+<ol>
+<li>  获取连接：如果ThreadLocal对象里有该线程的连接，就返回；否则new一个线程，绑定线程Local，然后返回。</li>
+<li>  提交事务并关闭：提交事务，获取当前线程的连接，给他关闭，记得解绑。</li>
+<li>  回滚事务并关闭：回滚事务，获取当前线程的连接，给他关闭，记得解绑。</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.wangpeng.utils;<br><br><span class="hljs-keyword">import</span> com.alibaba.druid.pool.DruidDataSource;<br><span class="hljs-keyword">import</span> com.alibaba.druid.pool.DruidDataSourceFactory;<br><br><span class="hljs-keyword">import</span> java.io.InputStream;<br><span class="hljs-keyword">import</span> java.sql.Connection;<br><span class="hljs-keyword">import</span> java.sql.SQLException;<br><span class="hljs-keyword">import</span> java.util.Properties;<br><br><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">JdbcUtils</span> </span>&#123;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> DruidDataSource dataSource;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> ThreadLocal&lt;Connection&gt; conns = <span class="hljs-keyword">new</span> ThreadLocal&lt;Connection&gt;();<br><br>    <span class="hljs-keyword">static</span> &#123;<br>        <span class="hljs-keyword">try</span> &#123;<br>            Properties properties = <span class="hljs-keyword">new</span> Properties();<br>            <span class="hljs-comment">//读取jdbc.properties属性配置文件</span><br>            InputStream inputStream = JdbcUtils.class.getClassLoader().getResourceAsStream(<span class="hljs-string">&quot;jdbc.properties&quot;</span>);<br>            <span class="hljs-comment">//从流中加载数据</span><br>            properties.load(inputStream);<br>            dataSource = (DruidDataSource) DruidDataSourceFactory.createDataSource(properties);<br>        &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>            e.printStackTrace();<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 获取数据库连接池中的连接</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> 如果返回null，说明获取连接失败，有值就是获取连接成功</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> Connection <span class="hljs-title">getConnection</span><span class="hljs-params">()</span> </span>&#123;<br>        Connection conn = conns.get();<br>        <span class="hljs-keyword">if</span>(conn == <span class="hljs-keyword">null</span>) &#123;<br>            <span class="hljs-keyword">try</span> &#123;<br>                conn = dataSource.getConnection();  <span class="hljs-comment">//从数据库连接池中获取连接</span><br>                conns.set(conn);    <span class="hljs-comment">//保存到ThreadLocal对象中，供后买你的jdbc操作使用</span><br>                conn.setAutoCommit(<span class="hljs-keyword">false</span>);  <span class="hljs-comment">//设置为手动管理事务</span><br>            &#125; <span class="hljs-keyword">catch</span> (SQLException throwables) &#123;<br>                throwables.printStackTrace();<br>            &#125;<br>        &#125;<br>        <span class="hljs-keyword">return</span> conn;<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 提交事务并关闭释放连接</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">commitAndClose</span><span class="hljs-params">()</span> </span>&#123;<br>        Connection connection = conns.get();<br>        <span class="hljs-keyword">if</span>(connection != <span class="hljs-keyword">null</span>) &#123;    <span class="hljs-comment">//如果不等于null，说明之前使用过连接，操作过数据库</span><br>            <span class="hljs-keyword">try</span> &#123;<br>                connection.commit();    <span class="hljs-comment">//提交事务</span><br>            &#125; <span class="hljs-keyword">catch</span> (SQLException throwables) &#123;<br>                throwables.printStackTrace();<br>            &#125; <span class="hljs-keyword">finally</span> &#123;<br>                <span class="hljs-keyword">try</span> &#123;<br>                    connection.close(); <span class="hljs-comment">//关闭连接，释放资源</span><br>                &#125; <span class="hljs-keyword">catch</span> (SQLException throwables) &#123;<br>                    throwables.printStackTrace();<br>                &#125;<br>            &#125;<br>        &#125;<br>        conns.remove(); <span class="hljs-comment">//ThradLocal的解绑（因为Tomcat服务器底层使用了线程池技术）</span><br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 回滚事务并关闭释放连接</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">rollbackAndClose</span><span class="hljs-params">()</span> </span>&#123;<br>        Connection connection = conns.get();<br>        <span class="hljs-keyword">if</span>(connection != <span class="hljs-keyword">null</span>) &#123;    <span class="hljs-comment">//如果不等于null，说明之前使用过连接，操作过数据库</span><br>            <span class="hljs-keyword">try</span> &#123;<br>                connection.rollback();    <span class="hljs-comment">//回滚事务</span><br>            &#125; <span class="hljs-keyword">catch</span> (SQLException throwables) &#123;<br>                throwables.printStackTrace();<br>            &#125; <span class="hljs-keyword">finally</span> &#123;<br>                <span class="hljs-keyword">try</span> &#123;<br>                    connection.close(); <span class="hljs-comment">//关闭连接，释放资源</span><br>                &#125; <span class="hljs-keyword">catch</span> (SQLException throwables) &#123;<br>                    throwables.printStackTrace();<br>                &#125;<br>            &#125;<br>        &#125;<br>        conns.remove(); <span class="hljs-comment">//ThradLocal的解绑，否则就会出错（因为Tomcat服务器底层使用了线程池技术）</span><br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 关闭连接，放回数据库连接池</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> conn</span><br><span class="hljs-comment">     */</span><br><span class="hljs-comment">/*    public static void close(Connection conn) &#123;</span><br><span class="hljs-comment">        if(conn != null) &#123;</span><br><span class="hljs-comment">            try &#123;</span><br><span class="hljs-comment">                conn.close();</span><br><span class="hljs-comment">            &#125; catch (SQLException throwables) &#123;</span><br><span class="hljs-comment">                throwables.printStackTrace();</span><br><span class="hljs-comment">            &#125;</span><br><span class="hljs-comment">        &#125;</span><br><span class="hljs-comment">    &#125;*/</span><br><br>&#125;<br><br></code></pre></div></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.wangpeng.dao.impl;<br><br><span class="hljs-keyword">import</span> com.wangpeng.pojo.User;<br><span class="hljs-keyword">import</span> com.wangpeng.utils.JdbcUtils;<br><span class="hljs-keyword">import</span> org.apache.commons.dbutils.QueryRunner;<br><span class="hljs-keyword">import</span> org.apache.commons.dbutils.handlers.BeanHandler;<br><span class="hljs-keyword">import</span> org.apache.commons.dbutils.handlers.BeanListHandler;<br><span class="hljs-keyword">import</span> org.apache.commons.dbutils.handlers.ScalarHandler;<br><br><span class="hljs-keyword">import</span> java.sql.Connection;<br><span class="hljs-keyword">import</span> java.sql.SQLException;<br><span class="hljs-keyword">import</span> java.util.List;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">abstract</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BaseDao</span> </span>&#123;<br>    <span class="hljs-comment">//使用DbUtils操作数据库</span><br>    <span class="hljs-keyword">private</span> QueryRunner queryRunner = <span class="hljs-keyword">new</span> QueryRunner();<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * update()方法用来执行：Insert\Update\Delete语句</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> 如果返回-1，说明执行失败，返回其他表示影响的行数</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">update</span><span class="hljs-params">(String sql, Object ... args)</span> </span>&#123;<br>        Connection conn = JdbcUtils.getConnection();<br>        <span class="hljs-keyword">try</span> &#123;<br>            <span class="hljs-keyword">return</span> queryRunner.update(conn,sql,args);<br>        &#125; <span class="hljs-keyword">catch</span> (SQLException throwables) &#123;<br>            throwables.printStackTrace();<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> RuntimeException(throwables);<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 查询返回一个javaBean的sql语句</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> type 返回的对象类型</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> sql 执行的sql语句</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> args sql对应的参数值</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> &lt;T&gt; 返回的类型的泛型</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span></span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> &lt;T&gt;<span class="hljs-function">T <span class="hljs-title">queryForOne</span><span class="hljs-params">(Class&lt;T&gt; type, String sql, Object ... args)</span> </span>&#123;<br>        Connection conn = JdbcUtils.getConnection();<br>        <span class="hljs-keyword">try</span> &#123;<br>            <span class="hljs-keyword">return</span> queryRunner.query(conn,sql, <span class="hljs-keyword">new</span> BeanHandler&lt;T&gt;(type), args);<br>        &#125; <span class="hljs-keyword">catch</span> (SQLException throwables) &#123;<br>            throwables.printStackTrace();<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> RuntimeException(throwables);<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 查询返回多个javaBean的sql语句</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> type 返回的对象类型</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> sql 执行的sql语句</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> args sql对应的参数值</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> &lt;T&gt; 返回的类型的泛型</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span></span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> &lt;T&gt; <span class="hljs-function">List&lt;T&gt; <span class="hljs-title">queryForList</span><span class="hljs-params">(Class&lt;T&gt; type, String sql, Object ... args)</span> </span>&#123;<br>        Connection conn = JdbcUtils.getConnection();<br>        <span class="hljs-keyword">try</span> &#123;<br>            <span class="hljs-keyword">return</span> queryRunner.query(conn, sql, <span class="hljs-keyword">new</span> BeanListHandler&lt;T&gt;(type), args);<br>        &#125; <span class="hljs-keyword">catch</span> (SQLException throwables) &#123;<br>            throwables.printStackTrace();<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> RuntimeException(throwables);<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 执行返回一行一列的sql语句</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> sql 执行的sql语句</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> args sql对应的参数值</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span></span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> Object <span class="hljs-title">queryForSingleValue</span><span class="hljs-params">(String sql, Object ... args)</span> </span>&#123;<br>        Connection conn = JdbcUtils.getConnection();<br>        <span class="hljs-keyword">try</span> &#123;<br>            <span class="hljs-keyword">return</span> queryRunner.query(conn, sql, <span class="hljs-keyword">new</span> ScalarHandler(), args);<br>        &#125; <span class="hljs-keyword">catch</span> (SQLException throwables) &#123;<br>            throwables.printStackTrace();<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> RuntimeException(throwables);<br>        &#125;<br>    &#125;<br><br>&#125;<br><br></code></pre></div></td></tr></table></figure>
+
+<p>BaseDao中所有的数据库操作都不能关闭连接，并且产生的异常需要往外抛。</p>
+<figure class="highlight java"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.wangpeng.dao.impl;<br><br><span class="hljs-keyword">import</span> com.wangpeng.pojo.User;<br><span class="hljs-keyword">import</span> com.wangpeng.utils.JdbcUtils;<br><span class="hljs-keyword">import</span> org.apache.commons.dbutils.QueryRunner;<br><span class="hljs-keyword">import</span> org.apache.commons.dbutils.handlers.BeanHandler;<br><span class="hljs-keyword">import</span> org.apache.commons.dbutils.handlers.BeanListHandler;<br><span class="hljs-keyword">import</span> org.apache.commons.dbutils.handlers.ScalarHandler;<br><br><span class="hljs-keyword">import</span> java.sql.Connection;<br><span class="hljs-keyword">import</span> java.sql.SQLException;<br><span class="hljs-keyword">import</span> java.util.List;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">abstract</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BaseDao</span> </span>&#123;<br>    <span class="hljs-comment">//使用DbUtils操作数据库</span><br>    <span class="hljs-keyword">private</span> QueryRunner queryRunner = <span class="hljs-keyword">new</span> QueryRunner();<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * update()方法用来执行：Insert\Update\Delete语句</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> 如果返回-1，说明执行失败，返回其他表示影响的行数</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">update</span><span class="hljs-params">(String sql, Object ... args)</span> </span>&#123;<br>        Connection conn = JdbcUtils.getConnection();<br>        <span class="hljs-keyword">try</span> &#123;<br>            <span class="hljs-keyword">return</span> queryRunner.update(conn,sql,args);<br>        &#125; <span class="hljs-keyword">catch</span> (SQLException throwables) &#123;<br>            throwables.printStackTrace();<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> RuntimeException(throwables);<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 查询返回一个javaBean的sql语句</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> type 返回的对象类型</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> sql 执行的sql语句</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> args sql对应的参数值</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> &lt;T&gt; 返回的类型的泛型</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span></span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> &lt;T&gt;<span class="hljs-function">T <span class="hljs-title">queryForOne</span><span class="hljs-params">(Class&lt;T&gt; type, String sql, Object ... args)</span> </span>&#123;<br>        Connection conn = JdbcUtils.getConnection();<br>        <span class="hljs-keyword">try</span> &#123;<br>            <span class="hljs-keyword">return</span> queryRunner.query(conn,sql, <span class="hljs-keyword">new</span> BeanHandler&lt;T&gt;(type), args);<br>        &#125; <span class="hljs-keyword">catch</span> (SQLException throwables) &#123;<br>            throwables.printStackTrace();<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> RuntimeException(throwables);<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 查询返回多个javaBean的sql语句</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> type 返回的对象类型</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> sql 执行的sql语句</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> args sql对应的参数值</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> &lt;T&gt; 返回的类型的泛型</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span></span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> &lt;T&gt; <span class="hljs-function">List&lt;T&gt; <span class="hljs-title">queryForList</span><span class="hljs-params">(Class&lt;T&gt; type, String sql, Object ... args)</span> </span>&#123;<br>        Connection conn = JdbcUtils.getConnection();<br>        <span class="hljs-keyword">try</span> &#123;<br>            <span class="hljs-keyword">return</span> queryRunner.query(conn, sql, <span class="hljs-keyword">new</span> BeanListHandler&lt;T&gt;(type), args);<br>        &#125; <span class="hljs-keyword">catch</span> (SQLException throwables) &#123;<br>            throwables.printStackTrace();<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> RuntimeException(throwables);<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 执行返回一行一列的sql语句</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> sql 执行的sql语句</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> args sql对应的参数值</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span></span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> Object <span class="hljs-title">queryForSingleValue</span><span class="hljs-params">(String sql, Object ... args)</span> </span>&#123;<br>        Connection conn = JdbcUtils.getConnection();<br>        <span class="hljs-keyword">try</span> &#123;<br>            <span class="hljs-keyword">return</span> queryRunner.query(conn, sql, <span class="hljs-keyword">new</span> ScalarHandler(), args);<br>        &#125; <span class="hljs-keyword">catch</span> (SQLException throwables) &#123;<br>            throwables.printStackTrace();<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> RuntimeException(throwables);<br>        &#125;<br>    &#125;<br><br>&#125;<br><br></code></pre></div></td></tr></table></figure>
+
+<p>在Sevlet中包裹相关代码。</p>
+<h3><span id="82-使用filter过滤器">8.2 使用Filter过滤器</span></h3><p>对相关的Servlet给他加一层过滤器，自定义Filter类中的doFilter方法调用filterChain.doFilter(servletRequest,servletResponse);</p>
+<p>也就间接调用了Servlet中的方法。这样有问题都会抛到Filter类中去处理，我们就在Filter中给他提交事务和回滚事务。</p>
+<figure class="highlight java"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.wangpeng.dao.filter;<br><br><span class="hljs-keyword">import</span> com.wangpeng.utils.JdbcUtils;<br><br><span class="hljs-keyword">import</span> javax.servlet.*;<br><span class="hljs-keyword">import</span> java.io.IOException;<br><br><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TransactionFilter</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">Filter</span> </span>&#123;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">init</span><span class="hljs-params">(FilterConfig filterConfig)</span> <span class="hljs-keyword">throws</span> ServletException </span>&#123;&#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">doFilter</span><span class="hljs-params">(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)</span> <span class="hljs-keyword">throws</span> IOException, ServletException </span>&#123;<br>        <span class="hljs-keyword">try</span> &#123;<br>            filterChain.doFilter(servletRequest,servletResponse);<br>            JdbcUtils.commitAndClose(); <span class="hljs-comment">//提交事务</span><br>        &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>            JdbcUtils.rollbackAndClose();   <span class="hljs-comment">//回滚事务</span><br>            e.printStackTrace();<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> RuntimeException(e);  <span class="hljs-comment">//把异常抛给Tomcat服务器</span><br>        &#125;<br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">destroy</span><span class="hljs-params">()</span> </span>&#123;&#125;<br>&#125;<br><br></code></pre></div></td></tr></table></figure>
+
+<p>注意把异常抛给Tomcat服务器，我们可以在8.3做错误提示的功能。</p>
+<p>xml中的配置</p>
+<figure class="highlight xml"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">filter</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">filter-name</span>&gt;</span>TransactionFilter<span class="hljs-tag">&lt;/<span class="hljs-name">filter-name</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">filter-class</span>&gt;</span>com.wangpeng.dao.filter.TransactionFilter<span class="hljs-tag">&lt;/<span class="hljs-name">filter-class</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">filter</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">filter-mapping</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">filter-name</span>&gt;</span>TransactionFilter<span class="hljs-tag">&lt;/<span class="hljs-name">filter-name</span>&gt;</span><br>    <span class="hljs-comment">&lt;!--/*表示当前工程下所有请求--&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">url-pattern</span>&gt;</span>/*<span class="hljs-tag">&lt;/<span class="hljs-name">url-pattern</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">filter-mapping</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+
+<p>注意BaseServlet的异常也需要往外抛</p>
+<figure class="highlight java"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.wangpeng.web;<br><br><span class="hljs-keyword">import</span> javax.servlet.ServletException;<br><span class="hljs-keyword">import</span> javax.servlet.http.HttpServlet;<br><span class="hljs-keyword">import</span> javax.servlet.http.HttpServletRequest;<br><span class="hljs-keyword">import</span> javax.servlet.http.HttpServletResponse;<br><span class="hljs-keyword">import</span> java.io.IOException;<br><span class="hljs-keyword">import</span> java.lang.reflect.Method;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">abstract</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BaseServlet</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">HttpServlet</span> </span>&#123;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title">doGet</span><span class="hljs-params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="hljs-keyword">throws</span> ServletException, IOException </span>&#123;<br>        doPost(req,resp);<br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title">doPost</span><span class="hljs-params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="hljs-keyword">throws</span> ServletException, IOException </span>&#123;<br>        req.setCharacterEncoding(<span class="hljs-string">&quot;UTF-8&quot;</span>);<br>        resp.setContentType(<span class="hljs-string">&quot;text/html;charset=UTF-8&quot;</span>);<br>        String action = req.getParameter(<span class="hljs-string">&quot;action&quot;</span>);<br>        <span class="hljs-comment">//通过反射调用对应方法</span><br>        <span class="hljs-keyword">try</span> &#123;<br>            Method method = <span class="hljs-keyword">this</span>.getClass().getDeclaredMethod(action, HttpServletRequest.class, HttpServletResponse.class);<br>            method.invoke(<span class="hljs-keyword">this</span>, req, resp);<br>        &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>            e.printStackTrace();<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> RuntimeException(e);  <span class="hljs-comment">//把异常抛给Filter过滤器</span><br>        &#125;<br>    &#125;<br>&#125;<br><br></code></pre></div></td></tr></table></figure>
+
+<p>因为Filter、BaseServlet和OrderServlet的内外层关系是。</p>
+<p>Filter–&gt;BaseServlet–&gt;OrderServlet</p>
+<h3><span id="83-将所有异常都统一交给-tomcat让-tomcat-展示友好的错误信息页面">8.3 将所有异常都统一交给 Tomcat，让 Tomcat 展示友好的错误信息页面。</span></h3><figure class="highlight xml"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs xml"><span class="hljs-comment">&lt;!--服务器出错之后，自动跳转的页面--&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">error-page</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">error-code</span>&gt;</span>500<span class="hljs-tag">&lt;/<span class="hljs-name">error-code</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">location</span>&gt;</span>/pages/error/error500.jsp<span class="hljs-tag">&lt;/<span class="hljs-name">location</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">error-page</span>&gt;</span><br><br><span class="hljs-tag">&lt;<span class="hljs-name">error-page</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">error-code</span>&gt;</span>404<span class="hljs-tag">&lt;/<span class="hljs-name">error-code</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">location</span>&gt;</span>/pages/error/error404.jsp<span class="hljs-tag">&lt;/<span class="hljs-name">location</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">error-page</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Java%E5%90%8E%E7%AB%AF/">Java后端</a>
+                    
+                      <a class="hover-with-bg" href="/categories/Java%E5%90%8E%E7%AB%AF/JavaWeb/">JavaWeb</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Java/">Java</a>
+                    
+                      <a class="hover-with-bg" href="/tags/JavaWeb/">JavaWeb</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Filter/">Filter</a>
+                    
+                      <a class="hover-with-bg" href="/tags/ThreadLocal/">ThreadLocal</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/07/20/JavaWeb-06-Servlet/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">JavaWeb-06-Servlet</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/07/20/JavaWeb-03-Jquery/">
+                        <span class="hidden-mobile">JavaWeb-03-Jquery</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"kKHw5YzfOlny9jMQJEjDkSBi-9Nh9j0Va","appKey":"3N5RE5Sl5hj96cTuho5YEMnY","path":"window.location.pathname","placeholder":"小伙伴们快来评论！","avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":true,"recordIP":true,"serverURLs":"https://kkhw5yzf.lc-cn-e1-shared.com","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          Fluid.plugins.initFancyBox('#valine .vcontent img:not(.vemoji)');
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+    <span>Copyright© 2021 huanfenz</span>
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        loader: {
+          load: ['ui/lazy']
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
