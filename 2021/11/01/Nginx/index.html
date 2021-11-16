@@ -1,0 +1,922 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210927131547.jpg">
+  <link rel="icon" href="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210927131547.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="该博客使用Hexo+Github创建">
+  <meta name="author" content="huanfenz">
+  <meta name="keywords" content="">
+  <meta name="description" content="Nginx   第1章 Nginx简介 概述 Nginx 作为 web 服务器 正向代理 反向代理 负载均衡 动静分离   第2章 Nginx的安装 进入 nginx 官网，下载 安装 nginx 1、安装pcre 2、安装openssl 、zlib 、 gcc 3、安装 nginx   运行Nginx   第3章 Nginx常用命令和配置文件 Nginx 常用命令 Nginx 的配置文件   第">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nginx">
+<meta property="og:url" content="https://huanfenz.top/2021/11/01/Nginx/index.html">
+<meta property="og:site_name" content="huanfenz的博客">
+<meta property="og:description" content="Nginx   第1章 Nginx简介 概述 Nginx 作为 web 服务器 正向代理 反向代理 负载均衡 动静分离   第2章 Nginx的安装 进入 nginx 官网，下载 安装 nginx 1、安装pcre 2、安装openssl 、zlib 、 gcc 3、安装 nginx   运行Nginx   第3章 Nginx常用命令和配置文件 Nginx 常用命令 Nginx 的配置文件   第">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110291454506.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110291454999.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110291500911.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110291502398.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110291529928.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110291531602.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110291541202.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110291542962.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110291543138.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110291544372.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110291544713.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110291609577.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110291609840.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110291609910.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110291626488.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110291628148.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110291952500.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110291929293.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110291931408.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110291906348.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110291932254.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110291933230.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110292255849.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110292257304.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110292301403.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110292301136.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110301514380.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110301534403.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110301533758.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110301518664.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110301532656.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110301531321.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110301531278.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110302234683.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110310059027.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110310059678.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110302307211.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110310128795.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110310133439.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110310107790.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110310058583.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110311315958.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110311315379.png">
+<meta property="og:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110311315447.png">
+<meta property="article:published_time" content="2021-11-01T15:00:01.000Z">
+<meta property="article:modified_time" content="2021-11-16T06:45:56.546Z">
+<meta property="article:author" content="huanfenz">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="服务器">
+<meta property="article:tag" content="负载均衡">
+<meta property="article:tag" content="反向代理">
+<meta property="article:tag" content="动静分离">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110291454506.png">
+  
+  <title>Nginx - huanfenz的博客</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/obsidian.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"huanfenz.top","root":"/","version":"1.8.12","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4","collapseDepth":2},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname"}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>huanfenz&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210927141514.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="Nginx">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-11-01 23:00" pubdate>
+        2021年11月1日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      9.3k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      29 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Nginx</h1>
+            
+            <div class="markdown-body">
+              <h1><span id="nginx">Nginx</span></h1><!-- toc -->
+
+<ul>
+<li><a href="#%E7%AC%AC1%E7%AB%A0-nginx%E7%AE%80%E4%BB%8B">第1章 Nginx简介</a><ul>
+<li><a href="#%E6%A6%82%E8%BF%B0">概述</a></li>
+<li><a href="#nginx-%E4%BD%9C%E4%B8%BA-web-%E6%9C%8D%E5%8A%A1%E5%99%A8">Nginx 作为 web 服务器</a></li>
+<li><a href="#%E6%AD%A3%E5%90%91%E4%BB%A3%E7%90%86">正向代理</a></li>
+<li><a href="#%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86">反向代理</a></li>
+<li><a href="#%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1">负载均衡</a></li>
+<li><a href="#%E5%8A%A8%E9%9D%99%E5%88%86%E7%A6%BB">动静分离</a></li>
+</ul>
+</li>
+<li><a href="#%E7%AC%AC2%E7%AB%A0-nginx%E7%9A%84%E5%AE%89%E8%A3%85">第2章 Nginx的安装</a><ul>
+<li><a href="#%E8%BF%9B%E5%85%A5-nginx-%E5%AE%98%E7%BD%91%E4%B8%8B%E8%BD%BD">进入 nginx 官网，下载</a></li>
+<li><a href="#%E5%AE%89%E8%A3%85-nginx">安装 nginx</a><ul>
+<li><a href="#1-%E5%AE%89%E8%A3%85pcre">1、安装pcre</a></li>
+<li><a href="#2-%E5%AE%89%E8%A3%85openssl-zlib-gcc">2、安装openssl 、zlib 、 gcc</a></li>
+<li><a href="#3-%E5%AE%89%E8%A3%85-nginx">3、安装 nginx</a></li>
+</ul>
+</li>
+<li><a href="#%E8%BF%90%E8%A1%8Cnginx">运行Nginx</a></li>
+</ul>
+</li>
+<li><a href="#%E7%AC%AC3%E7%AB%A0-nginx%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%92%8C%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6">第3章 Nginx常用命令和配置文件</a><ul>
+<li><a href="#nginx-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4">Nginx 常用命令</a></li>
+<li><a href="#nginx-%E7%9A%84%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6">Nginx 的配置文件</a></li>
+</ul>
+</li>
+<li><a href="#%E7%AC%AC4%E7%AB%A0-nginx-%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86">第4章 Nginx 反向代理</a><ul>
+<li><a href="#nginx-%E9%85%8D%E7%BD%AE%E5%AE%9E%E4%BE%8B-%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E5%AE%9E%E4%BE%8B-1">Nginx 配置实例-反向代理实例 1</a><ul>
+<li><a href="#1-%E5%AE%9E%E7%8E%B0%E6%95%88%E6%9E%9C">1、实现效果</a></li>
+<li><a href="#2-%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C">2、准备工作</a></li>
+<li><a href="#3-%E8%AE%BF%E9%97%AE%E8%BF%87%E7%A8%8B%E7%9A%84%E5%88%86%E6%9E%90">3、访问过程的分析</a></li>
+<li><a href="#%E7%AC%AC%E4%B8%80%E6%AD%A5-%E5%9C%A8windows-%E7%B3%BB%E7%BB%9F%E7%9A%84-host-%E6%96%87%E4%BB%B6%E8%BF%9B%E8%A1%8C%E5%9F%9F%E5%90%8D%E5%92%8C-ip-%E5%AF%B9%E5%BA%94%E5%85%B3%E7%B3%BB%E7%9A%84%E9%85%8D%E7%BD%AE">第一步 在windows 系统的 host 文件进行域名和 ip 对应关系的配置</a></li>
+<li><a href="#5-%E6%9C%80%E7%BB%88%E6%B5%8B%E8%AF%95">5、最终测试</a></li>
+</ul>
+</li>
+<li><a href="#nginx-%E9%85%8D%E7%BD%AE%E5%AE%9E%E4%BE%8B-%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E5%AE%9E%E4%BE%8B-2">Nginx 配置实例-反向代理实例 2</a><ul>
+<li><a href="#1-%E5%AE%9E%E7%8E%B0%E6%95%88%E6%9E%9C-1">1、实现效果</a></li>
+<li><a href="#2-%E5%87%86%E5%A4%872%E4%B8%AAtomcat%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%80%E4%B8%AA8080%E7%AB%AF%E5%8F%A3%E4%B8%80%E4%B8%AA8081%E7%AB%AF%E5%8F%A3">2、准备2个tomcat服务器，一个8080端口，一个8081端口</a></li>
+<li><a href="#3-%E6%89%BE%E5%88%B0ngix%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%BF%9B%E8%A1%8C%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E9%85%8D%E7%BD%AE">3、找到ngix配置文件，进行反向代理配置</a></li>
+<li><a href="#4-%E8%BF%90%E8%A1%8C%E6%B5%8B%E8%AF%95">4、运行测试</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E7%AC%AC5%E7%AB%A0-nginx-%E5%9D%87%E8%A1%A1%E8%B4%9F%E8%BD%BD">第5章 Nginx 均衡负载</a><ul>
+<li><a href="#nginx-%E9%85%8D%E7%BD%AE%E5%AE%9E%E4%BE%8B-%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1">Nginx 配置实例-负载均衡</a><ul>
+<li><a href="#1-%E5%AE%9E%E7%8E%B0%E6%95%88%E6%9E%9C-2">1、实现效果</a></li>
+<li><a href="#2-%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C-1">2、准备工作</a></li>
+<li><a href="#3-%E5%9C%A8-nginx-%E7%9A%84%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E4%B8%AD%E8%BF%9B%E8%A1%8C%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%9A%84%E9%85%8D%E7%BD%AE">3、在 nginx 的配置文件中进行负载均衡的配置</a></li>
+<li><a href="#4-%E6%B5%8B%E8%AF%95%E8%BF%90%E8%A1%8C">4、测试运行</a></li>
+</ul>
+</li>
+<li><a href="#nginx-%E5%88%86%E9%85%8D%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AD%96%E7%95%A5">nginx 分配服务器策略</a><ul>
+<li><a href="#%E7%AC%AC%E4%B8%80%E7%A7%8D%E8%BD%AE%E8%AF%A2%E9%BB%98%E8%AE%A4">第一种：轮询（默认）</a></li>
+<li><a href="#%E7%AC%AC%E4%BA%8C%E7%A7%8Dweight">第二种：weight</a></li>
+<li><a href="#%E7%AC%AC%E4%B8%89%E7%A7%8Dip_hash">第三种：ip_hash</a></li>
+<li><a href="#%E7%AC%AC%E5%9B%9B%E7%A7%8Dfair%E7%AC%AC%E4%B8%89%E6%96%B9">第四种：fair（第三方）</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E7%AC%AC6%E7%AB%A0-nginx-%E5%8A%A8%E9%9D%99%E5%88%86%E7%A6%BB">第6章 Nginx 动静分离</a><ul>
+<li><a href="#1-%E4%BB%80%E4%B9%88%E6%98%AF%E5%8A%A8%E9%9D%99%E5%88%86%E7%A6%BB">1、什么是动静分离</a></li>
+<li><a href="#2-%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C-2">2、准备工作</a></li>
+<li><a href="#3-%E5%85%B7%E4%BD%93%E9%85%8D%E7%BD%AE">3、具体配置</a></li>
+<li><a href="#4-%E8%BF%90%E8%A1%8C%E6%B5%8B%E8%AF%95-1">4、运行测试</a></li>
+</ul>
+</li>
+<li><a href="#%E7%AC%AC7%E7%AB%A0-nginx-%E9%85%8D%E7%BD%AE%E9%AB%98%E5%8F%AF%E7%94%A8%E9%9B%86%E7%BE%A4">第7章 Nginx 配置高可用集群</a><ul>
+<li><a href="#1-%E4%BB%80%E4%B9%88%E6%98%AFnginx%E9%AB%98%E5%8F%AF%E7%94%A8">1、什么是Nginx高可用</a></li>
+<li><a href="#2-%E9%85%8D%E7%BD%AE%E9%AB%98%E5%8F%AF%E7%94%A8%E7%9A%84%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C">2、配置高可用的准备工作</a></li>
+<li><a href="#3-%E5%AE%89%E8%A3%85nginx%E5%B9%B6%E8%BF%90%E8%A1%8C%E6%B5%8B%E8%AF%95">3、安装nginx并运行测试</a></li>
+<li><a href="#4-%E5%AE%89%E8%A3%85keepalived">4、安装keepalived</a></li>
+<li><a href="#5-%E5%AE%8C%E6%88%90%E9%AB%98%E5%8F%AF%E7%94%A8%E9%85%8D%E7%BD%AE%E4%B8%BB%E4%BB%8E%E9%85%8D%E7%BD%AE">5、完成高可用配置（主从配置）</a></li>
+<li><a href="#6-%E5%9C%A8usrlocalsrc-%E6%B7%BB%E5%8A%A0%E6%A3%80%E6%B5%8B%E8%84%9A%E6%9C%AC">6、在/usr/local/src 添加检测脚本</a></li>
+<li><a href="#7-%E6%8A%8A%E4%B8%A4%E5%8F%B0%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A-nginx-%E5%92%8C-keepalived-%E5%90%AF%E5%8A%A8">7、把两台服务器上 nginx 和 keepalived 启动</a></li>
+<li><a href="#8-%E8%BF%90%E8%A1%8C%E6%B5%8B%E8%AF%95">8、运行测试</a></li>
+</ul>
+</li>
+<li><a href="#%E7%AC%AC8%E7%AB%A0-nginx-%E7%9A%84%E5%8E%9F%E7%90%86">第8章 Nginx 的原理</a><ul>
+<li><a href="#1-mater-%E5%92%8Cworker">1、mater 和worker</a></li>
+<li><a href="#2-worker-%E5%A6%82%E4%BD%95%E8%BF%9B%E8%A1%8C%E5%B7%A5%E4%BD%9C%E7%9A%84">2、worker 如何进行工作的</a></li>
+<li><a href="#3-%E4%B8%80%E4%B8%AAmaster-%E5%92%8C%E5%A4%9A%E4%B8%AA-woker-%E6%9C%89%E5%A5%BD%E5%A4%84">3、一个master 和多个 woker 有好处</a></li>
+<li><a href="#4-%E8%AE%BE%E7%BD%AE%E5%A4%9A%E5%B0%91%E4%B8%AAwoker-%E5%90%88%E9%80%82">4、设置多少个woker 合适</a></li>
+<li><a href="#5-%E8%BF%9E%E6%8E%A5%E6%95%B0worker_connection">5、连接数worker_connection</a></li>
+</ul>
+</li>
+</ul>
+<!-- tocstop -->
+
+<h2><span id="第1章-nginx简介">第1章 Nginx简介</span></h2><h3><span id="概述">概述</span></h3><p>Nginx  是一个高性能的 HTTP 和反向代理服务器。</p>
+<p>特点是占有内存少，并发能力强。</p>
+<h3><span id="nginx-作为-web-服务器">Nginx 作为 web 服务器</span></h3><p>Nginx 可以作为静态页面的 web 服务器，同时还支持 CGI 协议的动态语言，比如 perl、php等。<font color="red">但是不支持java。Java程序只能通过与tomcat配合完成。</font>Nginx专为性能优化而开发，性能是其最重要的考量,实现上非常注重效率 ，能经受高负载的考验,有报告表明能支持高达 50,000个并发连接数。</p>
+<p><a target="_blank" rel="noopener" href="https://lnmp.org/nginx.html">https://lnmp.org/nginx.html</a></p>
+<h3><span id="正向代理">正向代理</span></h3><p>Nginx 不仅可以做反向代理，实现负载均衡。还能用作正向代理来进行上网等功能。 </p>
+<p>正向代理：如果把局域网外的 Internet 想象成一个巨大的资源库，则局域网中的客户端要访问Internet，<font color="red">则需要通过代理服务器来访问</font>，这种代理服务就称为正向代理。</p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110291454506.png" srcset="/img/loading.gif" lazyload alt="image-20211029145408405"></p>
+<h3><span id="反向代理">反向代理</span></h3><p>反向代理，其实客户端对代理是无感知的，因为客户端不需要任何配置就可以访问，我们只需要将请求发送到反向代理服务器，由反向代理服务器去选择目标服务器获取数据后，在返回给客户端，此时反向代理服务器和目标服务器对外就是一个服务器，<font color="red">暴露的是代理服务器地址，隐藏了真实服务器IP地址</font>。</p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110291454999.png" srcset="/img/loading.gif" lazyload alt="image-20211029145455937"></p>
+<p><font color="red">正向代理布置在客户端，反向代理布置在服务器端。</font></p>
+<h3><span id="负载均衡">负载均衡</span></h3><p>增加服务器的数量，然后将请求分发到各个服务器上，将原先请求集中到单个服务器上的情况改为将请求分发到多个服务器上，将负载分发到不同的服务器，也就是我们所说的负载均衡</p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110291500911.png" srcset="/img/loading.gif" lazyload alt="image-20211029150032849"></p>
+<h3><span id="动静分离">动静分离</span></h3><p>为了加快网站的解析速度，可以把动态页面和静态页面由不同的服务器来解析，加快解析速度。降低原来单个服务器的压力。</p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110291502398.png" srcset="/img/loading.gif" lazyload alt="image-20211029150243335"></p>
+<h2><span id="第2章-nginx的安装">第2章 Nginx的安装</span></h2><h3><span id="进入-nginx-官网下载">进入 nginx 官网，下载</span></h3><p><a target="_blank" rel="noopener" href="http://nginx.org/">http://nginx.org/</a></p>
+<p>所需要的素材</p>
+<ul>
+<li>  pcre-8.37.tar.gz</li>
+<li>  openssl-1.0.1t.tar.gz</li>
+<li>  zlib-1.2.8.tar.gz</li>
+<li>  nginx-1.11.1.tar.gz</li>
+</ul>
+<h3><span id="安装-nginx">安装 nginx</span></h3><h4><span id="1-安装pcre">1、安装pcre</span></h4><p>第一步 联网下载 pcre 压缩文件依赖</p>
+<figure class="highlight awk"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs awk">wget http:<span class="hljs-regexp">//</span>downloads.sourceforge.net<span class="hljs-regexp">/project/</span>pcre<span class="hljs-regexp">/pcre/</span><span class="hljs-number">8.37</span>/pcre-<span class="hljs-number">8.37</span>.tar.gz <br></code></pre></div></td></tr></table></figure>
+
+<p>第二步 解压压缩文件</p>
+<figure class="highlight apache"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs apache"><span class="hljs-attribute">tar</span> –zxvf pcre-<span class="hljs-number">8</span>.<span class="hljs-number">37</span>.tar.gz<br></code></pre></div></td></tr></table></figure>
+
+<p>第三步 源码的安装的3个步骤</p>
+<p>配置(configure)、编译(make)、安装(make install)</p>
+<p>进入文件夹内，运行</p>
+<figure class="highlight gauss"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs gauss">./configure<br><span class="hljs-built_in">make</span><br><span class="hljs-built_in">make</span> install<br></code></pre></div></td></tr></table></figure>
+
+<p>也可以通过&amp;&amp;连接起来，表示当前一条命令正常结束后，后面的命令才会执行，如下</p>
+<figure class="highlight gauss"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs gauss">./configure  &amp;&amp;  <span class="hljs-built_in">make</span>  &amp;&amp;  <span class="hljs-built_in">make</span>  install<br></code></pre></div></td></tr></table></figure>
+
+<p>可以用以下命令查看pcre是否安装完成。</p>
+<figure class="highlight lua"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs lua">pcre-<span class="hljs-built_in">config</span> <span class="hljs-comment">--version</span><br></code></pre></div></td></tr></table></figure>
+
+
+
+<h4><span id="2-安装openssl-zlib-gcc">2、安装openssl 、zlib 、 gcc</span></h4><figure class="highlight nsis"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs nsis">yum -y install make <span class="hljs-literal">zlib</span> <span class="hljs-literal">zlib</span>-devel gcc-c++ libtool openssl openssl-devel<br></code></pre></div></td></tr></table></figure>
+
+
+
+<h4><span id="3-安装-nginx">3、安装 nginx</span></h4><p>第一步 下载tar.gz包</p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110291529928.png" srcset="/img/loading.gif" lazyload alt="image-20211029152922904"></p>
+<p>第二步 上传linux并解压</p>
+<figure class="highlight java"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs java">tar –zxvf nginx...<br></code></pre></div></td></tr></table></figure>
+
+<p>第三步 源码的安装的3个步骤</p>
+<figure class="highlight gauss"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs gauss">./configure  &amp;&amp;  <span class="hljs-built_in">make</span>  &amp;&amp;  <span class="hljs-built_in">make</span>  install<br></code></pre></div></td></tr></table></figure>
+
+
+
+<h3><span id="运行nginx">运行Nginx</span></h3><p>进入目录 /usr/local/nginx/sbin/nginx 启动服务</p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110291531602.png" srcset="/img/loading.gif" lazyload alt="image-20211029153155575"></p>
+<p><font color="red">注意：在windows 系统中访问 linux 中 nginx，默认不能访问的，因为防火墙问题 </font><br>（1）关闭防火墙</p>
+<figure class="highlight arduino"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs arduino">systemctl stop firewalld<br></code></pre></div></td></tr></table></figure>
+
+<p>（2）开放访问的端口号，80 端口 </p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs jboss-cli">查看开放的端口号 <br>firewall-cmd <span class="hljs-params">--list-all</span><br><br>设置开放的端口号 <br>firewall-cmd <span class="hljs-params">--add-service=http</span> –-permanent <br>firewall-cmd <span class="hljs-params">--add-port=80/tcp</span> <span class="hljs-params">--permanent</span><br><br>重启防火墙<br>firewall-cmd –<span class="hljs-keyword">reload</span><br></code></pre></div></td></tr></table></figure>
+
+
+
+<h2><span id="第3章-nginx常用命令和配置文件">第3章 Nginx常用命令和配置文件</span></h2><h3><span id="nginx-常用命令">Nginx 常用命令</span></h3><p>进入 nginx 目录中</p>
+<figure class="highlight awk"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs awk">cd <span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/nginx/</span>sbin<br></code></pre></div></td></tr></table></figure>
+
+<p>1、查看 nginx 版本号</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs jboss-cli"><span class="hljs-string">./nginx</span> -v<br></code></pre></div></td></tr></table></figure>
+
+<p>2、启动 nginx</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs \">./nginx<br></code></pre></div></td></tr></table></figure>
+
+<p>3、停止 nginx</p>
+<figure class="highlight arduino"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs arduino">./nginx -s stop<br></code></pre></div></td></tr></table></figure>
+
+<p>4、重新加载 nginx</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs jboss-cli"><span class="hljs-string">./nginx</span> -s <span class="hljs-keyword">reload</span><br></code></pre></div></td></tr></table></figure>
+
+
+
+<h3><span id="nginx-的配置文件">Nginx 的配置文件</span></h3><p>nginx 安装目录下，其默认的配置文件都放在这个目录的 conf 目录下，而主配置文件 nginx.conf 也在其中，后续对 nginx 的使用基本上都是对此配置文件进行相应的修改</p>
+<figure class="highlight awk"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs awk">cd <span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/nginx/</span>conf/nginx.conf<br></code></pre></div></td></tr></table></figure>
+
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110291541202.png" srcset="/img/loading.gif" lazyload alt="image-20211029154106164"></p>
+<p>配置文件中有很多#， 开头的表示注释内容，我们去掉所有以 # 开头的段落，精简之后的<br>内容如下：</p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110291542962.png" srcset="/img/loading.gif" lazyload alt="image-20211029154253928"></p>
+<p>根据上述文件，我们可以很明显的将 nginx.conf 配置文件分为三部分： </p>
+<p><font color="red">第一部分：全局块</font></p>
+<p>从配置文件开始到 events 块之间的内容，主要会设置一些影响 nginx 服务器整体运行的配置指令，主要包括配置运行 Nginx 服务器的用户（组）、允许生成的 worker process 数，进程 PID 存放路径、日志存放路径和类型以及配置文件的引入等。</p>
+<p>比如上面第一行配置的：</p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110291543138.png" srcset="/img/loading.gif" lazyload alt="image-20211029154347109"></p>
+<p>这是 Nginx 服务器并发处理服务的关键配置，worker_processes值越大，可以支持的并发处理量也越多，但是会受到硬件、软件等设备的制约</p>
+<p><font color="red">第二部分：events块</font></p>
+<p>比如上面的配置：</p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110291544372.png" srcset="/img/loading.gif" lazyload alt="image-20211029154408347"></p>
+<p>events 块涉及的指令主要影响 Nginx 服务器与用户的网络连接，常用的设置包括是否开启对多 work process 下的网络连接进行序列化，是否允许同时接收多个网络连接，选取哪种事件驱动模型来处理连接请求，每个 word process 可以同时支持的最大连接数等。 </p>
+<p>上述例子就表示每个 work process 支持的最大连接数为 1024. </p>
+<p>这部分的配置对 Nginx 的性能影响较大，在实际中应该灵活配置。 </p>
+<p><font color="red">第三部分：http块</font></p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110291544713.png" srcset="/img/loading.gif" lazyload alt="image-20211029154435677"></p>
+<p>这算是Nginx 服务器配置中最频繁的部分，代理、缓存和日志定义等绝大多数功能和第三方模块的配置都在这里。需要注意的是：http块也可以包括 http 全局块、server块。</p>
+<p><font color="red">http全局块</font></p>
+<p>http 全局块配置的指令包括文件引入、MIME-TYPE定义、日志自定义、连接超时时间、单链接请求数上限等。</p>
+<p><font color="red">server 块</font></p>
+<p>这块和虚拟主机有密切关系，虚拟主机从用户角度看，和一台独立的硬件主机是完全一样的，该技术的产生是为了节省互联网服务器硬件成本。</p>
+<p>每个 http 块可以包括多个 server 块，而每个 server 块就相当于一个虚拟主机。</p>
+<p><strong>1、全局 server 块</strong><br> 最常见的配置是本虚拟机主机的监听配置和本虚拟主机的名称或 IP 配置。 </p>
+<p><strong>2、location块</strong></p>
+<p>一个server块可以配置多个location块。<br>这块的主要作用是基于 Nginx 服务器接收到的请求字符串（例如 server_name/uri-string），对虚拟主机名称（也可以是 IP 别名）之外的字符串（例如 前面的 /uri-string）进行匹配，对特定的请求进行处理。地址定向、数据缓存和应答控制等功能，还有许多第三方模块的配置也在这里进行。 </p>
+<h2><span id="第4章-nginx-反向代理">第4章 Nginx 反向代理</span></h2><h3><span id="nginx-配置实例-反向代理实例-1">Nginx 配置实例-反向代理实例 1</span></h3><h4><span id="1-实现效果">1、实现效果</span></h4><p>打开浏览器，在浏览器地址栏输入地址 <a target="_blank" rel="noopener" href="http://www.123.com,跳转到/">www.123.com，跳转到</a> liunx 系统tomcat 主页面中</p>
+<h4><span id="2-准备工作">2、准备工作</span></h4><p>在liunx 系统安装 tomcat，使用默认端口8080</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs jboss-cli">1) 上传安装文件，并解压缩到<span class="hljs-string">/opt/tomcat</span><br><br>2) 进入解压目录<span class="hljs-string">/bin</span> , 启动 tomcat <span class="hljs-string">./startup.sh</span><br><br>3) 开放端口 8080<br>firewall-cmd <span class="hljs-params">--add-port=8080/tcp</span> <span class="hljs-params">--permanent</span> <br>firewall-cmd –<span class="hljs-keyword">reload</span><br>查看已经开放的端口号<br>firewall-cmd <span class="hljs-params">--list-all</span><br><br>4)访问测试	http:<span class="hljs-string">//</span>&lt;linux ip&gt;<span class="hljs-function">:8080</span>，看到猫就好了<br></code></pre></div></td></tr></table></figure>
+
+
+
+<h4><span id="3-访问过程的分析">3、访问过程的分析</span></h4><p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110291609577.png" srcset="/img/loading.gif" lazyload alt="image-20211029160930539"></p>
+<p>4、具体配置</p>
+<h4><span id="第一步-在windows-系统的-host-文件进行域名和-ip-对应关系的配置">第一步 在windows 系统的 host 文件进行域名和 ip 对应关系的配置</span></h4><p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110291609840.png" srcset="/img/loading.gif" lazyload alt="image-20211029160946812"></p>
+<p>（1）添加内容在host 文件中 </p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110291609910.png" srcset="/img/loading.gif" lazyload alt="image-20211029160954887"></p>
+<p><font color="red">知道这个域名映射就行，不需要改它。</font></p>
+<p>第二步 在 nginx 进行请求转发的配置（反向代理配置）</p>
+<p>教程上server_name设置成了linux的ip地址。我觉得这个server_name没必要改，这里是Nginx的ip地址和端口号，所以写localhost就行。</p>
+<p>也就是说，<font color="red">Nginx将本机的80端口转发到8080端口</font>。</p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110291626488.png" srcset="/img/loading.gif" lazyload alt="image-20211029162602448"></p>
+<h4><span id="5-最终测试">5、最终测试</span></h4><p>访问80端口的，成功转发到了8080端口。</p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110291628148.png" srcset="/img/loading.gif" lazyload alt="image-20211029162839118"></p>
+<h3><span id="nginx-配置实例-反向代理实例-2">Nginx 配置实例-反向代理实例 2</span></h3><h4><span id="1-实现效果">1、实现效果</span></h4><p>使用 nginx 反向代理，根据访问的路径跳转到不同端口的服务中<br>nginx 监听端口为9001，</p>
+<p>访问 <a target="_blank" rel="noopener" href="http://192.168.17.129:9001/edu/">http://192.168.17.129:9001/edu/</a> 直接跳转到 127.0.0.1:8080 </p>
+<p>访问 <a target="_blank" rel="noopener" href="http://192.168.17.129:9001/vod/">http://192.168.17.129:9001/vod/</a> 直接跳转到 127.0.0.1:8081</p>
+<h4><span id="2-准备2个tomcat服务器一个8080端口一个8081端口">2、准备2个tomcat服务器，一个8080端口，一个8081端口</span></h4><p>实际上就是解压2份tomcat</p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110291952500.png" srcset="/img/loading.gif" lazyload alt="image-20211029195253476"></p>
+<p>修改第二个tomcat的端口号，进入它的目录下 conf/server.xml，修改配置文件，搜索port，修改以下端口。</p>
+<p>8005改成8015</p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110291929293.png" srcset="/img/loading.gif" lazyload alt="image-20211029192959258"></p>
+<p>8080改成8081</p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110291931408.png" srcset="/img/loading.gif" lazyload alt="image-20211029190642304"></p>
+<p>在8080的 tomcat 里面 webapps 目录中，创建名称是 edu 文件夹，在 edu 文件夹中创建<br>页面 a.html，用于测试，页面内容</p>
+<figure class="highlight html"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>tomcat:8080<span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+
+<p>在8081的 tomcat 里面 webapps 目录中，创建名称是 vod 文件夹，在 vod 文件夹中创建<br>页面 a.html，用于测试，页面内容</p>
+<figure class="highlight html"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>tomcat:8080<span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+
+
+
+<h4><span id="3-找到ngix配置文件进行反向代理配置">3、找到ngix配置文件，进行反向代理配置</span></h4><p>增加一个server，这里就根据下面这个注释了的server修改。</p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110291906348.png" srcset="/img/loading.gif" lazyload alt="image-20211029190642304"></p>
+<h4><span id="4-运行测试">4、运行测试</span></h4><p><font color="red">注意开放相关端口或关闭防火墙</font></p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110291932254.png" srcset="/img/loading.gif" lazyload alt="image-20211029193258221"></p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110291933230.png" srcset="/img/loading.gif" lazyload alt="image-20211029193314193"></p>
+<h2><span id="第5章-nginx-均衡负载">第5章 Nginx 均衡负载</span></h2><h3><span id="nginx-配置实例-负载均衡">Nginx 配置实例-负载均衡</span></h3><h4><span id="1-实现效果">1、实现效果</span></h4><p>（1）浏览器地址栏输入地址 <a target="_blank" rel="noopener" href="http://192.168.17.129/edu/a.html%EF%BC%8C%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E6%95%88%E6%9E%9C%EF%BC%8C%E5%B9%B3%E5%9D%87">http://192.168.17.129/edu/a.html，负载均衡效果，平均</a> 8080<br>和8081 端口中</p>
+<h4><span id="2-准备工作">2、准备工作</span></h4><p>（1）准备两台tomcat 服务器，一台8080，一台 8081</p>
+<p>（2）在两台 tomcat 里面 webapps 目录中，创建名称是 edu 文件夹，在 edu 文件夹中创建<br>页面 a.html，用于测试</p>
+<h4><span id="3-在-nginx-的配置文件中进行负载均衡的配置">3、在 nginx 的配置文件中进行负载均衡的配置</span></h4><p>在主server上面写一下这个upstream</p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110292255849.png" srcset="/img/loading.gif" lazyload alt="image-20211029225557807"></p>
+<p>这是的就是2个tomcat的IP地址。（这里因为是在本机上，所以写ip，写127.0.0.1，写localhost都是一样的）</p>
+<p>代理设置为upstream的名字</p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110292257304.png" srcset="/img/loading.gif" lazyload alt="image-20211029225717273"></p>
+<h4><span id="4-测试运行">4、测试运行</span></h4><p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110292301403.png" srcset="/img/loading.gif" lazyload alt="image-20211029230132374"></p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110292301136.png" srcset="/img/loading.gif" lazyload alt="image-20211029230143110"></p>
+<p>多次请求，目标服务器在tomcat8080和tomcat8081之间切换。</p>
+<h3><span id="nginx-分配服务器策略">nginx 分配服务器策略</span></h3><h4><span id="第一种轮询默认">第一种：轮询（默认）</span></h4><p>每个请求按时间顺序逐一分配到不同的后端服务器，如果后端服务器 down 掉，能自动剔除。</p>
+<h4><span id="第二种weight">第二种：weight</span></h4><p>weight 代表权重默认为 1,权重越高被分配的客户端越多。</p>
+<p>指定轮询几率，weight 和访问比率成正比，用于后端服务器性能不均的情况。 例如：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs routeros">upstream server_pool&#123;    <br>   <span class="hljs-built_in"> server </span>192.168.5.21 <span class="hljs-attribute">weight</span>=10;<br>   <span class="hljs-built_in"> server </span>192.168.5.22 <span class="hljs-attribute">weight</span>=10;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+
+
+<h4><span id="第三种ip_hash">第三种：ip_hash</span></h4><p>每个请求按访问ip 的 hash 结果分配，这样每个访客固定访问一个后端服务器，可以解决session 的问题。例如：</p>
+<figure class="highlight roboconf"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs roboconf">upstream server_pool&#123;    <br>    <span class="hljs-attribute">ip_hash;     </span><br><span class="hljs-attribute">    server 192.168.5.21</span>:80;     <br>    <span class="hljs-attribute">server 192.168.5.22</span>:80;     <br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+
+
+<h4><span id="第四种fair第三方">第四种：fair（第三方）</span></h4><p>按后端服务器的响应时间来分配请求，响应时间短的优先分配。</p>
+<figure class="highlight html"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs html">upstream server_pool&#123;    <br>    server 192.168.5.21:80;     <br>    server 192.168.5.22:80;     <br>    fair;     <br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+
+
+<h2><span id="第6章-nginx-动静分离">第6章 Nginx 动静分离</span></h2><h3><span id="1-什么是动静分离">1、什么是动静分离</span></h3><p>Nginx 动静分离简单来说就是把动态跟静态请求分开，不能理解成只是单纯的把动态页面和静态页面物理分离。严格意义上说应该是动态请求跟静态请求分开，可以理解成使用 Nginx 处理静态页面，Tomcat处理动态页面。</p>
+<p>动静分离从目前实现角度来讲大致分为两种：</p>
+<ul>
+<li>  一种是纯粹把静态文件独立成单独的域名，放在独立的服务器上，也是目前主流推崇的方案；</li>
+<li>  另外一种方法就是动态跟静态文件混合在一起发布，通过 nginx 来分开。</li>
+</ul>
+<p><strong>通过 location 指定不同的后缀名实现不同的请求转发</strong>。</p>
+<p><strong>通过 expires 参数设置，可以使浏览器缓存过期时间</strong>，减少与服务器之前的请求和流量。具体 Expires 定义：是给一个资源设定一个过期时间，也就是说无需去服务端验证，直接通过浏览器自身确认是否过期即可，所以不会产生额外的流量。此种方法非常适合不经常变动的资源。（如果经常更新的文件，不建议使用 Expires 来缓存），我这里设置 3d，表示在这 3 天之内访问这个 URL，发送一个请求，比对服务器该文件最后更新时间没有变化，则不会从服务器抓取，返回状态码 304，如果有修改，则直接从服务器重新下载，返回状态码 200。</p>
+<h3><span id="2-准备工作">2、准备工作</span></h3><p>在liunx 系统中准备静态资源，用于进行访问</p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110301514380.png" srcset="/img/loading.gif" lazyload alt="image-20211030151408340"></p>
+<p>image文件夹用于存放静态图片，准备个图片放进去</p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110301534403.png" srcset="/img/loading.gif" lazyload alt="image-20211030153406376"></p>
+<p>www文件夹用于存放静态页面，准备个静态网页放进去</p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110301533758.png" srcset="/img/loading.gif" lazyload alt="image-20211030153358728"></p>
+<h3><span id="3-具体配置">3、具体配置</span></h3><p>在 nginx 配置文件中进行配置</p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110301518664.png" srcset="/img/loading.gif" lazyload alt="image-20211030151818618"></p>
+<p>添加2个location，地址和根指定好，设置了autoindex为on，就会有一个文件列表的效果。</p>
+<h3><span id="4-运行测试">4、运行测试</span></h3><p><a target="_blank" rel="noopener" href="http://192.168.199.137/image/a.jpg">http://192.168.199.137/image/a.jpg</a></p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110301532656.png" srcset="/img/loading.gif" lazyload alt="image-20211030153235524"></p>
+<p><a target="_blank" rel="noopener" href="http://192.168.199.137/image/">http://192.168.199.137/image/</a></p>
+<p>因为配置文件 autoindex on，所以有文件列表的效果</p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110301531321.png" srcset="/img/loading.gif" lazyload alt="image-20211030153140281"></p>
+<p><a target="_blank" rel="noopener" href="http://192.168.199.137/www/a.html">http://192.168.199.137/www/a.html</a></p>
+<p>测试静态网页</p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110301531278.png" srcset="/img/loading.gif" lazyload alt="image-20211030153108247"></p>
+<h2><span id="第7章-nginx-配置高可用集群">第7章 Nginx 配置高可用集群</span></h2><h3><span id="1-什么是nginx高可用">1、什么是Nginx高可用</span></h3><p>就是当一个nginx宕机时，有另一个nginx可以顶上。用户始终访问的是一个虚拟ip，虚拟ip指向一个可用的nginx的ip地址。</p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110302234683.png" srcset="/img/loading.gif" lazyload alt="image-20211030223423635"></p>
+<p>所以配置高可用集群需要以下东西</p>
+<p>（1）需要两台nginx 服务器</p>
+<p>（2）需要keepalived</p>
+<p>（3）需要虚拟ip</p>
+<h3><span id="2-配置高可用的准备工作">2、配置高可用的准备工作</span></h3><p>（1）需要两台服务器，两个ip地址。<br>（2）在两台服务器安装 nginx<br>（3）在两台服务器安装 keepalive</p>
+<h3><span id="3-安装nginx并运行测试">3、安装nginx并运行测试</span></h3><p><font color="red">注意别忘记关防火墙或开放端口</font></p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110310059027.png" srcset="/img/loading.gif" lazyload alt="image-20211031005919997"></p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110310059678.png" srcset="/img/loading.gif" lazyload alt="image-20211031005937649"></p>
+<h3><span id="4-安装keepalived">4、安装keepalived</span></h3><p>（1）使用yum 命令进行安装</p>
+<figure class="highlight cmake"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs cmake">yum <span class="hljs-keyword">install</span> keepalived –y<br></code></pre></div></td></tr></table></figure>
+
+<p>（2）安装之后，在 etc 里面生成目录keepalived，有文件 keepalived.conf</p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110302307211.png" srcset="/img/loading.gif" lazyload alt="image-20211030230731178"></p>
+<h3><span id="5-完成高可用配置主从配置">5、完成高可用配置（主从配置）</span></h3><p>修改/etc/keepalived/keepalivec.conf 配置文件</p>
+<p>主机配置</p>
+<figure class="highlight puppet"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs puppet"><span class="hljs-keyword">global_defs</span> &#123;	<span class="hljs-comment"># 全局配置</span><br>   notification_email &#123;<br>     acassen@firewall.loc<br>     failover@firewall.loc<br>     sysadmin@firewall.loc<br>   &#125;<br>   <span class="hljs-keyword">notification_email_from</span> <span class="hljs-keyword">Alexandre</span>.Cassen@firewall.loc<br>   smtp_server 192.168.199.137<br>   smtp_connect_timeout 30<br>   router_id LVS_DEVEL	<span class="hljs-comment"># 访问到主机（主服务器的名字hostname）</span><br>&#125;<br><br>vrrp_script <span class="hljs-keyword">chk_http_port</span> &#123;	<span class="hljs-comment"># 脚本配置</span><br>	script <span class="hljs-string">&quot;/usr/local/src/nginx_check.sh&quot;</span><br>	interval <span class="hljs-number">2</span> <span class="hljs-comment">#（检测脚本执行的间隔） </span><br>	weight <span class="hljs-number">2</span>	<span class="hljs-comment"># 权重</span><br>&#125;<br><br><span class="hljs-keyword">vrrp_instance</span> <span class="hljs-keyword">VI_1</span> &#123;	<span class="hljs-comment"># 虚拟ip配置</span><br>    state MASTER			<span class="hljs-comment"># 备份服务器上将 MASTER 改为 BACKUP</span><br>    interface ens33			<span class="hljs-comment"># 网卡</span><br>    virtual_router_id <span class="hljs-number">51</span>	<span class="hljs-comment"># 主、备机的 virtual_router_id 必须相同</span><br>    <span class="hljs-literal">priority</span> <span class="hljs-number">100</span>			<span class="hljs-comment"># 主、备机取不同的优先级，主机值较大，备份机值较小</span><br>    advert_int <span class="hljs-number">1</span>			<span class="hljs-comment"># 检测服务器是不是还活着的间隔</span><br>    authentication &#123;		<span class="hljs-comment"># 校验的方式</span><br>        <span class="hljs-literal">auth_type</span> PASS<br>        auth_pass <span class="hljs-number">1111</span><br>    &#125;<br>    <span class="hljs-keyword">virtual_ipaddress</span> &#123;<br>        <span class="hljs-number">192.168</span>.<span class="hljs-number">199.140</span> // VRRP H 虚拟地址<br>    &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>服务器的名字怎么看呢？可以 vim /etc/hosts，然后给主机设一个名字。（<font color="orange">然而这项不配置也能成功。</font>）</p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110310128795.png" srcset="/img/loading.gif" lazyload alt="image-20211031012828742"></p>
+<p><font color="red">注意，这里配的一定是主服务器的名字hostname。</font></p>
+<p>查看hostname的命令：hostname</p>
+<p>weight 2    # 权重</p>
+<p>如果设成-20，就是当脚本中的条件成立时，就把当前主机的权重降20</p>
+<p>网卡名字可以在ifconfig中查看</p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110310133439.png" srcset="/img/loading.gif" lazyload alt="image-20211031013322395"></p>
+<p>从机配置</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs angelscript">global_defs &#123;<br>   notification_email &#123;<br>     <span class="hljs-symbol">acassen@</span>firewall.loc<br>     <span class="hljs-symbol">failover@</span>firewall.loc<br>     <span class="hljs-symbol">sysadmin@</span>firewall.loc<br>   &#125;<br>   notification_email_from Alexandre.<span class="hljs-symbol">Cassen@</span>firewall.loc<br>   smtp_server <span class="hljs-number">192.168</span><span class="hljs-number">.199</span><span class="hljs-number">.138</span><br>   smtp_connect_timeout <span class="hljs-number">30</span><br>   router_id LVS_DEVEL<br>&#125;<br><br>vrrp_script chk_http_port &#123; <br>	script <span class="hljs-string">&quot;/usr/local/src/nginx_check.sh&quot;</span><br>	<span class="hljs-built_in">int</span>erval <span class="hljs-number">2</span> #（检测脚本执行的间隔） <br>	weight <span class="hljs-number">2</span><br>&#125;<br><br>vrrp_instance VI_1 &#123;<br>    state BACKUP			# 备份服务器上将 MASTER 改为 BACKUP<br>    <span class="hljs-keyword">interface</span> <span class="hljs-symbol">ens33</span>			# 网卡<br>    <span class="hljs-symbol">virtual_router_id</span> <span class="hljs-symbol">51</span>	# 主、备机的 <span class="hljs-symbol">virtual_router_id</span> 必须相同<br>    <span class="hljs-symbol">priority</span> <span class="hljs-symbol">90</span>				# 主、备机取不同的优先级，主机值较大，备份机值较小<br>    <span class="hljs-symbol">advert_int</span> <span class="hljs-symbol">1</span><br>    <span class="hljs-symbol">authentication</span> &#123;<br>        auth_type PASS<br>        auth_pass <span class="hljs-number">1111</span><br>    &#125;<br>    virtual_ipaddress &#123;<br>        <span class="hljs-number">192.168</span><span class="hljs-number">.199</span><span class="hljs-number">.140</span> <span class="hljs-comment">// VRRP H 虚拟地址</span><br>    &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+
+
+<h3><span id="6-在usrlocalsrc-添加检测脚本">6、在/usr/local/src 添加检测脚本</span></h3><figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash"><span class="hljs-meta">#!/bin/bash </span><br>A=`ps -C nginx –no-header |wc -l` <br><span class="hljs-keyword">if</span> [ <span class="hljs-variable">$A</span> -eq 0 ];<span class="hljs-keyword">then</span> <br>    /usr/<span class="hljs-built_in">local</span>/nginx/sbin/nginx <br>    sleep 2 <br>    <span class="hljs-keyword">if</span> [ `ps -C nginx --no-header |wc -l` -eq 0 ];<span class="hljs-keyword">then</span> <br>        killall keepalived <br>    <span class="hljs-keyword">fi</span> <br><span class="hljs-keyword">fi</span><br></code></pre></div></td></tr></table></figure>
+
+<p>如果说nginx挂掉了，就kill掉keepalived</p>
+<h3><span id="7-把两台服务器上-nginx-和-keepalived-启动">7、把两台服务器上 nginx 和 keepalived 启动</span></h3><figure class="highlight crmsh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs crmsh">启动 nginx：./nginx <br>启动keepalived：systemctl <span class="hljs-literal">start</span> keepalived.service<br></code></pre></div></td></tr></table></figure>
+
+
+
+<h3><span id="8-运行测试">8、运行测试</span></h3><p><font color="red"><code>ip a</code> 命令能够看到当前主机绑定的虚拟ip，只有正在响应的主机才会有。</font></p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110310107790.png" srcset="/img/loading.gif" lazyload alt="image-20211031010721739"></p>
+<p>在浏览器地址栏输入 虚拟 ip 地址 192.168.199.140</p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110310058583.png" srcset="/img/loading.gif" lazyload alt="image-20211031005856550"></p>
+<p>把主机的niginx和keepalived停止，再输入192.168.199.140，<strong>依然能够正常访问</strong>，高可用集群配置成功。</p>
+<h2><span id="第8章-nginx-的原理">第8章 Nginx 的原理</span></h2><h3><span id="1-mater-和worker">1、mater 和worker</span></h3><p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110311315958.png" srcset="/img/loading.gif" lazyload alt="image-20211031131543918"></p>
+<p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110311315379.png" srcset="/img/loading.gif" lazyload alt="image-20211031131548329"></p>
+<h3><span id="2-worker-如何进行工作的">2、worker 如何进行工作的</span></h3><p><img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/202110311315447.png" srcset="/img/loading.gif" lazyload alt="image-20211031131557379"></p>
+<h3><span id="3-一个master-和多个-woker-有好处">3、一个master 和多个 woker 有好处</span></h3><p>（1）可以使用nginx –s reload 热部署，利用 nginx 进行热部署操作<br>（2）每个woker 是独立的进程，如果有其中的一个woker 出现问题，其他 woker 独立的，继续进行争抢，实现请求过程，不会造成服务中断</p>
+<h3><span id="4-设置多少个woker-合适">4、设置多少个woker 合适</span></h3><p>worker 数和服务器的 cpu 数相等是最为适宜的</p>
+<h3><span id="5-连接数worker_connection">5、连接数worker_connection</span></h3><p>第一个：发送请求，占用了 woker 的几个连接数？<br>答案：2 或者 4 个</p>
+<p>第二个：nginx 有一个 master，有四个 woker，每个woker 支持最大的连接数 1024，支持的<br>最大并发数是多少？</p>
+<ul>
+<li>  普通的静态访问最大并发数是： worker_connections * worker_processes /2，</li>
+<li>  而如果是HTTP 作 为反向代理来说，最大并发数量应该是 worker_connections * worker_processes/4。</li>
+</ul>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Java%E5%90%8E%E7%AB%AF/">Java后端</a>
+                    
+                      <a class="hover-with-bg" href="/categories/Java%E5%90%8E%E7%AB%AF/%E6%9C%8D%E5%8A%A1%E5%99%A8/">服务器</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Java/">Java</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%9C%8D%E5%8A%A1%E5%99%A8/">服务器</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/">负载均衡</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86/">反向代理</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%8A%A8%E9%9D%99%E5%88%86%E7%A6%BB/">动静分离</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/10/25/dubbo/">
+                        <span class="hidden-mobile">远程服务Dubbo与Zookeeper</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"kKHw5YzfOlny9jMQJEjDkSBi-9Nh9j0Va","appKey":"3N5RE5Sl5hj96cTuho5YEMnY","path":"window.location.pathname","placeholder":"小伙伴们快来评论！","avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":true,"recordIP":true,"serverURLs":"https://kkhw5yzf.lc-cn-e1-shared.com","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          Fluid.plugins.initFancyBox('#valine .vcontent img:not(.vemoji)');
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+    <span>Copyright© 2021 huanfenz</span>
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        loader: {
+          load: ['ui/lazy']
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

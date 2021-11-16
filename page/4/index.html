@@ -190,60 +190,535 @@
     
     
       <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2021/07/10/MySQL-08-%E8%81%9A%E5%90%88%E5%87%BD%E6%95%B0%E4%B8%8E%E5%88%86%E7%BB%84/" target="_self">
-          <img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210927195533.png" srcset="/img/loading.gif" lazyload alt="MySQL-08-聚合函数与分组">
+        <a href="/2021/07/10/MySQL-16-%E5%B8%B8%E8%A7%81%E7%BA%A6%E6%9D%9F/" target="_self">
+          <img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210927195533.png" srcset="/img/loading.gif" lazyload alt="MySQL-16-常见约束">
         </a>
       </div>
     
     <article class="col-12 col-md-8 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2021/07/10/MySQL-08-%E8%81%9A%E5%90%88%E5%87%BD%E6%95%B0%E4%B8%8E%E5%88%86%E7%BB%84/" target="_self">
-          MySQL-08-聚合函数与分组
+        <a href="/2021/07/10/MySQL-16-%E5%B8%B8%E8%A7%81%E7%BA%A6%E6%9D%9F/" target="_self">
+          MySQL-16-常见约束
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2021/07/10/MySQL-08-%E8%81%9A%E5%90%88%E5%87%BD%E6%95%B0%E4%B8%8E%E5%88%86%E7%BB%84/" target="_self">
+        <a href="/2021/07/10/MySQL-16-%E5%B8%B8%E8%A7%81%E7%BA%A6%E6%9D%9F/" target="_self">
           
           
             
           
-          分组函数与分组
+          常见约束
 
 
-分组函数
-功能
+常见约束
+含义
+分类
+添加约束的时机
+约束的添加分类
+
+
+一、创建表时添加约束
+1.添加列级约束
+语法
+
+
+2.添加表级约束
+语法：在各个字段的最下面
+
+
+通用的写法：★
+二、修改表时添加约束
+1、添加列级约束
+2、添加表级约束
+
+
+三、修改表时删除约束
+作业12-约束
+问题
+我的解答
+总结
+
+
+级联
+
+
+
+常见约束含义一种限制，用于限制表中的数据，为了保证表中的数据的准确和可靠性
+
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-07-10 20:00" pubdate>
+              2021-07-10
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Java%E5%90%8E%E7%AB%AF/">Java后端</a>
+            
+              <a href="/categories/Java%E5%90%8E%E7%AB%AF/MySQL/">MySQL</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+            
+              <a href="/tags/MySQL/">MySQL</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2021/07/10/MySQL-15-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" target="_self">
+          <img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210927195533.png" srcset="/img/loading.gif" lazyload alt="MySQL-15-数据类型">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2021/07/10/MySQL-15-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" target="_self">
+          MySQL-15-数据类型
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2021/07/10/MySQL-15-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" target="_self">
+          
+          
+            
+          
+          数据类型
+
+
+常见的数据类型
+一、整型
 分类
 特点
 例子
-1、简单的使用
-2、参数支持哪些类型
-3、是否忽略null
-4、和distinct搭配
-5、count函数的详细介绍
-6、和分组函数一同查询的字段有限制
+1.如何设置无符号和有符号
 
 
-作业5-分组函数
+
+
+二、小数
+分类
+特点
+测试M和D
+原则
+
+
+三、字符型
+分类
+特点
+例子
+
+
+四、日期型
+分类
+特点
+
+
+
+
+
+常见的数据类型
+数值型
+
+整型
+
+小数
+
+定点数
+浮点数
+
+
+
+
+
+字符型：
+较短的文本：char、varchar
+较长的文本：text、blob（较长的二进制数据）
+
+
+日期型
+
+
+一、整型分
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-07-10 20:00" pubdate>
+              2021-07-10
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Java%E5%90%8E%E7%AB%AF/">Java后端</a>
+            
+              <a href="/categories/Java%E5%90%8E%E7%AB%AF/MySQL/">MySQL</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+            
+              <a href="/tags/MySQL/">MySQL</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2021/07/10/MySQL-14-%E5%BA%93%E5%92%8C%E8%A1%A8%E7%9A%84%E7%AE%A1%E7%90%86/" target="_self">
+          <img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210927195533.png" srcset="/img/loading.gif" lazyload alt="MySQL-14-库和表的管理">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2021/07/10/MySQL-14-%E5%BA%93%E5%92%8C%E8%A1%A8%E7%9A%84%E7%AE%A1%E7%90%86/" target="_self">
+          MySQL-14-库和表的管理
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2021/07/10/MySQL-14-%E5%BA%93%E5%92%8C%E8%A1%A8%E7%9A%84%E7%AE%A1%E7%90%86/" target="_self">
+          
+          
+            
+          
+          库和表的管理
+
+
+DDL介绍
+一、库的管理
+1、库的创建
+语法：
+例子：
+
+
+2、库的修改
+更改库的字符集
+3、库的删除
+
+
+二、表的管理
+1.表的创建 ★
+语法
+例子
+
+
+
+
+2.表的修改
+语法
+例子
+
+
+3.表的删除
+4.表的复制
+
+
+作业11-创建和管理表
 问题
 我的解答
 
 
 
 
-分组查询
+
+DDL介绍数据定义语言
+一、库的管理
+创建、修改、删除
+二、表的管理
+创建、修改、删除
+创建： create修
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-07-10 20:00" pubdate>
+              2021-07-10
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Java%E5%90%8E%E7%AB%AF/">Java后端</a>
+            
+              <a href="/categories/Java%E5%90%8E%E7%AB%AF/MySQL/">MySQL</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+            
+              <a href="/tags/MySQL/">MySQL</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2021/07/10/MySQL-13-%E6%95%B0%E6%8D%AE%E7%9A%84%E5%A2%9E%E5%88%A0%E6%94%B9/" target="_self">
+          <img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210927195533.png" srcset="/img/loading.gif" lazyload alt="MySQL-13-数据的增删改">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2021/07/10/MySQL-13-%E6%95%B0%E6%8D%AE%E7%9A%84%E5%A2%9E%E5%88%A0%E6%94%B9/" target="_self">
+          MySQL-13-数据的增删改
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2021/07/10/MySQL-13-%E6%95%B0%E6%8D%AE%E7%9A%84%E5%A2%9E%E5%88%A0%E6%94%B9/" target="_self">
+          
+          
+            
+          
+          数据的增删改
+
+
+DML语言介绍
+一、插入语句
+方式一：经典的插入——语法
+例子
+方式二语法：
+例子
+两种方式大pk ★
+
+
+二、修改语句
+1.修改单表的记录★
+2.修改多表的记录【补充】
+例子
+
+
+三、删除语句
+方式一：delete
+方式二：truncate
+例子
+delete pk truncate【面试题★】
+
+
+作业10-数据处理
+问题
+我的解答
+
+
+
+
+
+DML语言介绍数据操作语言：插入
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-07-10 20:00" pubdate>
+              2021-07-10
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Java%E5%90%8E%E7%AB%AF/">Java后端</a>
+            
+              <a href="/categories/Java%E5%90%8E%E7%AB%AF/MySQL/">MySQL</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+            
+              <a href="/tags/MySQL/">MySQL</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2021/07/10/MySQL-12-%E8%81%94%E5%90%88%E6%9F%A5%E8%AF%A2/" target="_self">
+          <img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210927195533.png" srcset="/img/loading.gif" lazyload alt="MySQL-12-联合查询">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2021/07/10/MySQL-12-%E8%81%94%E5%90%88%E6%9F%A5%E8%AF%A2/" target="_self">
+          MySQL-12-联合查询
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2021/07/10/MySQL-12-%E8%81%94%E5%90%88%E6%9F%A5%E8%AF%A2/" target="_self">
+          
+          
+            
+          
+          联合查询
+
+
+联合查询
+描述
+语法
+应用场景
+特点：★
+例子
+
+
+
+
+
+联合查询描述union 联合
+合并：将多条查询语句的结果合并成一个结果
+语法查询语句1union查询语句2union…
+应用场景要查询的结果来自于多个表，且多个表没有直接的连接关系，但查询的信息一致时
+特点：★1、要求多条查询语句的查询列数是一致的！2、要求多条查询语句的查询的每一列的类型和顺序最好一致3、union关键字默认
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-07-10 20:00" pubdate>
+              2021-07-10
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Java%E5%90%8E%E7%AB%AF/">Java后端</a>
+            
+              <a href="/categories/Java%E5%90%8E%E7%AB%AF/MySQL/">MySQL</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+            
+              <a href="/tags/MySQL/">MySQL</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2021/07/10/MySQL-11-%E5%88%86%E9%A1%B5%E6%9F%A5%E8%AF%A2/" target="_self">
+          <img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210927195533.png" srcset="/img/loading.gif" lazyload alt="MySQL-11-分页查询">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2021/07/10/MySQL-11-%E5%88%86%E9%A1%B5%E6%9F%A5%E8%AF%A2/" target="_self">
+          MySQL-11-分页查询
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2021/07/10/MySQL-11-%E5%88%86%E9%A1%B5%E6%9F%A5%E8%AF%A2/" target="_self">
+          
+          
+            
+          
+          分页查询
+
+
+分页查询
+应用场景
 语法
 特点
 例子
-1. 简单的分组
-2. 可以实现分组前的筛选
-3. 分组后筛选
-4. 添加排序
-5. 按多个字段分组
 
 
-作业6-分组
+习题
+测试题3
+子查询练习题
+作业习题
+
+
+
+
+
+分页查询应用场景当我们数据特别多的时候，一页显示不全，就需要分页提交sql请求。
+语法123456789101112select 查询列表from 表【join type join 表2on 连接条件where 筛选条件group by 分组字段having 分组后海选order by 排序的
         </a>
       </p>
 
@@ -461,322 +936,60 @@
     
     
       <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2021/07/10/MySQL-11-%E5%88%86%E9%A1%B5%E6%9F%A5%E8%AF%A2/" target="_self">
-          <img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210927195533.png" srcset="/img/loading.gif" lazyload alt="MySQL-11-分页查询">
+        <a href="/2021/07/10/MySQL-08-%E8%81%9A%E5%90%88%E5%87%BD%E6%95%B0%E4%B8%8E%E5%88%86%E7%BB%84/" target="_self">
+          <img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210927195533.png" srcset="/img/loading.gif" lazyload alt="MySQL-08-聚合函数与分组">
         </a>
       </div>
     
     <article class="col-12 col-md-8 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2021/07/10/MySQL-11-%E5%88%86%E9%A1%B5%E6%9F%A5%E8%AF%A2/" target="_self">
-          MySQL-11-分页查询
+        <a href="/2021/07/10/MySQL-08-%E8%81%9A%E5%90%88%E5%87%BD%E6%95%B0%E4%B8%8E%E5%88%86%E7%BB%84/" target="_self">
+          MySQL-08-聚合函数与分组
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2021/07/10/MySQL-11-%E5%88%86%E9%A1%B5%E6%9F%A5%E8%AF%A2/" target="_self">
+        <a href="/2021/07/10/MySQL-08-%E8%81%9A%E5%90%88%E5%87%BD%E6%95%B0%E4%B8%8E%E5%88%86%E7%BB%84/" target="_self">
           
           
             
           
-          分页查询
+          分组函数与分组
 
 
-分页查询
-应用场景
-语法
+分组函数
+功能
+分类
 特点
 例子
+1、简单的使用
+2、参数支持哪些类型
+3、是否忽略null
+4、和distinct搭配
+5、count函数的详细介绍
+6、和分组函数一同查询的字段有限制
 
 
-习题
-测试题3
-子查询练习题
-作业习题
-
-
-
-
-
-分页查询应用场景当我们数据特别多的时候，一页显示不全，就需要分页提交sql请求。
-语法123456789101112select 查询列表from 表【join type join 表2on 连接条件where 筛选条件group by 分组字段having 分组后海选order by 排序的
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2021-07-10 20:00" pubdate>
-              2021-07-10
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Java%E5%90%8E%E7%AB%AF/">Java后端</a>
-            
-              <a href="/categories/Java%E5%90%8E%E7%AB%AF/MySQL/">MySQL</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
-            
-              <a href="/tags/MySQL/">MySQL</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-      <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2021/07/10/MySQL-12-%E8%81%94%E5%90%88%E6%9F%A5%E8%AF%A2/" target="_self">
-          <img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210927195533.png" srcset="/img/loading.gif" lazyload alt="MySQL-12-联合查询">
-        </a>
-      </div>
-    
-    <article class="col-12 col-md-8 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2021/07/10/MySQL-12-%E8%81%94%E5%90%88%E6%9F%A5%E8%AF%A2/" target="_self">
-          MySQL-12-联合查询
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2021/07/10/MySQL-12-%E8%81%94%E5%90%88%E6%9F%A5%E8%AF%A2/" target="_self">
-          
-          
-            
-          
-          联合查询
-
-
-联合查询
-描述
-语法
-应用场景
-特点：★
-例子
-
-
-
-
-
-联合查询描述union 联合
-合并：将多条查询语句的结果合并成一个结果
-语法查询语句1union查询语句2union…
-应用场景要查询的结果来自于多个表，且多个表没有直接的连接关系，但查询的信息一致时
-特点：★1、要求多条查询语句的查询列数是一致的！2、要求多条查询语句的查询的每一列的类型和顺序最好一致3、union关键字默认
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2021-07-10 20:00" pubdate>
-              2021-07-10
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Java%E5%90%8E%E7%AB%AF/">Java后端</a>
-            
-              <a href="/categories/Java%E5%90%8E%E7%AB%AF/MySQL/">MySQL</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
-            
-              <a href="/tags/MySQL/">MySQL</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-      <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2021/07/10/MySQL-13-%E6%95%B0%E6%8D%AE%E7%9A%84%E5%A2%9E%E5%88%A0%E6%94%B9/" target="_self">
-          <img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210927195533.png" srcset="/img/loading.gif" lazyload alt="MySQL-13-数据的增删改">
-        </a>
-      </div>
-    
-    <article class="col-12 col-md-8 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2021/07/10/MySQL-13-%E6%95%B0%E6%8D%AE%E7%9A%84%E5%A2%9E%E5%88%A0%E6%94%B9/" target="_self">
-          MySQL-13-数据的增删改
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2021/07/10/MySQL-13-%E6%95%B0%E6%8D%AE%E7%9A%84%E5%A2%9E%E5%88%A0%E6%94%B9/" target="_self">
-          
-          
-            
-          
-          数据的增删改
-
-
-DML语言介绍
-一、插入语句
-方式一：经典的插入——语法
-例子
-方式二语法：
-例子
-两种方式大pk ★
-
-
-二、修改语句
-1.修改单表的记录★
-2.修改多表的记录【补充】
-例子
-
-
-三、删除语句
-方式一：delete
-方式二：truncate
-例子
-delete pk truncate【面试题★】
-
-
-作业10-数据处理
+作业5-分组函数
 问题
 我的解答
 
 
 
 
-
-DML语言介绍数据操作语言：插入
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2021-07-10 20:00" pubdate>
-              2021-07-10
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Java%E5%90%8E%E7%AB%AF/">Java后端</a>
-            
-              <a href="/categories/Java%E5%90%8E%E7%AB%AF/MySQL/">MySQL</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
-            
-              <a href="/tags/MySQL/">MySQL</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-      <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2021/07/10/MySQL-14-%E5%BA%93%E5%92%8C%E8%A1%A8%E7%9A%84%E7%AE%A1%E7%90%86/" target="_self">
-          <img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210927195533.png" srcset="/img/loading.gif" lazyload alt="MySQL-14-库和表的管理">
-        </a>
-      </div>
-    
-    <article class="col-12 col-md-8 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2021/07/10/MySQL-14-%E5%BA%93%E5%92%8C%E8%A1%A8%E7%9A%84%E7%AE%A1%E7%90%86/" target="_self">
-          MySQL-14-库和表的管理
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2021/07/10/MySQL-14-%E5%BA%93%E5%92%8C%E8%A1%A8%E7%9A%84%E7%AE%A1%E7%90%86/" target="_self">
-          
-          
-            
-          
-          库和表的管理
-
-
-DDL介绍
-一、库的管理
-1、库的创建
-语法：
-例子：
-
-
-2、库的修改
-更改库的字符集
-3、库的删除
-
-
-二、表的管理
-1.表的创建 ★
+分组查询
 语法
+特点
 例子
+1. 简单的分组
+2. 可以实现分组前的筛选
+3. 分组后筛选
+4. 添加排序
+5. 按多个字段分组
 
 
-
-
-2.表的修改
-语法
-例子
-
-
-3.表的删除
-4.表的复制
-
-
-作业11-创建和管理表
-问题
-我的解答
-
-
-
-
-
-DDL介绍数据定义语言
-一、库的管理
-创建、修改、删除
-二、表的管理
-创建、修改、删除
-创建： create修
+作业6-分组
         </a>
       </p>
 
@@ -817,255 +1030,47 @@ DDL介绍数据定义语言
     
     
       <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2021/07/10/MySQL-15-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" target="_self">
-          <img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210927195533.png" srcset="/img/loading.gif" lazyload alt="MySQL-15-数据类型">
+        <a href="/2021/07/10/MySQL-07-%E5%B8%B8%E7%94%A8%E5%87%BD%E6%95%B0/" target="_self">
+          <img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210927195533.png" srcset="/img/loading.gif" lazyload alt="MySQL-07-常用函数">
         </a>
       </div>
     
     <article class="col-12 col-md-8 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2021/07/10/MySQL-15-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" target="_self">
-          MySQL-15-数据类型
+        <a href="/2021/07/10/MySQL-07-%E5%B8%B8%E7%94%A8%E5%87%BD%E6%95%B0/" target="_self">
+          MySQL-07-常用函数
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2021/07/10/MySQL-15-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" target="_self">
+        <a href="/2021/07/10/MySQL-07-%E5%B8%B8%E7%94%A8%E5%87%BD%E6%95%B0/" target="_self">
           
           
             
           
-          数据类型
+          常用函数
 
 
-常见的数据类型
-一、整型
+常见函数
+概念
 分类
-特点
+常见函数
+字符函数
+数学函数
+日期函数
+
+
 例子
-1.如何设置无符号和有符号
-
-
-
-
-二、小数
-分类
-特点
-测试M和D
-原则
-
-
-三、字符型
-分类
-特点
-例子
-
-
-四、日期型
-分类
-特点
-
-
-
-
-
-常见的数据类型
-数值型
-
-整型
-
-小数
-
-定点数
-浮点数
-
-
-
-
-
-字符型：
-较短的文本：char、varchar
-较长的文本：text、blob（较长的二进制数据）
-
-
-日期型
-
-
-一、整型分
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2021-07-10 20:00" pubdate>
-              2021-07-10
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Java%E5%90%8E%E7%AB%AF/">Java后端</a>
-            
-              <a href="/categories/Java%E5%90%8E%E7%AB%AF/MySQL/">MySQL</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
-            
-              <a href="/tags/MySQL/">MySQL</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-      <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2021/07/10/MySQL-16-%E5%B8%B8%E8%A7%81%E7%BA%A6%E6%9D%9F/" target="_self">
-          <img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210927195533.png" srcset="/img/loading.gif" lazyload alt="MySQL-16-常见约束">
-        </a>
-      </div>
-    
-    <article class="col-12 col-md-8 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2021/07/10/MySQL-16-%E5%B8%B8%E8%A7%81%E7%BA%A6%E6%9D%9F/" target="_self">
-          MySQL-16-常见约束
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2021/07/10/MySQL-16-%E5%B8%B8%E8%A7%81%E7%BA%A6%E6%9D%9F/" target="_self">
-          
-          
-            
-          
-          常见约束
-
-
-常见约束
-含义
-分类
-添加约束的时机
-约束的添加分类
-
-
-一、创建表时添加约束
-1.添加列级约束
-语法
-
-
-2.添加表级约束
-语法：在各个字段的最下面
-
-
-通用的写法：★
-二、修改表时添加约束
-1、添加列级约束
-2、添加表级约束
-
-
-三、修改表时删除约束
-作业12-约束
-问题
-我的解答
-总结
-
-
-级联
-
-
-
-常见约束含义一种限制，用于限制表中的数据，为了保证表中的数据的准确和可靠性
-
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2021-07-10 20:00" pubdate>
-              2021-07-10
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Java%E5%90%8E%E7%AB%AF/">Java后端</a>
-            
-              <a href="/categories/Java%E5%90%8E%E7%AB%AF/MySQL/">MySQL</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
-            
-              <a href="/tags/MySQL/">MySQL</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-      <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2021/07/10/MySQL-17-%E6%A0%87%E8%AF%86%E5%88%97/" target="_self">
-          <img src="http://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/img/20210927195533.png" srcset="/img/loading.gif" lazyload alt="MySQL-17-标识列">
-        </a>
-      </div>
-    
-    <article class="col-12 col-md-8 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2021/07/10/MySQL-17-%E6%A0%87%E8%AF%86%E5%88%97/" target="_self">
-          MySQL-17-标识列
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2021/07/10/MySQL-17-%E6%A0%87%E8%AF%86%E5%88%97/" target="_self">
-          
-          
-            
-          
-          标识列
-
-
-介绍
-含义
-特点
-
-
-一、创建表时设置标识列
-二、修改表时设置标识列
-三、修改表时删除标识列
-
-
-
-介绍又称为自增长列
-含义可以不用手动的插入值，系统提供默认的序列值
-特点1、标识列必须和主键搭配吗？不一定，但要求是一个key2、一个表可以有几个标识列？至多一个！3、标识列的类型只能是数值型4、标识列可以通过 SET auto_increment_increment=3;设置步长可以通
+一、字符函数
+1. length获取参数值的字节个数
+2.concat 拼接字符串
+3.upper、lower 大小写
+4.substr、substring 分隔字符串
+5.instr 返回子串第一次出现的索引，如果找不到返回0
+6.trim 修剪
+7.lpad 用指定的字符实现左填充指定长度
+8.rpad 用指
         </a>
       </p>
 
