@@ -4,33 +4,6 @@
   
   
   <entry>
-    <title>电子书阅读器演示视频</title>
-    <link href="/2022/02/27/showapp/"/>
-    <url>/2022/02/27/showapp/</url>
-    
-    <content type="html"><![CDATA[<!DOCTYPE html><html lang="en"><head>    <meta charset="UTF-8">    <title>阅读器APP在线演示</title>    <style type="text/css">        div {            text-align: center;        }        video {            width: 360px;            height: 800px;        }    </style></head><body bgcolor="#C1D2F0">    <div>        <h1><span id="电子书阅读器app演示视频">电子书阅读器APP演示视频</span></h1>        <video src="https://wangpeng-imgsubmit.oss-cn-hangzhou.aliyuncs.com/video/%E9%98%85%E8%AF%BB%E5%99%A8APP%E6%BC%94%E7%A4%BA.mp4        " controls="controls">            您的浏览器不支持 video 标签。        </video>    </div></body></html>]]></content>
-    
-    
-    <categories>
-      
-      <category>Android</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>Java</tag>
-      
-      <tag>Android</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
     <title>电子书阅读器APP演示视频</title>
     <link href="/2022/02/27/show/"/>
     <url>/2022/02/27/show/</url>
